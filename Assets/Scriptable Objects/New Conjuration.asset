@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3799e31b54a2bc6438500e9041a5bddc, type: 3}
+  m_Name: New Conjuration
+  m_EditorClassIdentifier: 
+  SpellName: 
+  spellDuration: 0
+  conjuringStrategy:
+    rid: 5142980346582401239
+  castVFX: {fileID: 0}
+  spellVFX: {fileID: 0}
+  castSFX: {fileID: 0}
+  spellSFX: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 5142980346582401239
+      type: {class: SelfConjure, ns: , asm: Assembly-CSharp}
+      data: 
