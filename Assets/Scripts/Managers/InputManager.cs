@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActions
 {
-
     private PlayerControls controls;
 
     // Character and Camera Movement Interaction Event
