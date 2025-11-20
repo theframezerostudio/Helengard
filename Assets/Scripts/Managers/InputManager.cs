@@ -73,18 +73,18 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
         if (!context.performed) { return; }
 
         Vector2 val = context.ReadValue<Vector2>();
-        int amt = 0;
+        int index = 0;
 
         if (val == Vector2.up)
-            amt = 1;
+            index = 0;
         else if (val == Vector2.right)
-            amt = 2;
+            index = 1;
         else if (val == Vector2.down)
-            amt = 3;
+            index = 2;
         else if (val == Vector2.left)
-            amt = 4;
+            index = 3;
 
-        Debug.Log("Test" + amt);
-        onSkillSelect?.Invoke(amt);
+        Debug.Log("Test" + index);
+        onSkillSelect?.Invoke(index);
     }
 }

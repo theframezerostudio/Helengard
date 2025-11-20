@@ -7,7 +7,7 @@ public class CastingProperties : ScriptableObject
     [field: SerializeField] public float spellDuration { get; private set; } // Duration of spell 
 
     [field: Header("Conjuration Strategy")]
-    [SerializeReference, SubclassSelector] private CastingStrategy conjuringStrategy;
+    [field: SerializeReference, SubclassSelector] public CastingStrategy conjuringStrategy {  get; private set; }
 
     [field: Header("Base Properties")]
     [field: SerializeField] public GameObject castVFX { get; private set; }    // Casting VFX

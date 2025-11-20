@@ -3,19 +3,8 @@ using UnityEngine.InputSystem;
 
 public class CharacterCastingManager : MonoBehaviour
 {
-    protected CastingStrategy currentStrategy;
-    protected Spell currentSpell;
-
-
-    public void UpdateCurrentSpell(Spell spell)
-    {
-        if (spell == currentSpell)
-        {
-            return;
-        }
-
-        currentSpell = spell;
-    }
+    [SerializeField] protected CastingStrategy currentStrategy;
+    [SerializeField] protected SpellCaster spellCaster;
 
     public virtual void SetCurrentStrategy(CastingStrategy strategy)
     {
@@ -35,6 +24,10 @@ public class CharacterCastingManager : MonoBehaviour
 
     }
 
+    protected virtual void HandleSkillSelect(InputAction.CallbackContext context)
+    {
+
+    }
     public virtual void ClearCurrentStrategy()
     {
         currentStrategy = null;

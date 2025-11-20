@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Fire_Vortex
   m_EditorClassIdentifier: 
   <SpellName>k__BackingField: 
-  spellDuration: 0
-  conjuringStrategy:
-    rid: -2
-  castVFX: {fileID: 0}
-  spellVFX: {fileID: 0}
-  castSFX: {fileID: 0}
-  spellSFX: {fileID: 0}
+  <spellDuration>k__BackingField: 0
+  <conjuringStrategy>k__BackingField:
+    rid: 5142980400770973816
+  <castVFX>k__BackingField: {fileID: 6297188057111669499, guid: 98d4ca196e4ad9948948fcfea60f7c11, type: 3}
+  <spellVFX>k__BackingField: {fileID: 0}
+  <castSFX>k__BackingField: {fileID: 0}
+  <spellSFX>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 5142980400770973816
+      type: {class: SelfCasting, ns: , asm: Assembly-CSharp}
+      data: 

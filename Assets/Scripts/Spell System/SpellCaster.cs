@@ -11,17 +11,36 @@ public class SpellCaster : MonoBehaviour
         castingManager = GetComponent<CharacterCastingManager>();
     }
 
+    private void Start()
+    {
+        SkillSelector(0);
+    }
+
     public void SkillSelector(int index)
     {
         if (index < spells.Length)
         {
             currentSpell = spells[index];
-            castingManager.UpdateCurrentSpell(currentSpell);
         }
     }
 
     public void ExecuteSkill()
     {
+       
+    }
 
+    public void OnCastStart()
+    {
+        currentSpell.conjurationProperties.conjuringStrategy.Started(currentSpell, castingManager);
+    }
+
+    public void OnCastPerform()
+    {
+        currentSpell.conjurationProperties.conjuringStrategy.Performing();
+    }
+
+    public void OnCastRelease()
+    {
+        currentSpell.conjurationProperties.conjuringStrategy.Stopped();
     }
 }

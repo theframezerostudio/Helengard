@@ -4,30 +4,40 @@ using UnityEngine.InputSystem;
 
 
 public class PlayerCastingManager : CharacterCastingManager
-{
+{   
     public Camera mainCam;
+
     private void Awake()
     {
         mainCam = Camera.main; // Getting access to the main camera (Later we will be changing with camera manager or something)
+        spellCaster = GetComponent<SpellCaster>();
+    }
 
+    private void Start()
+    {
         InputManager.Instance.onCast += HandleCastStarted;
         InputManager.Instance.onCast += HandleCastPerforming;
         InputManager.Instance.onCast += HandleCastStopped;
+        InputManager.Instance.onSkillSelect += HandleSkillSelect;
+    }
 
+    private void HandleSkillSelect(int skillIndex)
+    {
+        spellCaster.SkillSelector(skillIndex);
     }
 
     protected override void HandleCastStarted(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            currentStrategy.Started(currentSpell, this);
+            spellCaster.OnCastStart();
         }
     }
     protected override void HandleCastPerforming(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            currentStrategy.Performing();
+            spellCaster.OnCastPerform();
         }
     }
 
@@ -35,7 +45,7 @@ public class PlayerCastingManager : CharacterCastingManager
     {
         if (context.canceled)
         {
-            currentStrategy.Stopped();
+            spellCaster.OnCastRelease();    
         }
     }
 
@@ -51,9 +61,12 @@ public class PlayerCastingManager : CharacterCastingManager
 
     private void UnsubscribeEvents()
     {
-        InputManager.Instance.onCast -= HandleCastStarted;
-        InputManager.Instance.onCast -= HandleCastPerforming;
-        InputManager.Instance.onCast -= HandleCastStopped;
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.onCast -= HandleCastStarted;
+            InputManager.Instance.onCast -= HandleCastPerforming;
+            InputManager.Instance.onCast -= HandleCastStopped;
+        }
     }
 
     private void OnDisable()

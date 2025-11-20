@@ -5,4 +5,5 @@ using System;
 public class Spell
 {
     public CastingProperties conjurationProperties;
+
 }
