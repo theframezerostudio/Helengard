@@ -60,11 +60,20 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Conjure",
+                    "name": "Cast",
                     "type": "Button",
                     "id": "a4ab51ed-8ed0-4b2d-8746-5432d3f42506",
                     "expectedControlType": "",
                     "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SpellSelect",
+                    "type": "Value",
+                    "id": "c2b8a83b-8d31-4ab0-8fe5-8c45dfd93ea6",
+                    "expectedControlType": "Vector2",
+                    "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
                 }
@@ -165,7 +174,7 @@
                     "interactions": "Hold",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Conjure",
+                    "action": "Cast",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -201,6 +210,72 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92121954-9a0e-483e-83cd-23fb5f312c70",
+                    "path": "<Gamepad>/dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "SpellSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Num-Pad",
+                    "id": "d5cac17e-dad9-499a-aa82-38d8f81de385",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpellSelect",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "9d312414-bf64-405b-bc41-e77e54e545dc",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "SpellSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "5dfecc4f-baf0-4d79-836b-6b8d200aad84",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "SpellSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "9775e722-984c-430d-878f-f4c690297a4b",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "SpellSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e945eeeb-3cab-4ccd-974f-e0f795838117",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "SpellSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

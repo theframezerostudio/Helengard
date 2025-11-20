@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3799e31b54a2bc6438500e9041a5bddc, type: 3}
-  m_Name: New Conjuration
+  m_Name: Fire_Vortex
   m_EditorClassIdentifier: 
-  SpellName: 
+  <SpellName>k__BackingField: 
   spellDuration: 0
   conjuringStrategy:
-    rid: 5142980346582401239
+    rid: -2
   castVFX: {fileID: 0}
   spellVFX: {fileID: 0}
   castSFX: {fileID: 0}
@@ -23,6 +23,5 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 5142980346582401239
-      type: {class: SelfConjure, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: -2
+      type: {class: , ns: , asm: }

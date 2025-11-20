@@ -146,11 +146,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Conjure"",
+                    ""name"": ""Cast"",
                     ""type"": ""Button"",
                     ""id"": ""a4ab51ed-8ed0-4b2d-8746-5432d3f42506"",
                     ""expectedControlType"": """",
                     ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SpellSelect"",
+                    ""type"": ""Value"",
+                    ""id"": ""c2b8a83b-8d31-4ab0-8fe5-8c45dfd93ea6"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""NormalizeVector2"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 }
@@ -251,7 +260,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Conjure"",
+                    ""action"": ""Cast"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -287,6 +296,72 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92121954-9a0e-483e-83cd-23fb5f312c70"",
+                    ""path"": ""<Gamepad>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SpellSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Num-Pad"",
+                    ""id"": ""d5cac17e-dad9-499a-aa82-38d8f81de385"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpellSelect"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9d312414-bf64-405b-bc41-e77e54e545dc"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""SpellSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""5dfecc4f-baf0-4d79-836b-6b8d200aad84"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""SpellSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""9775e722-984c-430d-878f-f4c690297a4b"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""SpellSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""e945eeeb-3cab-4ccd-974f-e0f795838117"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""SpellSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -845,7 +920,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Conjure = m_Player.FindAction("Conjure", throwIfNotFound: true);
+        m_Player_Cast = m_Player.FindAction("Cast", throwIfNotFound: true);
+        m_Player_SpellSelect = m_Player.FindAction("SpellSelect", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -945,7 +1021,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Conjure;
+    private readonly InputAction m_Player_Cast;
+    private readonly InputAction m_Player_SpellSelect;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -982,9 +1059,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Conjure".
+        /// Provides access to the underlying input action "Player/Cast".
         /// </summary>
-        public InputAction @Conjure => m_Wrapper.m_Player_Conjure;
+        public InputAction @Cast => m_Wrapper.m_Player_Cast;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SpellSelect".
+        /// </summary>
+        public InputAction @SpellSelect => m_Wrapper.m_Player_SpellSelect;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1029,9 +1110,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Conjure.started += instance.OnConjure;
-            @Conjure.performed += instance.OnConjure;
-            @Conjure.canceled += instance.OnConjure;
+            @Cast.started += instance.OnCast;
+            @Cast.performed += instance.OnCast;
+            @Cast.canceled += instance.OnCast;
+            @SpellSelect.started += instance.OnSpellSelect;
+            @SpellSelect.performed += instance.OnSpellSelect;
+            @SpellSelect.canceled += instance.OnSpellSelect;
         }
 
         /// <summary>
@@ -1061,9 +1145,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Conjure.started -= instance.OnConjure;
-            @Conjure.performed -= instance.OnConjure;
-            @Conjure.canceled -= instance.OnConjure;
+            @Cast.started -= instance.OnCast;
+            @Cast.performed -= instance.OnCast;
+            @Cast.canceled -= instance.OnCast;
+            @SpellSelect.started -= instance.OnSpellSelect;
+            @SpellSelect.performed -= instance.OnSpellSelect;
+            @SpellSelect.canceled -= instance.OnSpellSelect;
         }
 
         /// <summary>
@@ -1368,12 +1455,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Conjure" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Cast" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnConjure(InputAction.CallbackContext context);
+        void OnCast(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SpellSelect" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpellSelect(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

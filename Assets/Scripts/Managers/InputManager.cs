@@ -12,12 +12,14 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     // Hold Interaction Events
     public event Action<bool> onSprint;
-    public event Action<bool> onConjure;
+    public event Action<InputAction.CallbackContext> onCast;
 
     // Tap or Press Interaction Events
     public event Action onDash;
     public event Action onJump;
     public event Action onLock;
+
+    public event Action<int> onSkillSelect;
 
 
     private void OnEnable()
@@ -42,10 +44,6 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     {
         onSprint?.Invoke(true);
     }
-    public void OnConjure(InputAction.CallbackContext context)
-    {
-        onConjure?.Invoke(true);
-    }
     public void OnDash(InputAction.CallbackContext context)
     {
         onDash?.Invoke();
@@ -65,4 +63,28 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
         controls.Disable();
     }
 
+    public void OnCast(InputAction.CallbackContext context)
+    {
+        onCast?.Invoke(context);
+    }
+
+    public void OnSpellSelect(InputAction.CallbackContext context)
+    {
+        if (!context.performed) { return; }
+
+        Vector2 val = context.ReadValue<Vector2>();
+        int amt = 0;
+
+        if (val == Vector2.up)
+            amt = 1;
+        else if (val == Vector2.right)
+            amt = 2;
+        else if (val == Vector2.down)
+            amt = 3;
+        else if (val == Vector2.left)
+            amt = 4;
+
+        Debug.Log("Test" + amt);
+        onSkillSelect?.Invoke(amt);
+    }
 }
