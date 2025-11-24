@@ -33,6 +33,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     public void OnMove(InputAction.CallbackContext context)
     {
         onMove?.Invoke(context.ReadValue<Vector2>());
+        //Debug.Log(context.ReadValue<Vector2>());
     }
 
     public void OnLook(InputAction.CallbackContext context)

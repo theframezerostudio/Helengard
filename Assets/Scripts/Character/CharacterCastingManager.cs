@@ -1,10 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(SpellCaster))]
 public class CharacterCastingManager : MonoBehaviour
 {
     [SerializeField] protected CastingStrategy currentStrategy;
     [SerializeField] protected SpellCaster spellCaster;
+
+    protected virtual void Awake()
+    {
+        spellCaster = GetComponent<SpellCaster>();
+    }
+
 
     public virtual void SetCurrentStrategy(CastingStrategy strategy)
     {

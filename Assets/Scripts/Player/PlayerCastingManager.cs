@@ -4,13 +4,13 @@ using UnityEngine.InputSystem;
 
 
 public class PlayerCastingManager : CharacterCastingManager
-{   
-    public Camera mainCam;
+{
 
-    private void Awake()
+    [HideInInspector] public float horizontalMoveAmount;
+    [HideInInspector] public float verticalMoveAmount;
+    protected override void Awake()
     {
-        mainCam = Camera.main; // Getting access to the main camera (Later we will be changing with camera manager or something)
-        spellCaster = GetComponent<SpellCaster>();
+        base.Awake();
     }
 
     private void Start()
@@ -19,6 +19,14 @@ public class PlayerCastingManager : CharacterCastingManager
         InputManager.Instance.onCast += HandleCastPerforming;
         InputManager.Instance.onCast += HandleCastStopped;
         InputManager.Instance.onSkillSelect += HandleSkillSelect;
+        InputManager.Instance.onMove += HandleOnMovement;
+    }
+
+    private void HandleOnMovement(Vector2 vector)
+    {
+        verticalMoveAmount = vector.y;
+        horizontalMoveAmount = vector.x;
+        //Debug.Log(horizontalMoveAmount + " " + verticalMoveAmount);
     }
 
     private void HandleSkillSelect(int skillIndex)
@@ -66,6 +74,8 @@ public class PlayerCastingManager : CharacterCastingManager
             InputManager.Instance.onCast -= HandleCastStarted;
             InputManager.Instance.onCast -= HandleCastPerforming;
             InputManager.Instance.onCast -= HandleCastStopped;
+            InputManager.Instance.onSkillSelect -= HandleSkillSelect;
+            InputManager.Instance.onMove -= HandleOnMovement;
         }
     }
 

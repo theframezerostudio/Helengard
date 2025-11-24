@@ -12,18 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9486f8fae3dc79c468967405d80aada4, type: 3}
   m_Name: Test_AOE_Conjuration
   m_EditorClassIdentifier: 
-  <SpellName>k__BackingField: 
-  <spellDuration>k__BackingField: 0
-  conjuringStrategy:
-    rid: -2
-  <castVFX>k__BackingField: {fileID: 0}
-  <spellVFX>k__BackingField: {fileID: 0}
+  <spellName>k__BackingField: Test AOE Magic
+  <spellDuration>k__BackingField: 2
+  <castingStrategy>k__BackingField:
+    rid: 5142980467513098461
+  <castVFX>k__BackingField: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
+  <spellVFX>k__BackingField: {fileID: 584207449403360073, guid: b1ae5055f08b8284d9e996465d1d37e3, type: 3}
   <castSFX>k__BackingField: {fileID: 0}
   <spellSFX>k__BackingField: {fileID: 0}
-  circleMoveSpeed: 0
-  circleRange: 0
+  <circleMoveSpeed>k__BackingField: 30
+  <circleRange>k__BackingField: 10
+  <effectRadius>k__BackingField: 10
+  <groundMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 5142980467513098461
+      type: {class: AOECasting, ns: , asm: Assembly-CSharp}
+      data: 

@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 112412420}
   - component: {fileID: 112412419}
   - component: {fileID: 112412418}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -563,7 +563,9 @@ GameObject:
   - component: {fileID: 1669870524}
   - component: {fileID: 1669870523}
   - component: {fileID: 1669870521}
-  m_Layer: 0
+  - component: {fileID: 1669870528}
+  - component: {fileID: 1669870527}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,6 +687,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1669870527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669870519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da004e3f3d4d6c4c80043e6a0a51f22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellCaster: {fileID: 0}
+  horizontalMoveAmount: 0
+  verticalMoveAmount: 0
+--- !u!114 &1669870528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669870519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c960a906d311c428b05a9f0bf3db4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spells:
+  - castingProperties: {fileID: 11400000, guid: b4a70f635cee9da4da1c855f5f9fcaf9, type: 2}
+  - castingProperties: {fileID: 11400000, guid: 8d739f0718bcce448be39f44670e1d37, type: 2}
+  currentSpell:
+    castingProperties: {fileID: 0}
+  castingManager: {fileID: 0}
 --- !u!1 &1927640328
 GameObject:
   m_ObjectHideFlags: 0

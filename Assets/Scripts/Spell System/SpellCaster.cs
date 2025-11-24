@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SpellCaster : MonoBehaviour
@@ -5,6 +6,8 @@ public class SpellCaster : MonoBehaviour
     public Spell[] spells;
     public Spell currentSpell;
     public CharacterCastingManager castingManager;
+
+    private bool isPerforming = false;
 
     private void Awake()
     {
@@ -31,16 +34,27 @@ public class SpellCaster : MonoBehaviour
 
     public void OnCastStart()
     {
-        currentSpell.conjurationProperties.conjuringStrategy.Started(currentSpell, castingManager);
+        currentSpell.castingProperties.castingStrategy.Started(currentSpell, castingManager);
     }
 
     public void OnCastPerform()
     {
-        currentSpell.conjurationProperties.conjuringStrategy.Performing();
+        isPerforming = true;
+        StartCoroutine(PerformCast());
     }
 
     public void OnCastRelease()
     {
-        currentSpell.conjurationProperties.conjuringStrategy.Stopped();
+        isPerforming = false;
+        currentSpell.castingProperties.castingStrategy.Stopped();
+    }
+
+    private IEnumerator PerformCast()
+    {
+        while (isPerforming)
+        {
+            currentSpell.castingProperties.castingStrategy.Performing();
+            yield return null;
+        }
     }
 }
