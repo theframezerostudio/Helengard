@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Runtime.CompilerServices;
 
 [Serializable]
 public class AOECasting : CastingStrategy
@@ -59,13 +60,10 @@ public class AOECasting : CastingStrategy
         }
 
         // Ground snapping using raycast (maybe remove)
-        if (Physics.Raycast(targetPosition + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, groundMask))
+        if (Physics.Raycast(targetPosition + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 6f, groundMask))
         {
             targetPosition = hit.point;
         }
-
-        Debug.Log("verticalMoveAmount" + verticalValue);
-        Debug.Log("horizontalMoveAmount" + horizontalValue);
 
         Vector3 moveDirection = cameraTransform.forward * verticalValue;
         moveDirection += cameraTransform.right * horizontalValue;
@@ -73,9 +71,15 @@ public class AOECasting : CastingStrategy
         moveDirection.y = 0f;
         moveDirection.Normalize();
 
+        targetPosition.y = 0f;
+        Vector3 cameraPos = cameraTransform.position;
+        cameraPos.y = 0f;
+
         targetPosition += moveDirection * moveSpeed * Time.deltaTime;
-        targetPosition = cameraTransform.position + (targetPosition - cameraTransform.position).normalized *
-                         Mathf.Min(Vector3.Distance(cameraTransform.position, targetPosition), castRange); // Limiting the cast to move within the given castRange
+        targetPosition = cameraPos + (targetPosition - cameraPos).normalized *
+                         Mathf.Min(Vector3.Distance(cameraPos, targetPosition), castRange); // Limiting the cast to move within the given castRange
+
+        targetPosition.y = hit.point.y;
 
         if (castInstance != null)
             castInstance.transform.position = targetPosition;

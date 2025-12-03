@@ -20,7 +20,7 @@ MonoBehaviour:
   <spellVFX>k__BackingField: {fileID: 584207449403360073, guid: b1ae5055f08b8284d9e996465d1d37e3, type: 3}
   <castSFX>k__BackingField: {fileID: 0}
   <spellSFX>k__BackingField: {fileID: 0}
-  <circleMoveSpeed>k__BackingField: 30
+  <circleMoveSpeed>k__BackingField: 15
   <circleRange>k__BackingField: 10
   <effectRadius>k__BackingField: 10
   <groundMask>k__BackingField:
