@@ -2,15 +2,13 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] protected Animator animator;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float movementSpeed;
+    public float rotationSpeed;
+    public float rotationDamping;
+
+    public void SetAnim(string anim, float value, float dampTime = 0f) => animator.SetFloat(anim, value, dampTime, Time.deltaTime);
+    public void SetAnim(string anim, bool value) => animator.SetBool(anim, value);
+    public void PlayAnim(string anim, float transitionTime = 0.1f) => animator.CrossFadeInFixedTime(anim, transitionTime);
 }

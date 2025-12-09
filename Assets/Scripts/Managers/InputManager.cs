@@ -7,8 +7,8 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     private PlayerControls controls;
 
     // Character and Camera Movement Interaction Event
-    public event Action<Vector2> onMove;
-    public event Action<Vector2> onCameraMove;
+    public Action<Vector2> onMove;
+    public Action<Vector2> onCameraMove;
 
     // Hold Interaction Events
     public event Action<bool> onSprint;
@@ -21,6 +21,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public event Action<int> onSkillSelect;
 
+    public Vector2 MoveInput { get; private set; }
 
     private void OnEnable()
     {
@@ -32,7 +33,8 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        onMove?.Invoke(context.ReadValue<Vector2>());
+        MoveInput = context.ReadValue<Vector2>();
+        onMove?.Invoke(MoveInput);
         //Debug.Log(context.ReadValue<Vector2>());
     }
 
