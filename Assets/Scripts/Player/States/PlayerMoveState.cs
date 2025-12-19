@@ -3,13 +3,11 @@ using UnityEngine;
 public class PlayerMoveState : PlayerState
 {
     private Vector2 movement = Vector2.zero;
-    private readonly Camera mainCamera;
 
     private Vector3 currentVelocity = Vector3.zero;
 
     public PlayerMoveState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
-        mainCamera = Camera.main;
     }
 
     public override void Enter()
@@ -18,6 +16,7 @@ public class PlayerMoveState : PlayerState
 
         InputManager.Instance.onMove += HandleMove;
         movement = InputManager.Instance.MoveInput;
+        player.PlayAnim("Movement", 0.1f);
     }
 
     public override void Update()
@@ -39,11 +38,12 @@ public class PlayerMoveState : PlayerState
 
         Vector3 moveDir = (movement.x * right) + (movement.y * forward);
 
-        HandleRotation(moveDir);
-
         currentVelocity = Vector3.Lerp(currentVelocity, moveDir, Time.deltaTime * player.acceleration);
-        player.Move(currentVelocity, player.movementSpeed);
-        player.SetAnim("Speed", currentVelocity.magnitude, 0.1f);
+        float targetSpeed = player.Context.isSprinting ? player.sprintSpeed : player.movementSpeed;
+
+        player.LocomotionMode.Rotate(moveDir);
+        player.LocomotionMode.Move(currentVelocity, targetSpeed);
+        player.LocomotionMode.PlayAnimation(currentVelocity);
     }
 
     public override void Exit()
@@ -57,18 +57,4 @@ public class PlayerMoveState : PlayerState
     {
         movement = dir;
     }
-
-    private void HandleRotation(Vector3 moveDir)
-    {
-        if (moveDir.sqrMagnitude < 0.01f)
-            return;
-
-        Quaternion targetRot = Quaternion.LookRotation(moveDir);
-        player.transform.rotation = Quaternion.Slerp(
-            player.transform.rotation,
-            targetRot,
-            Time.deltaTime * player.rotationDamping
-        );
-    }
-
 }

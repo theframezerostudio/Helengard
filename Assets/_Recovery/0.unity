@@ -675,21 +675,9 @@ MonoBehaviour:
     isSprinting: 0
     isLockedOn: 0
     isGuarding: 0
-    isPerfectGuarding: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheck: {x: 0, y: 0.55, z: 0.05}
-  footLength: 0.27
-  rayLength: 0.2
-  groundRays: 3
   acceleration: 10
   deceleration: 15
   sprintSpeed: 12
-  jumpForce: 8
-  gravity: -9.8
-  airControlPercent: 0.5
-  perfectGuardWindow: 0.2
 --- !u!114 &1669870530
 MonoBehaviour:
   m_ObjectHideFlags: 0

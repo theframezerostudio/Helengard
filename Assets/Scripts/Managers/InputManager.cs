@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     // Hold Interaction Events
     public event Action<bool> onSprint;
+    public event Action<bool> onGuard;
     public event Action<InputAction.CallbackContext> onCast;
 
     // Tap or Press Interaction Events
@@ -45,12 +47,17 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        onSprint?.Invoke(true);
+        if (context.performed)
+            onSprint?.Invoke(true);
+        else if (context.canceled)
+            onSprint?.Invoke(false);
     }
+
     public void OnDash(InputAction.CallbackContext context)
     {
         onDash?.Invoke();
     }
+
     public void OnJump(InputAction.CallbackContext context)
     {
         onJump?.Invoke();  
@@ -60,6 +67,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     {
         onLock?.Invoke();
     }
+
     private void OnDisable()
     {   
         controls.Player.RemoveCallbacks(this);
@@ -89,5 +97,13 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
         Debug.Log("Test" + index);
         onSkillSelect?.Invoke(index);
+    }
+
+    public void OnGuard(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onGuard?.Invoke(true);
+        else if (context.canceled)
+            onGuard?.Invoke(false);
     }
 }

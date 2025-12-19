@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerIdleState : PlayerState
@@ -11,6 +12,8 @@ public class PlayerIdleState : PlayerState
         base.Enter();
 
         InputManager.Instance.onMove += HandleMove;
+        InputManager.Instance.onJump += HandleJumpInput;
+        player.PlayAnim("Movement", 0.1f);
     }
 
     public override void Update()
@@ -24,14 +27,19 @@ public class PlayerIdleState : PlayerState
         base.Exit();
 
         InputManager.Instance.onMove -= HandleMove;
+        InputManager.Instance.onJump -= HandleJumpInput;
     }
 
     private void HandleMove(Vector2 movementInput)
     {
-        Debug.Log("Idle State - HandleMove called with input: " + movementInput.sqrMagnitude);
         if (movementInput.sqrMagnitude > 0.1f)
         {
             stateMachine.TransitionToState(player.MoveState);
         }
+    }
+
+    private void HandleJumpInput()
+    {
+        stateMachine.TransitionToState(player.AirState);
     }
 }

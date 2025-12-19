@@ -163,6 +163,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": ""NormalizeVector2"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Guard"",
+                    ""type"": ""Button"",
+                    ""id"": ""7c1bc801-b0cc-44e3-8577-ca2e931f429e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -279,7 +288,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5957e7f2-31cf-45d7-b97a-0c7dc092b7a0"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -429,6 +438,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""SpellSelect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7f8eca31-83ff-4463-a265-c398016e330c"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Guard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -989,6 +1009,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Cast = m_Player.FindAction("Cast", throwIfNotFound: true);
         m_Player_SpellSelect = m_Player.FindAction("SpellSelect", throwIfNotFound: true);
+        m_Player_Guard = m_Player.FindAction("Guard", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1090,6 +1111,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Cast;
     private readonly InputAction m_Player_SpellSelect;
+    private readonly InputAction m_Player_Guard;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1133,6 +1155,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/SpellSelect".
         /// </summary>
         public InputAction @SpellSelect => m_Wrapper.m_Player_SpellSelect;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Guard".
+        /// </summary>
+        public InputAction @Guard => m_Wrapper.m_Player_Guard;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1183,6 +1209,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SpellSelect.started += instance.OnSpellSelect;
             @SpellSelect.performed += instance.OnSpellSelect;
             @SpellSelect.canceled += instance.OnSpellSelect;
+            @Guard.started += instance.OnGuard;
+            @Guard.performed += instance.OnGuard;
+            @Guard.canceled += instance.OnGuard;
         }
 
         /// <summary>
@@ -1218,6 +1247,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SpellSelect.started -= instance.OnSpellSelect;
             @SpellSelect.performed -= instance.OnSpellSelect;
             @SpellSelect.canceled -= instance.OnSpellSelect;
+            @Guard.started -= instance.OnGuard;
+            @Guard.performed -= instance.OnGuard;
+            @Guard.canceled -= instance.OnGuard;
         }
 
         /// <summary>
@@ -1535,6 +1567,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSpellSelect(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Guard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGuard(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

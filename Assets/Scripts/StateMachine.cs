@@ -5,7 +5,7 @@ public abstract class StateMachine : MonoBehaviour
     protected BaseState CurrentState;
     protected BaseState QueuedState;
 
-    protected bool isTransitioningState = false;
+    public bool IsTransitioningState { get; private set; } = false;
 
     public void InitializeState(BaseState state)
     {
@@ -30,26 +30,26 @@ public abstract class StateMachine : MonoBehaviour
 
     public void TransitionToState(BaseState newState, bool force = false)
     {
-        if (isTransitioningState || newState == null)
+        if (IsTransitioningState || newState == null)
             return;
 
         if (CurrentState != null && !force)
         {
-            if (!CurrentState.isCanellable || newState.Priority < CurrentState.Priority)
+            if (!CurrentState.isCanellable && newState.Priority < CurrentState.Priority)
             {
                 QueuedState = newState;
                 return;
             }
         }
 
-        isTransitioningState = true;
+        IsTransitioningState = true;
 
         CurrentState.Exit();
         CurrentState = newState;
         CurrentState.Enter();
         QueuedState = null;
 
-        isTransitioningState = false;
+        IsTransitioningState = false;
     }
 
     public void TryApplyQueuedState()

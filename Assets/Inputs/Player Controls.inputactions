@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "Player Controls",
     "maps": [
         {
@@ -76,6 +77,15 @@
                     "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Guard",
+                    "type": "Button",
+                    "id": "7c1bc801-b0cc-44e3-8577-ca2e931f429e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -192,7 +202,7 @@
                 {
                     "name": "",
                     "id": "5957e7f2-31cf-45d7-b97a-0c7dc092b7a0",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "Hold",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -342,6 +352,17 @@
                     "action": "SpellSelect",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "7f8eca31-83ff-4463-a265-c398016e330c",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Guard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

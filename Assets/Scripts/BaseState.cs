@@ -6,7 +6,7 @@ public abstract class BaseState
     protected Character character;
 
     public bool isCanellable = true;
-    public int Priority = 0;
+    public virtual int Priority { get; private set; } = 0;
 
     public BaseState(StateMachine stateMachine, Character character)
     {

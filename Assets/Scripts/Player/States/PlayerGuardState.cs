@@ -1,0 +1,42 @@
+using UnityEngine;
+
+public class PlayerGuardState : PlayerState
+{
+    private float stateTimer;
+    private bool isPerfectGuarding;
+
+    public PlayerGuardState(StateMachine stateMachine, Character character) : base(stateMachine, character)
+    {
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        player.PlayAnim("Guard", 0.1f);
+        stateTimer = Time.time;
+
+        isPerfectGuarding = true;
+        player.Context.isPerfectGuarding = true;
+    }
+
+    public override void Update()
+    {
+        if (!player.Context.IsGuarding)
+        {
+            stateMachine.TransitionToState(player.IdleState);
+            return;
+        }
+
+        if (isPerfectGuarding && Time.time > stateTimer + player.perfectGuardWindow)
+        {
+            isPerfectGuarding = false;
+            player.Context.isPerfectGuarding = false;
+        }
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        player.Context.isPerfectGuarding = false;
+    }
+}
