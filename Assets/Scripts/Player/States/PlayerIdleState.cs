@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerIdleState : PlayerState
+public class PlayerIdleState : PlayerGroundedState
 {
     public PlayerIdleState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
@@ -12,14 +12,14 @@ public class PlayerIdleState : PlayerState
         base.Enter();
 
         InputManager.Instance.onMove += HandleMove;
-        InputManager.Instance.onJump += HandleJumpInput;
-        player.PlayAnim("Movement", 0.1f);
+        player.PlayAnim("Movement", 0.3f);
     }
 
     public override void Update()
     {
         base.Update();
-        player.SetAnim("Speed", 0f, 0.1f);
+
+        player.SetAnim("Speed", 0f, 0.3f);
     }
 
     public override void Exit()
@@ -27,7 +27,6 @@ public class PlayerIdleState : PlayerState
         base.Exit();
 
         InputManager.Instance.onMove -= HandleMove;
-        InputManager.Instance.onJump -= HandleJumpInput;
     }
 
     private void HandleMove(Vector2 movementInput)
@@ -36,10 +35,5 @@ public class PlayerIdleState : PlayerState
         {
             stateMachine.TransitionToState(player.MoveState);
         }
-    }
-
-    private void HandleJumpInput()
-    {
-        stateMachine.TransitionToState(player.AirState);
     }
 }

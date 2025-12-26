@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerGuardState : PlayerState
+public class PlayerGuardState : PlayerGroundedState
 {
     private float stateTimer;
     private bool isPerfectGuarding;
@@ -23,7 +23,7 @@ public class PlayerGuardState : PlayerState
     {
         if (!player.Context.IsGuarding)
         {
-            stateMachine.TransitionToState(player.IdleState);
+            SwitchToLocomotion();
             return;
         }
 

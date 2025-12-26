@@ -10,7 +10,9 @@ public abstract class LocomotionMode
     }
 
     public abstract void Move(Vector3 dir, float movemwntSpeed);
-    public abstract void Rotate(Vector3 dir);
+    public abstract void Rotate(Vector2 dir);
     public abstract void PlayAnimation(Vector3 input);
-    public abstract void PerformDodge(Vector2 dir);
+    public abstract void StopAnimation();
+    public abstract void PerformDash(Vector2 dir);
+    public abstract Vector3 GetDirection(Vector2 input);
 }

@@ -13,7 +13,7 @@ public class TargetLockMode : LocomotionMode
     {
     }
 
-    public override void PerformDodge(Vector2 dir)
+    public override void PerformDash(Vector2 dir)
     {
     }
 
@@ -21,7 +21,16 @@ public class TargetLockMode : LocomotionMode
     {
     }
 
-    public override void Rotate(Vector3 dir)
+    public override void Rotate(Vector2 dir)
     {
+    }
+
+    public override void StopAnimation()
+    {
+    }
+
+    public override Vector3 GetDirection(Vector2 input)
+    {
+        return Vector3.zero;
     }
 }

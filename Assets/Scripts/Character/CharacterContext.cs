@@ -1,15 +1,21 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
-[Serializable]
-public class CharacterContext
+public class CharacterContext : MonoBehaviour
 {
-    public bool isSprinting;
+    public AbilitySystem abilitySystem;
 
+    public JumpResolver jumpResolver;
+
+    public bool isSprinting;
+    public bool isGrounded;
     //Serialized for testing purposes
     [SerializeField] private bool isLockedOn;
     [SerializeField] private bool isGuarding;
     public bool isPerfectGuarding;
+
+    public Vector3 horizontalVelocity;
 
     [Header("Character Context Events")]
     public bool IsGuarding
@@ -37,4 +43,12 @@ public class CharacterContext
 
     public Action<bool> OnTargetLock;
     public Action<bool> OnGuard;
+
+    public void InitializeAbilities(AbilityData[] startingAbilities)
+    {
+        abilitySystem = new AbilitySystem(this, startingAbilities);
+    }
+
+    public bool CanDash() => abilitySystem.CanUse(AbilityType.Dash);
+    public bool CanJump() => abilitySystem.CanUse(AbilityType.Jump);
 }

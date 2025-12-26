@@ -5,8 +5,9 @@ public abstract class BaseState
     protected StateMachine stateMachine;
     protected Character character;
 
-    public bool isCanellable = true;
-    public virtual int Priority { get; private set; } = 0;
+    public virtual bool IsCancellable => true;
+    public virtual int Priority => 0;
+    public virtual bool IsCompleted { get; protected set; } = false;
 
     public BaseState(StateMachine stateMachine, Character character)
     {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.LowLevel;
 
 public enum AirStateType
 {
@@ -12,49 +13,73 @@ public class PlayerAirState : PlayerState
 
     private readonly InputManager inputManager;
     private AirStateType AirState;
-    private float verticalVelocity;
     private float gravity;
+    private bool jump;
+    private JumpProfile jumpProfile;
+    private Vector3 airMoveDirection;
 
-    public PlayerAirState(StateMachine stateMachine, Character character) : base(stateMachine, character)
+    public PlayerAirState(StateMachine stateMachine, Character character, JumpProfile jumpProfile = null) : base(stateMachine, character)
     {
         inputManager = InputManager.Instance;
+        this.jumpProfile = jumpProfile;
+        jump = jumpProfile == null;
     }
 
     public override void Enter()
     {
         base.Enter();
 
-        player.PlayAnim("Jump");
-        verticalVelocity = player.jumpForce;
-        gravity = player.gravity;   
-
         AirState = AirStateType.Rising;
+        
+        if (jumpProfile)
+        {
+            player.PlayAnim(jumpProfile.jumpAnim.name);
+            player.verticalVelocity = jumpProfile.jumpForce;
+        }
+        else
+        {
+            player.PlayAnim("Fall", 1f);
+            AirState = AirStateType.Falling;
+        }
+
+        gravity = player.gravity;
+        airMoveDirection = inputManager.MoveInput;
     }
 
     public override void Update()
     {
         base.Update();
 
-        verticalVelocity += gravity * Time.deltaTime;
+        player.verticalVelocity += gravity * Time.deltaTime;
+        player.verticalVelocity = Mathf.Max(player.verticalVelocity, player.terminalVelocity);
 
-        if (verticalVelocity < 0)
+        if (player.verticalVelocity < 0 && AirState == AirStateType.Rising)
         {
             AirState = AirStateType.Falling;
+
+            if (jumpProfile != null)
+            {
+                player.PlayAnim(jumpProfile.fallAnim.name, 0.2f);
+            }
+            else
+            {
+                player.PlayAnim("Fall", 0.2f);
+            }
         }
 
+        player.Move(Vector3.up, player.verticalVelocity);
+
         Vector2 movement = inputManager.MoveInput;
-        Vector3 forward = (mainCamera.transform.forward).normalized;
-        Vector3 right = (mainCamera.transform.right).normalized;
 
-        forward.y = 0;
-        right.y = 0;
-
-        Vector3 moveDir = (movement.x * right) + (movement.y * forward);
-
-        player.LocomotionMode.Rotate(moveDir);
-        player.LocomotionMode.Move(moveDir, player.movementSpeed * player.airControlPercent);
-
-        player.Move(Vector3.up, verticalVelocity);
+        if (jumpProfile)
+        {
+            player.LocomotionMode.Move(movement, player.movementSpeed * jumpProfile.airControlMultiplier);
+            player.LocomotionMode.Move(airMoveDirection, jumpProfile.forwardForce);
+        }
+        else
+        {
+            player.LocomotionMode.Move(movement, player.movementSpeed * player.airControlPercent);
+        }
 
         HandleLand();
     }
@@ -63,9 +88,9 @@ public class PlayerAirState : PlayerState
     {
         if (stateMachine.IsTransitioningState) return;
 
-        if (AirState == AirStateType.Falling && player.IsGrounded())
+        if (AirState == AirStateType.Falling && player.Context.isGrounded)
         {
-            stateMachine.TransitionToState(player.IdleState);
+            stateMachine.TransitionToState(new PlayerRecoveryState(stateMachine, player, player.ActionProvider.landing));
         }
     }
 

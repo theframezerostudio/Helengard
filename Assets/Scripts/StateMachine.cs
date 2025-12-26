@@ -35,10 +35,13 @@ public abstract class StateMachine : MonoBehaviour
 
         if (CurrentState != null && !force)
         {
-            if (!CurrentState.isCanellable && newState.Priority < CurrentState.Priority)
+            if (!CurrentState.IsCancellable)
             {
-                QueuedState = newState;
-                return;
+                if (newState.Priority < CurrentState.Priority && !CurrentState.IsCompleted)
+                {
+                    QueuedState = newState;
+                    return;
+                }
             }
         }
 

@@ -55,7 +55,8 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        onDash?.Invoke();
+        if (context.performed)
+            onDash?.Invoke();
     }
 
     public void OnJump(InputAction.CallbackContext context)

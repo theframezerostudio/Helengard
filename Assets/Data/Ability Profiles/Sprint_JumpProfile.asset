@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d90c96cf6f2fbfe4aa38c2e5e7ff32bf, type: 3}
+  m_Name: Sprint_JumpProfile
+  m_EditorClassIdentifier: Assembly-CSharp::JumpProfile
+  jumpForce: 10
+  forwardForce: 5
+  airControlMultiplier: 1
+  jumpAnim: {fileID: 7400000, guid: 79fef3be1ee187041b6a4f078eb60d60, type: 2}
+  fallAnim: {fileID: 7400000, guid: e7d905f44cda1f64bbd95e329ca5cc7d, type: 2}
+  landAnim: {fileID: 7400000, guid: ec6529fc6ab3fc2469cbcbaf218b016f, type: 2}

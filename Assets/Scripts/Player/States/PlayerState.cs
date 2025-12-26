@@ -14,16 +14,6 @@ public class PlayerState : BaseState
 
     public override void Enter()
     {
-        player.Context.OnGuard += HandleGuard;
-    }
-
-    private void HandleGuard(bool isGuarding)
-    {
-        Debug.Log("Handle Guard in Player State: " + isGuarding);
-        if (isGuarding)
-        {
-            stateMachine.TransitionToState(player.GuardState);
-        }
     }
 
     public override void Update()
@@ -33,7 +23,6 @@ public class PlayerState : BaseState
 
     public override void Exit()
     {
-        player.Context.OnGuard -= HandleGuard;
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -46,5 +35,17 @@ public class PlayerState : BaseState
 
     public override void OnTriggerStay(Collider other)
     {
+    }
+
+    protected void SwitchToLocomotion()
+    {
+        if (InputManager.Instance.MoveInput == Vector2.zero)
+        {
+            stateMachine.TransitionToState(player.IdleState);
+        }
+        else
+        {
+            stateMachine.TransitionToState(player.MoveState);
+        }
     }
 }

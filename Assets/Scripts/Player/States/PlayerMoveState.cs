@@ -1,10 +1,12 @@
 using UnityEngine;
 
-public class PlayerMoveState : PlayerState
+public class PlayerMoveState : PlayerGroundedState
 {
     private Vector2 movement = Vector2.zero;
 
     private Vector3 currentVelocity = Vector3.zero;
+    private Vector3 velocityHelper;
+    private readonly float momentumOffset = 1.5f;
 
     public PlayerMoveState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
@@ -23,27 +25,31 @@ public class PlayerMoveState : PlayerState
     {
         base.Update();
 
+        Vector3 moveDir = player.LocomotionMode.GetDirection(movement).normalized;
+        float moveSpeed = player.Context.isSprinting ? player.sprintSpeed : player.movementSpeed;
+        Vector3 targetVelocity = moveDir * moveSpeed;
+
+        //currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, Time.deltaTime * player.acceleration);
+        currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref velocityHelper, 0.2f);
+
         if (movement.sqrMagnitude < 0.1f)
         {
-            stateMachine.TransitionToState(player.IdleState);
+            if (currentVelocity.magnitude > player.movementSpeed + momentumOffset)
+            {
+                stateMachine.TransitionToState(new PlayerRecoveryState(stateMachine, player, player.ActionProvider.sprintStop));
+            }
+            else
+            {
+                stateMachine.TransitionToState(player.IdleState);
+            }
+
             return;
         }
 
-        Vector3 forward = (mainCamera.transform.forward).normalized;
-        Vector3 right = (mainCamera.transform.right).normalized;
 
-        forward.y = 0;
-        right.y = 0;
-
-
-        Vector3 moveDir = (movement.x * right) + (movement.y * forward);
-
-        currentVelocity = Vector3.Lerp(currentVelocity, moveDir, Time.deltaTime * player.acceleration);
-        float targetSpeed = player.Context.isSprinting ? player.sprintSpeed : player.movementSpeed;
-
-        player.LocomotionMode.Rotate(moveDir);
-        player.LocomotionMode.Move(currentVelocity, targetSpeed);
-        player.LocomotionMode.PlayAnimation(currentVelocity);
+        player.LocomotionMode.Rotate(movement);
+        player.LocomotionMode.Move(movement, moveSpeed * movement.magnitude);
+        player.LocomotionMode.PlayAnimation(movement);
     }
 
     public override void Exit()
@@ -51,6 +57,7 @@ public class PlayerMoveState : PlayerState
         base.Exit();
 
         InputManager.Instance.onMove -= HandleMove;
+        player.LocomotionMode.StopAnimation();
     }
 
     private void HandleMove(Vector2 dir)
