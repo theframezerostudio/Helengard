@@ -7,9 +7,12 @@ public class CharacterContext : MonoBehaviour
     public AbilitySystem abilitySystem;
 
     public JumpResolver jumpResolver;
+    public AttackResolver attackResolver;
 
     public bool isSprinting;
     public bool isGrounded;
+    public bool isDashing;
+
     //Serialized for testing purposes
     [SerializeField] private bool isLockedOn;
     [SerializeField] private bool isGuarding;

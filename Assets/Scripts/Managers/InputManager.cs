@@ -15,6 +15,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     public event Action<bool> onSprint;
     public event Action<bool> onGuard;
     public event Action<InputAction.CallbackContext> onCast;
+    public event Action<AttackInput> onAttack;
 
     // Tap or Press Interaction Events
     public event Action onDash;
@@ -106,5 +107,29 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
             onGuard?.Invoke(true);
         else if (context.canceled)
             onGuard?.Invoke(false);
+    }
+
+    public void OnLightAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onAttack?.Invoke(AttackInput.Light);
+    }
+
+    public void OnHeavyAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onAttack?.Invoke(AttackInput.Heavy);
+    }
+
+    public void OnLightHoldAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onAttack?.Invoke(AttackInput.LightHold);
+    }
+
+    public void OnHeavyHoldAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            onAttack?.Invoke(AttackInput.HeavyHold);
     }
 }

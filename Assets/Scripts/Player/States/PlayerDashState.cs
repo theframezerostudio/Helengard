@@ -16,6 +16,8 @@ public class PlayerDashState : PlayerState
         base.Enter();
         player.PlayAnim("Dash", 0.05f);
 
+        player.Context.isDashing = true;
+
         IsCompleted = false;
         stateTimer = Time.time;
         moveInput = InputManager.Instance.MoveInput;
@@ -38,5 +40,7 @@ public class PlayerDashState : PlayerState
     public override void Exit()
     {
         base.Exit();
+
+        player.Context.isDashing = false;
     }
 }

@@ -11,7 +11,6 @@ public class PlayerAirState : PlayerState
 {
     public override int Priority => 5;
 
-    private readonly InputManager inputManager;
     private AirStateType AirState;
     private float gravity;
     private bool jump;
@@ -20,7 +19,6 @@ public class PlayerAirState : PlayerState
 
     public PlayerAirState(StateMachine stateMachine, Character character, JumpProfile jumpProfile = null) : base(stateMachine, character)
     {
-        inputManager = InputManager.Instance;
         this.jumpProfile = jumpProfile;
         jump = jumpProfile == null;
     }

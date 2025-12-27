@@ -5,11 +5,13 @@ public class PlayerState : BaseState
 {
     protected readonly Player player;
     protected readonly Camera mainCamera;
+    protected readonly InputManager inputManager;
 
     public PlayerState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
         player = character as Player;
         mainCamera = Camera.main;
+        inputManager = InputManager.Instance;
     }
 
     public override void Enter()
