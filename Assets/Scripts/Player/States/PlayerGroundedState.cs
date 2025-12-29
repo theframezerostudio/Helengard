@@ -17,6 +17,7 @@ public class PlayerGroundedState : PlayerState
         InputManager.Instance.onJump += HandleJump;
         InputManager.Instance.onDash += HandleDash;
         InputManager.Instance.onGuard += HandleGuard;
+        InputManager.Instance.onAttack += HandleAttack;
     }
 
     private void HandleGuard(bool guardActive)
@@ -48,6 +49,11 @@ public class PlayerGroundedState : PlayerState
         }
     }
 
+    private void HandleAttack(AttackInput input)
+    {
+        stateMachine.TransitionToState(new PlayerAttackState(stateMachine, character, input));
+    }
+
     public override void Update()
     {
         base.Update();
@@ -65,5 +71,6 @@ public class PlayerGroundedState : PlayerState
         InputManager.Instance.onJump -= HandleJump;
         InputManager.Instance.onDash -= HandleDash;
         InputManager.Instance.onGuard -= HandleGuard;
+        InputManager.Instance.onAttack -= HandleAttack;
     }
 }

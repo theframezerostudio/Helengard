@@ -23,6 +23,11 @@ public abstract class StateMachine : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        CurrentState.LateUpdate();
+    }
+
     public void ForceState(BaseState newState)
     {
         TransitionToState(newState, true);
@@ -45,13 +50,12 @@ public abstract class StateMachine : MonoBehaviour
             }
         }
 
-        IsTransitioningState = true;
+        //IsTransitioningState = true;
 
         CurrentState.Exit();
         CurrentState = newState;
         CurrentState.Enter();
         QueuedState = null;
-
         IsTransitioningState = false;
     }
 

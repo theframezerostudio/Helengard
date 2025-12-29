@@ -17,6 +17,7 @@ public abstract class BaseState
 
     public abstract void Enter();
     public abstract void Update();
+    public abstract void LateUpdate();
     public abstract void Exit();
     public abstract void OnTriggerEnter(Collider other);
     public abstract void OnTriggerStay(Collider other);

@@ -9,21 +9,40 @@ public enum AttackInput
     HeavyHold
 }
 
+public enum MovementMotionPolicy
+{
+    FullRootMotion,
+    Root_XZ_MotionOnly,
+    RootForwardOnly,
+    NoRootMotion,
+}
+
+public enum RotationMotionPolicy
+{
+    FullRootRotation,
+    YawOnly,
+    NoRotation
+}
+
 [CreateAssetMenu(fileName = "ComboNode", menuName = "Nodes/ComboNode")]
 public class ComboNode : ScriptableObject
 {
     public AttackInput input;
+    public MovementMotionPolicy motionPolicy;
+    public RotationMotionPolicy rotationPolicy;
     public string animationStateName;
-    public float transitionTIme;
+    public float transitionTime;
 
     public FrameWindow comboWindow;
     public FrameWindow cancelWindow;
-    public FrameWindow invulWindow;
+    public FrameWindow invincibleWindow;
     public FrameWindow moveWindow;
 
+    public float motionMultiplier;
     public float forwardAttackForce;
     public float upwardAttackForce;
 
+    //public bool hasInputMotion;
     public bool requiresGround;
     public bool requiresAir;
     public bool requiresSprint;

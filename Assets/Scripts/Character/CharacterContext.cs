@@ -8,6 +8,7 @@ public class CharacterContext : MonoBehaviour
 
     public JumpResolver jumpResolver;
     public AttackResolver attackResolver;
+    public MotionAccumulator MotionAccumulator { get; private set; } = new MotionAccumulator();
 
     public bool isSprinting;
     public bool isGrounded;
@@ -54,4 +55,9 @@ public class CharacterContext : MonoBehaviour
 
     public bool CanDash() => abilitySystem.CanUse(AbilityType.Dash);
     public bool CanJump() => abilitySystem.CanUse(AbilityType.Jump);
+
+    private void Start()
+    {
+        //MotionAccumulator = new MotionAccumulator();
+    }
 }

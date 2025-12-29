@@ -23,6 +23,10 @@ public class PlayerState : BaseState
 
     }
 
+    public override void LateUpdate()
+    {
+    }
+
     public override void Exit()
     {
     }
@@ -41,6 +45,12 @@ public class PlayerState : BaseState
 
     protected void SwitchToLocomotion()
     {
+        if (!player.Context.isGrounded)
+        {
+            stateMachine.TransitionToState(player.AirState);
+            return;
+        }
+        
         if (InputManager.Instance.MoveInput == Vector2.zero)
         {
             stateMachine.TransitionToState(player.IdleState);

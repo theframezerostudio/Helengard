@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] protected Animator animator;
+    [field: SerializeField] public Animator Animator { get; protected set; }
 
     public float movementSpeed;
     public float rotationSpeed;
     public float rotationDamping;
 
-    public void SetAnim(string anim, float value, float dampTime = 0f) => animator.SetFloat(anim, value, dampTime, Time.deltaTime);
-    public void SetAnim(string anim, bool value) => animator.SetBool(anim, value);
-    public void PlayAnim(string anim, float transitionTime = 0.1f) => animator.CrossFadeInFixedTime(anim, transitionTime, 0);
+    public void SetAnim(string anim, float value, float dampTime = 0f) => Animator.SetFloat(anim, value, dampTime, Time.deltaTime);
+    public void SetAnim(string anim, bool value) => Animator.SetBool(anim, value);
+    public void PlayAnim(string anim, float transitionTime = 0.1f) => Animator.CrossFadeInFixedTime(anim, transitionTime, 0);
 }

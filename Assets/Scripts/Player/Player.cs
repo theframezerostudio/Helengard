@@ -25,6 +25,7 @@ public class Player : Character
     public PlayerInputHandler InputHandler { get; private set; }
     [field: SerializeField] public CharacterContext Context { get; private set; }
     private PlayerStateMachine stateMachine;
+    public MotionDriver MotionDriver;
 
     [Header("Abilities")]
     [SerializeField] private AbilityData[] startingAbilities;
@@ -76,6 +77,7 @@ public class Player : Character
         InputHandler.Initialize(Context);
 
         freeMoveMode = new FreeMoveMode(this);
+        MotionDriver.Initialize(Context.MotionAccumulator);
 
         LocomotionMode = freeMoveMode;
         stateMachine.InitializeState(IdleState);
@@ -118,6 +120,11 @@ public class Player : Character
     public void Move(Vector3 dir, float speed)
     {
         Controller.Move(speed * Time.deltaTime * dir);
+    }
+
+    public void DeltaMove(Vector3 delta)
+    {
+        Controller.Move(delta);
     }
 
     public void ApplyGravity()

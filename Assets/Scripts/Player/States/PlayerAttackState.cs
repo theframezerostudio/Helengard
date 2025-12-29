@@ -3,8 +3,17 @@ using UnityEngine;
 public class PlayerAttackState : PlayerState
 {
     private ComboNode node;
-    private float stateTimer;
     private Vector2 movement;
+    private AttackInput attackInput;
+    private bool comboAttempted = false;
+    private bool hasAttackStarted;
+    private float animNormalizedTime = 0f;
+    private Animator animator;
+
+    public PlayerAttackState(StateMachine stateMachine, Character character, AttackInput attackInput) : base(stateMachine, character)
+    {
+        this.attackInput = attackInput;
+    }
 
     public PlayerAttackState(StateMachine stateMachine, Character character, ComboNode node) : base(stateMachine, character)
     {
@@ -15,10 +24,26 @@ public class PlayerAttackState : PlayerState
     {
         base.Enter();
 
-        stateTimer = 0;
+        animator = player.Animator;
 
-        player.PlayAnim(node.animationStateName, node.transitionTIme);
+        if (node == null)
+        {
+            node = player.Context.attackResolver.comboGraph.GetEntryNode(player.Context, attackInput);
 
+            if (node == null)
+            {
+                Debug.LogWarning("No valid entry node found for attack input: " + attackInput);
+                SwitchToLocomotion();
+                return;
+            }
+        }
+
+        hasAttackStarted = false;
+
+        player.PlayAnim(node.animationStateName, node.transitionTime);
+
+        comboAttempted = false;
+        animNormalizedTime = 0f;
         inputManager.onAttack += HandleAttack;
     }
 
@@ -26,14 +51,45 @@ public class PlayerAttackState : PlayerState
     {
         base.Update();
 
-        movement = inputManager.MoveInput;
-        movement = movement == Vector2.zero ? Vector2.up : movement;
+        CheckAnimationState();
 
-        if (node.moveWindow.IsValid(stateTimer))
+        if (!hasAttackStarted)
+            return;
+
+        movement = inputManager.MoveInput;
+
+        animNormalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+        if (comboAttempted && node.comboWindow.IsValid(animNormalizedTime))
         {
-            player.LocomotionMode.Move(movement, node.forwardAttackForce);
+            ComboNode nextNode = player.Context.attackResolver.Resolve(player.Context, attackInput, node);
+            if (nextNode)
+            {
+                stateMachine.TransitionToState(new PlayerAttackState(stateMachine, player, nextNode));
+                return;
+            }
+            comboAttempted = false;
+        }
+
+        if (node.cancelWindow.IsValid(animNormalizedTime) || animNormalizedTime > 1f)
+        {
+            SwitchToLocomotion();
+        }
+    }
+
+    public override void LateUpdate()
+    {
+        base.LateUpdate();
+
+        if (node.moveWindow.IsValid(animNormalizedTime))
+        {
+            Vector3 direction = movement == Vector2.zero ? player.transform.forward.normalized : player.LocomotionMode.GetDirection(movement).normalized;
+            player.Context.MotionAccumulator.AddExtraDelta(node.forwardAttackForce * Time.deltaTime * direction);
             player.LocomotionMode.Rotate(movement);
         }
+
+        player.Context.MotionAccumulator.Consume(node.motionPolicy, node.rotationPolicy, player.transform, out Vector3 move, out Quaternion rot);
+        player.DeltaMove(move);
     }
 
     public override void Exit()
@@ -45,14 +101,24 @@ public class PlayerAttackState : PlayerState
 
     private void HandleAttack(AttackInput attackInput)
     {
-        if (!node.comboWindow.IsValid(stateTimer))
+        if (node.comboWindow.IsAccepted(animNormalizedTime, 0.2f))
+        {
+            this.attackInput = attackInput;
+            comboAttempted = true;
+        }
+    }
+
+    private void CheckAnimationState()
+    {
+        if (hasAttackStarted)
             return;
 
-        ComboNode nextNode = player.Context.attackResolver.Resolve(player.Context, attackInput, node);
+        if (animator.IsInTransition(0))
+            return;
 
-        if (nextNode)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName(node.animationStateName))
         {
-            stateMachine.TransitionToState(new PlayerAttackState(stateMachine, player, nextNode));
+            hasAttackStarted = true;
         }
     }
 }
