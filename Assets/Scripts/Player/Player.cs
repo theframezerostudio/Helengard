@@ -127,6 +127,11 @@ public class Player : Character
         Controller.Move(delta);
     }
 
+    public void DeltaRotate(Quaternion delta)
+    {
+        transform.rotation = delta * transform.rotation;
+    }
+
     public void ApplyGravity()
     {
         if (Context.isGrounded && verticalVelocity < 0)

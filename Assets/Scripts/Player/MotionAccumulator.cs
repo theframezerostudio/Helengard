@@ -1,10 +1,19 @@
 using UnityEngine;
 
+public struct MotionData
+{
+    public MovementMotionPolicy movementPolicy;
+    public RotationMotionPolicy rotationPolicy;
+    public Transform characterTransform;
+}
+
 public class MotionAccumulator
 {
-    Vector3 rootDelta;
-    Vector3 extraDelta;
-    Quaternion rootRotation = Quaternion.identity;
+    private MotionData motionData;
+
+    private Vector3 rootDelta;
+    private Vector3 extraDelta;
+    private Quaternion rootRotation = Quaternion.identity;
 
     public void AddRootDelta(Vector3 delta)
     {
@@ -21,11 +30,17 @@ public class MotionAccumulator
         extraDelta += delta;
     }
 
-    public void Consume(MovementMotionPolicy motionPolicy, RotationMotionPolicy rotationPolicy, Transform characterTransform, 
-                        out Vector3 position, out Quaternion rotation)
+    public void SetMotionData(MovementMotionPolicy movementPolicy, RotationMotionPolicy rotationPolicy, Transform characterTransform)
     {
-        position = FilterRootMotion(rootDelta, motionPolicy, characterTransform) + extraDelta;
-        rotation = FilterRootRotation(rootRotation, rotationPolicy);
+        motionData.movementPolicy = movementPolicy;
+        motionData.rotationPolicy = rotationPolicy;
+        motionData.characterTransform = characterTransform;
+    }
+
+    public void Consume(out Vector3 position, out Quaternion rotation)
+    {
+        position = FilterRootMotion(rootDelta, motionData.movementPolicy, motionData.characterTransform) + extraDelta;
+        rotation = FilterRootRotation(rootRotation, motionData.rotationPolicy);
         Reset();
     }
 

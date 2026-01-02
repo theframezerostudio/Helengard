@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c7d56ca324e44249a1da548ef331a2b, type: 3}
-  m_Name: Test_LightAttack_1
+  m_Name: Test_HeavyHoldAttack_Start
   m_EditorClassIdentifier: Assembly-CSharp::ComboNode
-  input: 0
+  input: 3
   motionPolicy: 1
-  rotationPolicy: 0
+  rotationPolicy: 1
   animMotionSpeed:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -32,34 +32,37 @@ MonoBehaviour:
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 34
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  animationStateName: LightAttack_1
-  animClip: {fileID: -203655887218126122, guid: 9ba147f39f069c74b8855b264f1d60aa, type: 3}
+  animationStateName: HeavyAttackHold_Start
+  animClip: {fileID: -203655887218126122, guid: 9aa75660e4bf9e742a1a80e4b083901e, type: 3}
   transitionTime: 0.1
   comboWindow:
-    startTime: 0.8
+    startTime: 0.4
     endTime: 1
   cancelWindow:
-    startTime: 0
-    endTime: 0
+    startTime: 0.45
+    endTime: 1
   invincibleWindow:
     startTime: 0
     endTime: 0
   moveWindow:
-    startTime: 0
-    endTime: 0
-  forwardAttackForce: 0
+    startTime: 0.29
+    endTime: 0.35
+  motionMultiplier: 0
+  forwardAttackForce: 25
   upwardAttackForce: 0
   requiresGround: 1
   requiresAir: 0
   requiresSprint: 0
   requiresDash: 0
   transitions:
+  - attackInput: 1
+    targetNode: {fileID: 11400000, guid: 7a83d766ebf4e32429f957c36612953a, type: 2}
   - attackInput: 0
-    targetNode: {fileID: 11400000, guid: b88cd7e9a478b9a4fbb20255ea37b76c, type: 2}
+    targetNode: {fileID: 11400000, guid: d575d9b9c4a746047b7ad7c80aae75f8, type: 2}

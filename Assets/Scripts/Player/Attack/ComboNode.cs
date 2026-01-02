@@ -30,7 +30,9 @@ public class ComboNode : ScriptableObject
     public AttackInput input;
     public MovementMotionPolicy motionPolicy;
     public RotationMotionPolicy rotationPolicy;
+    public AnimationCurve animMotionSpeed = AnimationCurve.Linear(0f, 1f, 1f, 1f);
     public string animationStateName;
+    public AnimationClip animClip;
     public float transitionTime;
 
     public FrameWindow comboWindow;
@@ -38,7 +40,6 @@ public class ComboNode : ScriptableObject
     public FrameWindow invincibleWindow;
     public FrameWindow moveWindow;
 
-    public float motionMultiplier;
     public float forwardAttackForce;
     public float upwardAttackForce;
 

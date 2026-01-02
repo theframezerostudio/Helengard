@@ -9,6 +9,8 @@ public class PlayerAttackState : PlayerState
     private bool hasAttackStarted;
     private float animNormalizedTime = 0f;
     private Animator animator;
+    private float attackTimer = 0f;
+    private float animDuration;
 
     public PlayerAttackState(StateMachine stateMachine, Character character, AttackInput attackInput) : base(stateMachine, character)
     {
@@ -38,12 +40,15 @@ public class PlayerAttackState : PlayerState
             }
         }
 
+        player.LocomotionMode.SetLocomotion(node.motionPolicy, node.rotationPolicy);
+
         hasAttackStarted = false;
 
         player.PlayAnim(node.animationStateName, node.transitionTime);
-
+        animDuration = GetStateDuration();
         comboAttempted = false;
         animNormalizedTime = 0f;
+
         inputManager.onAttack += HandleAttack;
     }
 
@@ -51,14 +56,23 @@ public class PlayerAttackState : PlayerState
     {
         base.Update();
 
-        CheckAnimationState();
-
-        if (!hasAttackStarted)
-            return;
+        attackTimer += Time.deltaTime;
+        animNormalizedTime = Mathf.InverseLerp(0, animDuration, attackTimer);
 
         movement = inputManager.MoveInput;
 
-        animNormalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        if (node.moveWindow.IsValid(animNormalizedTime))
+        {
+            float t = Mathf.InverseLerp(node.moveWindow.startTime, node.moveWindow.endTime, animNormalizedTime);
+            t = node.animMotionSpeed.Evaluate(t);
+
+            Vector3 direction = movement == Vector2.zero ? player.transform.forward.normalized : player.LocomotionMode.GetDirection(movement).normalized;
+
+            player.LocomotionMode.Move(direction, node.forwardAttackForce * t);
+            player.LocomotionMode.Move(player.transform.up, node.upwardAttackForce * t);
+
+            player.LocomotionMode.Rotate(movement);
+        }
 
         if (comboAttempted && node.comboWindow.IsValid(animNormalizedTime))
         {
@@ -71,7 +85,7 @@ public class PlayerAttackState : PlayerState
             comboAttempted = false;
         }
 
-        if (node.cancelWindow.IsValid(animNormalizedTime) || animNormalizedTime > 1f)
+        if ((node.cancelWindow.IsValid(animNormalizedTime) && inputManager.MoveInput != Vector2.zero) || animNormalizedTime >= 1f)
         {
             SwitchToLocomotion();
         }
@@ -81,15 +95,6 @@ public class PlayerAttackState : PlayerState
     {
         base.LateUpdate();
 
-        if (node.moveWindow.IsValid(animNormalizedTime))
-        {
-            Vector3 direction = movement == Vector2.zero ? player.transform.forward.normalized : player.LocomotionMode.GetDirection(movement).normalized;
-            player.Context.MotionAccumulator.AddExtraDelta(node.forwardAttackForce * Time.deltaTime * direction);
-            player.LocomotionMode.Rotate(movement);
-        }
-
-        player.Context.MotionAccumulator.Consume(node.motionPolicy, node.rotationPolicy, player.transform, out Vector3 move, out Quaternion rot);
-        player.DeltaMove(move);
     }
 
     public override void Exit()
@@ -108,17 +113,18 @@ public class PlayerAttackState : PlayerState
         }
     }
 
-    private void CheckAnimationState()
+    public float GetStateDuration()
     {
-        if (hasAttackStarted)
-            return;
+        RuntimeAnimatorController rac = animator.runtimeAnimatorController;
 
-        if (animator.IsInTransition(0))
-            return;
-
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName(node.animationStateName))
+        if (rac is AnimatorOverrideController overrideController)
         {
-            hasAttackStarted = true;
+            AnimationClip overriddenClip = overrideController[node.animClip];
+
+            if (overriddenClip != null)
+                return overriddenClip.length;
         }
+
+        return node.animClip.length;
     }
 }

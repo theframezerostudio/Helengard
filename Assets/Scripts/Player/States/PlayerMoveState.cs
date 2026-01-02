@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMoveState : PlayerGroundedState
@@ -16,8 +17,11 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.Enter();
 
+        player.LocomotionMode.SetLocomotion(MovementMotionPolicy.NoRootMotion, RotationMotionPolicy.YawOnly);
+
         InputManager.Instance.onMove += HandleMove;
         movement = InputManager.Instance.MoveInput;
+
         player.PlayAnim("Movement", 0.1f);
     }
 
@@ -25,12 +29,7 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.Update();
 
-        Vector3 moveDir = player.LocomotionMode.GetDirection(movement).normalized;
         float moveSpeed = player.Context.isSprinting ? player.sprintSpeed : player.movementSpeed;
-        Vector3 targetVelocity = moveDir * moveSpeed;
-
-        //currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, Time.deltaTime * player.acceleration);
-        currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref velocityHelper, 0.2f);
 
         if (movement.sqrMagnitude < 0.1f)
         {
@@ -45,7 +44,6 @@ public class PlayerMoveState : PlayerGroundedState
 
             return;
         }
-
 
         player.LocomotionMode.Rotate(movement);
         player.LocomotionMode.Move(movement, moveSpeed * movement.magnitude);

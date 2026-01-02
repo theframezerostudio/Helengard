@@ -10,14 +10,25 @@ public class FreeMoveMode : LocomotionMode
         mainCamera = Camera.main;
     }
 
-    public override void Move(Vector3 input, float speed)
+    public override void Move(Vector3 direction, float speed)
     {
-        Vector3 dir = GetDirection(input).normalized;
-        Vector3 velocity = speed * dir;
+        Vector3 velocity = speed * direction;
+
+        currentVelocity = Vector3.SmoothDamp(currentVelocity, velocity, ref velocityHelper, 0.2f);
+        player.Context.MotionAccumulator.AddExtraDelta(currentVelocity * Time.deltaTime);
 
         player.Context.horizontalVelocity = velocity;
+    }
 
-        player.Controller.Move(velocity * Time.deltaTime);
+    public override void Move(Vector2 input, float movementSpeed)
+    {
+        Vector3 dir = GetDirection(input).normalized;
+        Vector3 velocity = movementSpeed * dir;
+
+        currentVelocity = Vector3.SmoothDamp(currentVelocity, velocity, ref velocityHelper, 0.2f);
+        player.Context.MotionAccumulator.AddExtraDelta(currentVelocity * Time.deltaTime);
+
+        player.Context.horizontalVelocity = velocity;
     }
 
     public override void Rotate(Vector2 input)
@@ -25,14 +36,20 @@ public class FreeMoveMode : LocomotionMode
         if (input.sqrMagnitude < 0.01f)
             return;
 
-        Vector3 moveDir = GetDirection(input);
+        Vector3 desiredDir = GetDirection(input);
+        Quaternion desiredRotation = Quaternion.LookRotation(desiredDir);
 
-        Quaternion targetRot = Quaternion.LookRotation(moveDir);
-        player.transform.rotation = Quaternion.Slerp(
-            player.transform.rotation,
-            targetRot,
+        Quaternion current = player.transform.rotation;
+
+        Quaternion deltaRotation = Quaternion.Inverse(current) * desiredRotation;
+
+        deltaRotation = Quaternion.Slerp(
+            Quaternion.identity,
+            deltaRotation,
             Time.deltaTime * player.rotationDamping
         );
+
+        player.Context.MotionAccumulator.AddRootRotation(deltaRotation);
     }
 
     public override void PerformDash(Vector2 dir)

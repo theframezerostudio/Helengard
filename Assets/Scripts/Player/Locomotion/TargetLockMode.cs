@@ -13,6 +13,10 @@ public class TargetLockMode : LocomotionMode
     {
     }
 
+    public override void Move(Vector2 input, float movementSpeed)
+    {
+    }
+
     public override void PerformDash(Vector2 dir)
     {
     }

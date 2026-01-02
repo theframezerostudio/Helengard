@@ -15,7 +15,32 @@ MonoBehaviour:
   input: 0
   motionPolicy: 1
   rotationPolicy: 0
+  animMotionSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   animationStateName: LightAttack_2
+  animClip: {fileID: -203655887218126122, guid: 06b23f05cd3fba547a7662bb9c573298, type: 3}
   transitionTime: 0.1
   comboWindow:
     startTime: 0.5
@@ -28,8 +53,7 @@ MonoBehaviour:
     endTime: 0
   moveWindow:
     startTime: 0
-    endTime: 1
-  motionMultiplier: 0
+    endTime: 0
   forwardAttackForce: 0
   upwardAttackForce: 0
   requiresGround: 0

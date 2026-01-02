@@ -25,6 +25,10 @@ public class PlayerState : BaseState
 
     public override void LateUpdate()
     {
+        player.Context.MotionAccumulator.Consume(out Vector3 moveDelta, out Quaternion rotDelta);
+
+        player.DeltaMove(moveDelta);
+        player.DeltaRotate(rotDelta);
     }
 
     public override void Exit()
