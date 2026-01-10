@@ -101,7 +101,7 @@ public class PlayerAttackState : PlayerState
 
     private void HandleAttack(AttackInput attackInput)
     {
-        if (node.comboWindow.IsAccepted(animNormalizedTime, 0.2f))
+        if (node.comboWindow.IsAccepted(animNormalizedTime, 1f))
         {
             this.attackInput = attackInput;
             comboAttempted = true;
