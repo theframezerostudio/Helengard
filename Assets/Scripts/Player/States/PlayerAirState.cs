@@ -13,9 +13,10 @@ public class PlayerAirState : PlayerState
 
     private AirStateType AirState;
     private float gravity;
-    private bool jump;
-    private JumpProfile jumpProfile;
-    private Vector3 airMoveDirection;
+    private readonly bool jump;
+    private readonly JumpProfile jumpProfile;
+    private Vector2 airMoveDirection;
+    private float startTime;
 
     public PlayerAirState(StateMachine stateMachine, Character character, JumpProfile jumpProfile = null) : base(stateMachine, character)
     {
@@ -26,7 +27,7 @@ public class PlayerAirState : PlayerState
     public override void Enter()
     {
         base.Enter();
-
+        startTime = Time.time;
         AirState = AirStateType.Rising;
         
         if (jumpProfile)
@@ -48,8 +49,15 @@ public class PlayerAirState : PlayerState
     {
         base.Update();
 
-        player.verticalVelocity += gravity * Time.deltaTime;
-        player.verticalVelocity = Mathf.Max(player.verticalVelocity, player.terminalVelocity);
+        float dt = Time.deltaTime;
+        if (dt <= 0f)
+            return;
+
+        float elapsed = Time.time - startTime;
+        float gravityScale = jumpProfile ? jumpProfile.gravityCurve.Evaluate(elapsed) : 1f;
+        player.verticalVelocity += player.gravity * gravityScale * dt;
+
+        player.verticalVelocity = Mathf.Max(player.verticalVelocity, jumpProfile?.maxFallSpeed ?? -30f);
 
         if (player.verticalVelocity < 0 && AirState == AirStateType.Rising)
         {
@@ -65,7 +73,7 @@ public class PlayerAirState : PlayerState
             }
         }
 
-        player.Move(Vector3.up, player.verticalVelocity);
+        player.LocomotionMode.AddImpulse(Vector3.up, player.verticalVelocity * dt);
 
         Vector2 movement = inputManager.MoveInput;
 

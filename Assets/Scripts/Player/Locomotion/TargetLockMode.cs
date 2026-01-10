@@ -37,4 +37,16 @@ public class TargetLockMode : LocomotionMode
     {
         return Vector3.zero;
     }
+
+    public override void AddImpulse(Vector2 input, float distance)
+    {
+    }
+
+    public override void AddImpulse(Vector3 dir, float distance)
+    {
+    }
+
+    public override void ResetVelocity()
+    {
+    }
 }

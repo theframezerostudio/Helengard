@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerGroundedState : PlayerState
 {
     protected float lastTimeDashed = Mathf.NegativeInfinity;
-
+    
     public PlayerGroundedState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
     }

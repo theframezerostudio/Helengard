@@ -38,7 +38,7 @@ public class Player : Character
     [SerializeField] private int groundRays;
 
     [Header("Movement Settings")]
-    //public float acceleration = 10f;
+    public float acceleration = 10f;
     //public float deceleration = 15f;
     public float sprintSpeed = 12f;
     public float horizontalVelocity = 0f;
@@ -81,6 +81,8 @@ public class Player : Character
 
         LocomotionMode = freeMoveMode;
         stateMachine.InitializeState(IdleState);
+
+        verticalVelocity = groundSnapForce;
     }
 
     private void Update()
@@ -130,19 +132,6 @@ public class Player : Character
     public void DeltaRotate(Quaternion delta)
     {
         transform.rotation = delta * transform.rotation;
-    }
-
-    public void ApplyGravity()
-    {
-        if (Context.isGrounded && verticalVelocity < 0)
-        {
-            verticalVelocity = groundSnapForce;
-        }
-        else
-        {
-            verticalVelocity += gravity * Time.deltaTime;
-            verticalVelocity = Mathf.Max(verticalVelocity, terminalVelocity);
-        }
     }
 
     private void OnDrawGizmos()

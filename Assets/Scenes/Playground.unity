@@ -206,8 +206,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 43630593}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.09185551, y: 0.025008148, z: 0.002307623, w: 0.9954556}
-  m_LocalPosition: {x: 0.00000004443428, y: 1.550419, z: 3.2326665}
+  m_LocalRotation: {x: -0.09185554, y: 0.025008155, z: 0.0023076243, w: 0.9954556}
+  m_LocalPosition: {x: 0.00000764964, y: 1.3306508, z: 2.8038523}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -718,9 +718,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   <Animator>k__BackingField: {fileID: 5382490922141604080}
-  movementSpeed: 5
-  rotationSpeed: 20
-  rotationDamping: 15
+  movementSpeed: 0
+  rotationTime: 0
   <ActionProvider>k__BackingField: {fileID: 887540774}
   <Context>k__BackingField: {fileID: 1684997012}
   MotionDriver: {fileID: 5382490922141604081}
@@ -734,13 +733,14 @@ MonoBehaviour:
   footLength: 0.27
   rayLength: 0.1
   groundRays: 2
-  sprintSpeed: 12
+  acceleration: 10
+  sprintSpeed: 0
   horizontalVelocity: 0
   dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 1
   jumpForce: 8
-  gravity: -14.7
+  gravity: -30
   airControlPercent: 0.5
   verticalVelocity: 0
   groundSnapForce: -12
@@ -914,8 +914,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1927640328}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0918555, y: 0.025008148, z: 0.0023076225, w: 0.9954556}
-  m_LocalPosition: {x: 0.00000004443428, y: 1.550419, z: 3.2326665}
+  m_LocalRotation: {x: -0.091855526, y: 0.025008153, z: 0.0023076239, w: 0.9954556}
+  m_LocalPosition: {x: 0.00000764964, y: 1.3306508, z: 2.8038523}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1052,7 +1052,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 1.99
+  Radius: 2.43
   Orbits:
     Top:
       Radius: 1.25
@@ -1115,7 +1115,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 314723326722223142}
+    TrackingTarget: {fileID: 6743970643908910848}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:

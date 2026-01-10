@@ -6,7 +6,6 @@ public class PlayerAttackState : PlayerState
     private Vector2 movement;
     private AttackInput attackInput;
     private bool comboAttempted = false;
-    private bool hasAttackStarted;
     private float animNormalizedTime = 0f;
     private Animator animator;
     private float attackTimer = 0f;
@@ -42,8 +41,6 @@ public class PlayerAttackState : PlayerState
 
         player.LocomotionMode.SetLocomotion(node.motionPolicy, node.rotationPolicy);
 
-        hasAttackStarted = false;
-
         player.PlayAnim(node.animationStateName, node.transitionTime);
         animDuration = GetStateDuration();
         comboAttempted = false;
@@ -64,12 +61,16 @@ public class PlayerAttackState : PlayerState
         if (node.moveWindow.IsValid(animNormalizedTime))
         {
             float t = Mathf.InverseLerp(node.moveWindow.startTime, node.moveWindow.endTime, animNormalizedTime);
-            t = node.animMotionSpeed.Evaluate(t);
+            float motionAlpha = node.animMotionSpeed.Evaluate(t);
 
-            Vector3 direction = movement == Vector2.zero ? player.transform.forward.normalized : player.LocomotionMode.GetDirection(movement).normalized;
+            Vector3 direction = movement == Vector2.zero ? player.transform.forward : player.LocomotionMode.GetDirection(movement);
+            direction.Normalize();
 
-            player.LocomotionMode.Move(direction, node.forwardAttackForce * t);
-            player.LocomotionMode.Move(player.transform.up, node.upwardAttackForce * t);
+            float forwardDelta = (node.forwardAttackForce * motionAlpha) * Time.deltaTime;
+            float upwardDelta = (node.upwardAttackForce * motionAlpha) * Time.deltaTime;
+
+            player.LocomotionMode.AddImpulse(direction, forwardDelta);
+            player.LocomotionMode.AddImpulse(player.transform.up, upwardDelta);
 
             player.LocomotionMode.Rotate(movement);
         }
@@ -89,12 +90,6 @@ public class PlayerAttackState : PlayerState
         {
             SwitchToLocomotion();
         }
-    }
-
-    public override void LateUpdate()
-    {
-        base.LateUpdate();
-
     }
 
     public override void Exit()

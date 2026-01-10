@@ -4,31 +4,94 @@ using UnityEngine.Windows;
 public class FreeMoveMode : LocomotionMode
 {
     private readonly Camera mainCamera;
+    private float smoothingTime = 0.2f;
 
     public FreeMoveMode(Player player) : base(player)
     {
         mainCamera = Camera.main;
     }
 
-    public override void Move(Vector3 direction, float speed)
+    private float GetSmoothingDelta(float deltaTime, float timeConstant)
     {
-        Vector3 velocity = speed * direction;
+        if (timeConstant <= 0f) return 1f;
 
-        currentVelocity = Vector3.SmoothDamp(currentVelocity, velocity, ref velocityHelper, 0.2f);
-        player.Context.MotionAccumulator.AddExtraDelta(currentVelocity * Time.deltaTime);
-
-        player.Context.horizontalVelocity = velocity;
+        return 1f - Mathf.Exp(-deltaTime / timeConstant);
     }
 
-    public override void Move(Vector2 input, float movementSpeed)
+    public override void Move(Vector3 direction, float speed)
     {
+        float dt = Time.deltaTime;
+        if (dt <= 0)
+            return;
+
+        Vector3 targetVelocity = speed * direction;
+
+        if (direction.sqrMagnitude <= 0.001f || speed == 0f)
+        {
+            ResetVelocity();
+            return;
+        }
+
+        float alpha = GetSmoothingDelta(dt, smoothingTime);
+
+        Vector3 smoothTarget = Vector3.Lerp(currentVelocity, targetVelocity, alpha);
+        currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, player.acceleration * dt);
+        //currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref velocityHelper, 0.2f);
+        player.Context.MotionAccumulator.AddExtraDelta(currentVelocity * dt);
+
+        player.Context.horizontalVelocity = currentVelocity;
+    }
+
+    public override void Move(Vector2 input, float speed)
+    {
+        float dt = Time.deltaTime;
+        if (dt <= 0)
+            return;
+
+        if (input.sqrMagnitude < 0.001f || speed == 0f)
+        {
+            ResetVelocity();
+            return;
+        }
+
         Vector3 dir = GetDirection(input).normalized;
-        Vector3 velocity = movementSpeed * dir;
+        Vector3 targetVelocity = speed * dir;
 
-        currentVelocity = Vector3.SmoothDamp(currentVelocity, velocity, ref velocityHelper, 0.2f);
-        player.Context.MotionAccumulator.AddExtraDelta(currentVelocity * Time.deltaTime);
+        float alpha = GetSmoothingDelta(dt, smoothingTime);
+        Vector3 smoothTarget = Vector3.Lerp(currentVelocity, targetVelocity, alpha);
 
-        player.Context.horizontalVelocity = velocity;
+        currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, player.acceleration * dt);
+
+        player.Context.MotionAccumulator.AddExtraDelta(currentVelocity * dt);
+
+        player.Context.horizontalVelocity = currentVelocity;
+    }
+
+    public override void AddImpulse(Vector2 input, float distance)
+    {
+        if (input.sqrMagnitude < 0.001f)
+            return;
+
+        Vector3 dir = GetDirection(input).normalized;
+        Vector3 delta = distance * dir;
+
+        //currentVelocity = Vector3.SmoothDamp(currentVelocity, delta, ref velocityHelper, 0.2f);
+        player.Context.MotionAccumulator.AddExtraDelta(delta);
+
+        player.Context.horizontalVelocity = delta / Time.deltaTime;
+    }
+
+    public override void AddImpulse(Vector3 direction, float distance)
+    {
+        if (direction.sqrMagnitude < 0.001f)
+            return;
+
+        Vector3 delta = distance * direction;
+
+        //currentVelocity = Vector3.SmoothDamp(currentVelocity, velocity, ref velocityHelper, 0.2f);
+        player.Context.MotionAccumulator.AddExtraDelta(delta);
+
+        player.Context.horizontalVelocity = delta / Time.deltaTime;
     }
 
     public override void Rotate(Vector2 input)
@@ -36,20 +99,25 @@ public class FreeMoveMode : LocomotionMode
         if (input.sqrMagnitude < 0.01f)
             return;
 
-        Vector3 desiredDir = GetDirection(input);
+        Vector3 desiredDir = GetDirection(input).normalized;
         Quaternion desiredRotation = Quaternion.LookRotation(desiredDir);
+        Quaternion currentRotation = player.transform.rotation;
 
-        Quaternion current = player.transform.rotation;
+        Quaternion deltaRotation = Quaternion.Inverse(currentRotation) * desiredRotation;
 
-        Quaternion deltaRotation = Quaternion.Inverse(current) * desiredRotation;
+        float dt = Time.deltaTime;
+        if (dt <= 0f)
+            return;
 
-        deltaRotation = Quaternion.Slerp(
+        float alpha = GetSmoothingDelta(dt, player.rotationTime );
+
+        Quaternion smoothDelta = Quaternion.Slerp(
             Quaternion.identity,
             deltaRotation,
-            Time.deltaTime * player.rotationDamping
+            alpha
         );
 
-        player.Context.MotionAccumulator.AddRootRotation(deltaRotation);
+        player.Context.MotionAccumulator.AddRootRotation(smoothDelta);
     }
 
     public override void PerformDash(Vector2 dir)
@@ -80,5 +148,12 @@ public class FreeMoveMode : LocomotionMode
 
         Vector3 dir = (input.x * right) + (input.y * forward);
         return dir;
+    }
+
+    public override void ResetVelocity()
+    {
+        currentVelocity = Vector3.zero;
+        velocityHelper = Vector3.zero;
+        player.Context.horizontalVelocity = Vector3.zero;
     }
 }

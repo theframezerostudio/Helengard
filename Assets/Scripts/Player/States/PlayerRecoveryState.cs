@@ -14,8 +14,13 @@ public class PlayerRecoveryState : PlayerState
     public override void Enter()
     {
         base.Enter();
+
+        player.LocomotionMode.SetLocomotion(MovementMotionPolicy.FullRootMotion, RotationMotionPolicy.YawOnly);
+
         stateTimer = 0;
         player.PlayAnim(actionData.animState, 0.1f);
+
+        inputManager.onJump += HandleJump;
     }
 
     public override void Update()
@@ -35,8 +40,22 @@ public class PlayerRecoveryState : PlayerState
         }
     }
 
+    private void HandleJump()
+    {
+        if (player.Context.abilitySystem.TryUse(AbilityType.Jump))
+        {
+            player.Context.abilitySystem.UseAbility(AbilityType.Jump);
+
+            JumpProfile jumpProfile = player.Context.jumpResolver.Resolve(player.Context);
+
+            stateMachine.TransitionToState(new PlayerAirState(stateMachine, character, jumpProfile));
+        }
+    }
+
     public override void Exit()
     {
         base.Exit();
+
+        inputManager.onJump -= HandleJump;
     }
 }

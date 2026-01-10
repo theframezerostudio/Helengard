@@ -27,6 +27,12 @@ public class PlayerState : BaseState
     {
         player.Context.MotionAccumulator.Consume(out Vector3 moveDelta, out Quaternion rotDelta);
 
+        float dt = Time.deltaTime;
+        if (dt > 0f)
+        {
+            player.Context.horizontalVelocity = moveDelta / dt;
+        }
+
         player.DeltaMove(moveDelta);
         player.DeltaRotate(rotDelta);
     }

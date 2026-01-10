@@ -44,7 +44,7 @@ public class MotionAccumulator
         Reset();
     }
 
-    void Reset()
+    public void Reset()
     {
         rootDelta = Vector3.zero;
         extraDelta = Vector3.zero;

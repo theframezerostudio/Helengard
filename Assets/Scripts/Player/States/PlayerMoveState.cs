@@ -5,8 +5,6 @@ public class PlayerMoveState : PlayerGroundedState
 {
     private Vector2 movement = Vector2.zero;
 
-    private Vector3 currentVelocity = Vector3.zero;
-    private Vector3 velocityHelper;
     private readonly float momentumOffset = 1.5f;
 
     public PlayerMoveState(StateMachine stateMachine, Character character) : base(stateMachine, character)
@@ -17,7 +15,7 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.Enter();
 
-        player.LocomotionMode.SetLocomotion(MovementMotionPolicy.NoRootMotion, RotationMotionPolicy.YawOnly);
+        player.LocomotionMode.SetLocomotion(MovementMotionPolicy.FullRootMotion, RotationMotionPolicy.YawOnly);
 
         InputManager.Instance.onMove += HandleMove;
         movement = InputManager.Instance.MoveInput;
@@ -33,7 +31,7 @@ public class PlayerMoveState : PlayerGroundedState
 
         if (movement.sqrMagnitude < 0.1f)
         {
-            if (currentVelocity.magnitude > player.movementSpeed + momentumOffset)
+            if (player.Context.horizontalVelocity.sqrMagnitude > 20f)
             {
                 stateMachine.TransitionToState(new PlayerRecoveryState(stateMachine, player, player.ActionProvider.sprintStop));
             }

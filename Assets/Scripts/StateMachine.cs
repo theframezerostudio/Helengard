@@ -50,7 +50,7 @@ public abstract class StateMachine : MonoBehaviour
             }
         }
 
-        //IsTransitioningState = true;
+        IsTransitioningState = true;
 
         CurrentState.Exit();
         CurrentState = newState;

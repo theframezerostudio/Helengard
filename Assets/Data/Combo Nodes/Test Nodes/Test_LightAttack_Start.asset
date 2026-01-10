@@ -50,7 +50,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   animationStateName: LightAttack_Start
   animClip: {fileID: -203655887218126122, guid: 975a0e50c73a3494a80b5d5d32ca5913, type: 3}
-  animDuration: 0
   transitionTime: 0.2
   comboWindow:
     startTime: 0.8
@@ -64,7 +63,6 @@ MonoBehaviour:
   moveWindow:
     startTime: 0
     endTime: 0.27
-  motionMultiplier: 0
   forwardAttackForce: 12
   upwardAttackForce: 0
   requiresGround: 1

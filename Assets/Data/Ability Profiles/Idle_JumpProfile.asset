@@ -12,9 +12,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d90c96cf6f2fbfe4aa38c2e5e7ff32bf, type: 3}
   m_Name: Idle_JumpProfile
   m_EditorClassIdentifier: Assembly-CSharp::JumpProfile
-  jumpForce: 7
+  jumpForce: 10
   forwardForce: 0.1
-  airControlMultiplier: 1
+  maxFallSpeed: -100
+  gravityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0022659302
+      value: 0.49901617
+      inSlope: 1.2098911
+      outSlope: 1.2098911
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.24363986
+      value: 0.7965354
+      inSlope: -0.4358263
+      outSlope: -0.4358263
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.47643825
+      value: 0.31195533
+      inSlope: 4.3759303
+      outSlope: 4.3759303
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.097509615
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.3141615
+      outSlope: 1.3141615
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  airControlMultiplier: 0.081
   jumpAnim: {fileID: 7400000, guid: 79fef3be1ee187041b6a4f078eb60d60, type: 2}
   fallAnim: {fileID: 7400000, guid: e7d905f44cda1f64bbd95e329ca5cc7d, type: 2}
   landAnim: {fileID: 7400000, guid: ec6529fc6ab3fc2469cbcbaf218b016f, type: 2}

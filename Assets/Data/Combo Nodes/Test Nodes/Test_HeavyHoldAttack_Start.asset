@@ -54,7 +54,6 @@ MonoBehaviour:
   moveWindow:
     startTime: 0.29
     endTime: 0.35
-  motionMultiplier: 0
   forwardAttackForce: 25
   upwardAttackForce: 0
   requiresGround: 1
