@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -39,7 +40,10 @@ public class Player : Character
 
     [Header("Movement Settings")]
     public float acceleration = 10f;
-    //public float deceleration = 15f;
+    public float deceleration = 15f;
+    public float OppositeDotThreshold = -0.3f;
+    public float minSlope = 0.7f;
+    public float customLength = 3f;
     public float sprintSpeed = 12f;
     public float horizontalVelocity = 0f;
 
@@ -85,10 +89,9 @@ public class Player : Character
         verticalVelocity = groundSnapForce;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         CheckGround();
-        //ApplyGravity();
     }
 
     public void EnabletargetLock(Target target)
@@ -101,23 +104,37 @@ public class Player : Character
     {
         LocomotionMode = freeMoveMode;
     }
-
     public void CheckGround()
     {
+        Vector3 origin = transform.position + groundCheck;
+
+        float radius = footLength * 0.5f;
+        float minSlopeDot = Mathf.Cos(minSlope * Mathf.Deg2Rad);
+
+        bool grounded = false;
+
         for (int i = 0; i < groundRays; i++)
         {
-            float t = (float)i / (groundRays - 1);
-            Vector3 rayOrigin = transform.position + transform.forward * Mathf.Lerp(-footLength / 2, footLength / 2, t) + groundCheck;
-            Ray ray = new (rayOrigin, Vector3.down);
-            if (Physics.Raycast(ray, rayLength, groundLayer))
+            float angle = (360f / groundRays) * i;
+            Vector3 offset =
+                Quaternion.Euler(0, angle, 0) * Vector3.forward * radius;
+
+            Vector3 rayOrigin = origin + offset;
+
+            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, rayLength, groundLayer))
             {
-                Context.isGrounded = true;
-                return;
+                if (Vector3.Dot(hit.normal, Vector3.up) >= minSlopeDot)
+                {
+                    grounded = true;
+                    break;
+                }
             }
+
         }
 
-        Context.isGrounded = false;
+        Context.isGrounded = grounded;
     }
+
 
     public void Move(Vector3 dir, float speed)
     {
@@ -133,15 +150,29 @@ public class Player : Character
     {
         transform.rotation = delta * transform.rotation;
     }
-
     private void OnDrawGizmos()
     {
+        if (groundRays <= 0) return;
+
+        Vector3 origin = transform.position + groundCheck;
+        float radius = footLength * 0.5f;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(origin, origin + Vector3.down * rayLength);
+
         Gizmos.color = Color.green;
+
         for (int i = 0; i < groundRays; i++)
         {
-            float t = (float)i / (groundRays - 1);
-            Vector3 rayOrigin = transform.position + transform.forward * Mathf.Lerp(-footLength / 2, footLength / 2, t) + groundCheck;
+            float angle = (360f / groundRays) * i;
+            Vector3 offset =
+                Quaternion.Euler(0f, angle, 0f) * Vector3.forward * radius;
+
+            Vector3 rayOrigin = origin + offset;
             Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * rayLength);
         }
+
+        Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+        Gizmos.DrawWireSphere(origin, radius);
     }
 }

@@ -57,7 +57,7 @@ public class PlayerState : BaseState
     {
         if (!player.Context.isGrounded)
         {
-            stateMachine.TransitionToState(player.AirState);
+            stateMachine.TransitionToState(new PlayerAirState(stateMachine, player, null));
             return;
         }
         

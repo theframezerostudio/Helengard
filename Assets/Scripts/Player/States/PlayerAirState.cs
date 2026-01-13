@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.LowLevel;
 
@@ -5,6 +6,7 @@ public enum AirStateType
 {
     Rising,
     Falling,
+    Landing
 }
 
 public class PlayerAirState : PlayerState
@@ -27,6 +29,7 @@ public class PlayerAirState : PlayerState
     public override void Enter()
     {
         base.Enter();
+
         startTime = Time.time;
         AirState = AirStateType.Rising;
         
@@ -37,8 +40,8 @@ public class PlayerAirState : PlayerState
         }
         else
         {
-            player.PlayAnim("Fall", 1f);
             AirState = AirStateType.Falling;
+            player.StartCoroutine(StartFall());
         }
 
         gravity = player.gravity;
@@ -63,13 +66,16 @@ public class PlayerAirState : PlayerState
         {
             AirState = AirStateType.Falling;
 
-            if (jumpProfile != null)
+            if (Time.deltaTime - startTime > 0.1f)
             {
-                player.PlayAnim(jumpProfile.fallAnim.name, 0.2f);
-            }
-            else
-            {
-                player.PlayAnim("Fall", 0.2f);
+                if (jumpProfile != null)
+                {
+                    player.PlayAnim(jumpProfile.fallAnim.name, 0.2f);
+                }
+                else
+                {
+                    player.PlayAnim("Fall", 0.2f);
+                }
             }
         }
 
@@ -90,13 +96,26 @@ public class PlayerAirState : PlayerState
         HandleLand();
     }
 
+    private IEnumerator StartFall()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (AirState == AirStateType.Falling)
+            player.PlayAnim("Fall", 1f);
+    }
+
     private void HandleLand()
     {
-        if (stateMachine.IsTransitioningState) return;
+        if (AirState == AirStateType.Landing) return;
 
         if (AirState == AirStateType.Falling && player.Context.isGrounded)
         {
-            stateMachine.TransitionToState(new PlayerRecoveryState(stateMachine, player, player.ActionProvider.landing));
+            Debug.Log("Landed, switching to Recovery State.");
+            if (Time.deltaTime - startTime > 0.1f)
+                stateMachine.TransitionToState(new PlayerRecoveryState(stateMachine, player, player.ActionProvider.landing));
+            else
+                SwitchToLocomotion();
+
+            AirState = AirStateType.Landing;
         }
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 public class PlayerMoveState : PlayerGroundedState
 {
     private Vector2 movement = Vector2.zero;
+    private Vector2 smoothedMovement;
+    private Vector2 movementVelocity;
 
     private readonly float momentumOffset = 1.5f;
 
@@ -28,6 +30,9 @@ public class PlayerMoveState : PlayerGroundedState
         base.Update();
 
         float moveSpeed = player.Context.isSprinting ? player.sprintSpeed : player.movementSpeed;
+        float rate = movement.sqrMagnitude > smoothedMovement.sqrMagnitude ? player.acceleration : player.deceleration;
+
+        smoothedMovement = Vector2.SmoothDamp(smoothedMovement, movement, ref movementVelocity, 1f / rate);
 
         if (movement.sqrMagnitude < 0.1f)
         {
@@ -43,9 +48,9 @@ public class PlayerMoveState : PlayerGroundedState
             return;
         }
 
-        player.LocomotionMode.Rotate(movement);
-        player.LocomotionMode.Move(movement, moveSpeed * movement.magnitude);
-        player.LocomotionMode.PlayAnimation(movement);
+        player.LocomotionMode.Rotate(smoothedMovement);
+        player.LocomotionMode.Move(smoothedMovement, moveSpeed * smoothedMovement.magnitude);
+        player.LocomotionMode.PlayAnimation(smoothedMovement);
     }
 
     public override void Exit()
@@ -58,6 +63,6 @@ public class PlayerMoveState : PlayerGroundedState
 
     private void HandleMove(Vector2 dir)
     {
-        movement = dir;
+        movement = Vector2.ClampMagnitude(dir, 1f);
     }
 }

@@ -121,7 +121,6 @@ public class FeetGrounder : MonoBehaviour
     private void FeetPositionSolver(Vector3 fromSkyPosition, ref Vector3 feetIkPositions, ref Quaternion feetIkRotations)
     {
         //raycast section - locating the feet position via a raycast and solving
-        RaycastHit feetOutHit;
 
         if (showSolverDebug)
         {
@@ -130,7 +129,7 @@ public class FeetGrounder : MonoBehaviour
         }
 
         if (Physics.Raycast(fromSkyPosition, Vector3.down,
-                out feetOutHit, raycastDownDistance + heightFromGroundRaycast, enviromentLayer))
+                out RaycastHit feetOutHit, raycastDownDistance + heightFromGroundRaycast, enviromentLayer))
         {
             float rotationStiffnessSlerpValue = Time.deltaTime * 8f;
             feetIkPositions = fromSkyPosition;
@@ -138,10 +137,13 @@ public class FeetGrounder : MonoBehaviour
             Quaternion feetHitRot = Quaternion.FromToRotation(Vector3.up, feetOutHit.normal);
             feetIkRotations = Quaternion.Slerp(feetIkRotations, feetHitRot, rotationStiffnessSlerpValue);
 
-            Debug.DrawLine(feetIkPositions, feetOutHit.normal * (raycastDownDistance + heightFromGroundRaycast), Color.magenta);
+            Debug.DrawLine(
+                feetOutHit.point,
+                feetOutHit.point + feetOutHit.normal * 0.3f,
+                Color.magenta
+            );
 
-
-            return; ;
+            return;
         }
 
         feetIkPositions = Vector3.zero;

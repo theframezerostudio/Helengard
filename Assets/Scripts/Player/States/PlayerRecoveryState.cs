@@ -18,6 +18,7 @@ public class PlayerRecoveryState : PlayerState
         player.LocomotionMode.SetLocomotion(MovementMotionPolicy.FullRootMotion, RotationMotionPolicy.YawOnly);
 
         stateTimer = 0;
+
         player.PlayAnim(actionData.animState, 0.1f);
 
         inputManager.onJump += HandleJump;
@@ -30,12 +31,14 @@ public class PlayerRecoveryState : PlayerState
         stateTimer += Time.deltaTime;
         if (InputManager.Instance.MoveInput.sqrMagnitude > 0 && actionData.cancelWindow.IsValid(stateTimer))
         {
+            Debug.Log("Recovery cancelled into locomotion.");
             SwitchToLocomotion();
             return;
         }
 
         if (stateTimer >= actionData.duration)
         {
+            Debug.Log("Recovery completed, switching to locomotion.");
             SwitchToLocomotion();
         }
     }
