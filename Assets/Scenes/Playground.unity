@@ -845,6 +845,7 @@ MonoBehaviour:
   groundRays: 4
   acceleration: 8
   deceleration: 16
+  OppositeDotThreshold: -0.3
   minSlope: 70
   customLength: 3
   sprintSpeed: 0
@@ -3881,7 +3882,6 @@ GameObject:
   - component: {fileID: 5382490922141604079}
   - component: {fileID: 5382490922141604080}
   - component: {fileID: 5382490922141604081}
-  - component: {fileID: 5382490922141604082}
   m_Layer: 0
   m_Name: Prototype
   m_TagString: Untagged
@@ -4367,19 +4367,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182e9ac38451c3942a3724e05b09c93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MotionDriver
-  animator: {fileID: 5382490922141604080}
---- !u!114 &5382490922141604082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4754009368825135701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2bb07fc3cb62e14096a63aa2aaa363c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FeetGrounder
   enableFeetIk: 1
   heightFromGroundRaycast: 1.14
   raycastDownDistance: 1.5
@@ -4391,7 +4378,7 @@ MonoBehaviour:
   feetToIkPositionSpeed: 0.5
   leftFootAnimVariableName: LeftFootCurve
   rightFootAnimVariableName: RightFootCurve
-  useProIkFeature: 1
+  useProIkFeature: 0
   showSolverDebug: 1
 --- !u!1 &5415887580006289250
 GameObject:
