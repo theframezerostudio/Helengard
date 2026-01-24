@@ -59,6 +59,7 @@ public class Player : Character
     public float verticalVelocity = 0f;
     public float groundSnapForce = -12f;
     public float terminalVelocity = -20f;
+    private bool hasGravity = true;
 
     [Header("Guard Settings")]
     public float perfectGuardWindow = 0.2f;
@@ -89,6 +90,11 @@ public class Player : Character
         verticalVelocity = groundSnapForce;
     }
 
+    private void Update()
+    {
+        ApplyGravity(Time.deltaTime);
+    }
+
     private void FixedUpdate()
     {
         CheckGround();
@@ -104,6 +110,26 @@ public class Player : Character
     {
         LocomotionMode = freeMoveMode;
     }
+
+    private void ApplyGravity(float dt)
+    {
+        if (!hasGravity)
+            return;
+
+        if (Context.isGrounded)
+        {
+            if (verticalVelocity < 0f)
+                verticalVelocity = groundSnapForce;
+        }
+        else
+        {
+            verticalVelocity += gravity * Context.GravityScale * dt;
+            verticalVelocity = Mathf.Max(verticalVelocity, terminalVelocity);
+        }
+
+        LocomotionMode.AddImpulse(Vector3.up, verticalVelocity * dt);
+    }
+
     public void CheckGround()
     {
         Vector3 origin = transform.position + groundCheck;
@@ -132,13 +158,7 @@ public class Player : Character
 
         }
 
-        Context.isGrounded = grounded;
-    }
-
-
-    public void Move(Vector3 dir, float speed)
-    {
-        Controller.Move(speed * Time.deltaTime * dir);
+        Context.UpdateGrounded(grounded, Time.fixedDeltaTime);
     }
 
     public void DeltaMove(Vector3 delta)
@@ -150,6 +170,16 @@ public class Player : Character
     {
         transform.rotation = delta * transform.rotation;
     }
+
+    public void SetGravity(bool status)
+    {
+        hasGravity = status;
+        if (!hasGravity)
+        {
+            //verticalVelocity = 0f;
+        }
+    }
+
     private void OnDrawGizmos()
     {
         if (groundRays <= 0) return;

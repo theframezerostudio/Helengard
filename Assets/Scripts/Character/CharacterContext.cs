@@ -20,6 +20,21 @@ public class CharacterContext : MonoBehaviour
     public bool isPerfectGuarding;
 
     public Vector3 horizontalVelocity;
+    public float UngroundedTime { get; private set; }
+
+    public void UpdateGrounded(bool isGrounded, float deltaTime)
+    {
+        if (isGrounded)
+        {
+            this.isGrounded = true;
+            UngroundedTime = 0f;
+        }
+        else
+        {
+            this.isGrounded = false;
+            UngroundedTime += deltaTime;
+        }
+    }
 
     [Header("Character Context Events")]
     public bool IsGuarding
@@ -45,6 +60,8 @@ public class CharacterContext : MonoBehaviour
         }
     }
 
+    public float GravityScale { get; internal set; }
+
     public Action<bool> OnTargetLock;
     public Action<bool> OnGuard;
 
@@ -55,9 +72,4 @@ public class CharacterContext : MonoBehaviour
 
     public bool CanDash() => abilitySystem.CanUse(AbilityType.Dash);
     public bool CanJump() => abilitySystem.CanUse(AbilityType.Jump);
-
-    private void Start()
-    {
-        //MotionAccumulator = new MotionAccumulator();
-    }
 }

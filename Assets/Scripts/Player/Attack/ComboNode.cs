@@ -40,6 +40,9 @@ public class ComboNode : ScriptableObject
     public FrameWindow invincibleWindow;
     public FrameWindow moveWindow;
 
+    public float attackTurnSpeed = 6f;          
+    public AnimationCurve turnInfluence;        
+
     public float forwardAttackForce;
     public float upwardAttackForce;
 

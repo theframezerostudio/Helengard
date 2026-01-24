@@ -60,7 +60,11 @@ public class PlayerGroundedState : PlayerState
 
         if (!player.Context.isGrounded)
         {
-            stateMachine.TransitionToState(new PlayerAirState(stateMachine, character));
+            if (player.verticalVelocity < player.groundSnapForce + -0.5f && player.Context.UngroundedTime > 0.05f)
+            {
+                Debug.Log(player.verticalVelocity + " " + player.Context.UngroundedTime);
+                stateMachine.TransitionToState(new PlayerAirState(stateMachine, character));
+            }
         }
     }
 

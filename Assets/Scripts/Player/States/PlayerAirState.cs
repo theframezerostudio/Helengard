@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.LowLevel;
 
 public enum AirStateType
 {
@@ -32,7 +31,7 @@ public class PlayerAirState : PlayerState
 
         startTime = Time.time;
         AirState = AirStateType.Rising;
-        
+
         player.MotionDriver.SetFeetIk(false);
 
         if (jumpProfile)
@@ -60,28 +59,29 @@ public class PlayerAirState : PlayerState
 
         float elapsed = Time.time - startTime;
         float gravityScale = jumpProfile ? jumpProfile.gravityCurve.Evaluate(elapsed) : 1f;
-        player.verticalVelocity += player.gravity * gravityScale * dt;
 
-        player.verticalVelocity = Mathf.Max(player.verticalVelocity, jumpProfile?.maxFallSpeed ?? -30f);
+        player.Context.GravityScale = gravityScale;
+
+        //player.verticalVelocity += player.gravity * gravityScale * dt;
+
+        //player.verticalVelocity = Mathf.Max(player.verticalVelocity, jumpProfile?.maxFallSpeed ?? -30f);
 
         if (player.verticalVelocity < 0 && AirState == AirStateType.Rising)
         {
             AirState = AirStateType.Falling;
 
-            if (Time.deltaTime - startTime > 0.1f)
+            if (jumpProfile != null)
             {
-                if (jumpProfile != null)
-                {
-                    player.PlayAnim(jumpProfile.fallAnim.name, 0.2f);
-                }
-                else
-                {
-                    player.PlayAnim("Fall", 0.2f);
-                }
+                player.PlayAnim(jumpProfile.fallAnim.name, 0.2f);
             }
+            else
+            {
+                player.PlayAnim("Fall", 0.2f);
+            }
+
         }
 
-        player.LocomotionMode.AddImpulse(Vector3.up, player.verticalVelocity * dt);
+        //player.LocomotionMode.AddImpulse(Vector3.up, player.verticalVelocity * dt);
 
         Vector2 movement = inputManager.MoveInput;
 
@@ -111,9 +111,12 @@ public class PlayerAirState : PlayerState
 
         if (AirState == AirStateType.Falling && player.Context.isGrounded)
         {
-            Debug.Log("Landed, switching to Recovery State.");
-            if (Time.deltaTime - startTime > 0.1f)
+            if (Time.time - startTime > 0.1f)
+            {
                 stateMachine.TransitionToState(new PlayerRecoveryState(stateMachine, player, player.ActionProvider.landing));
+
+                Debug.Log("Landed, switching to Recovery State.");
+            }
             else
                 SwitchToLocomotion();
 

@@ -10,6 +10,8 @@ public class PlayerAttackState : PlayerState
     private Animator animator;
     private float attackTimer = 0f;
     private float animDuration;
+    private Vector2 smoothedMovement;
+    private Vector2 movementVelocity;
 
     public PlayerAttackState(StateMachine stateMachine, Character character, AttackInput attackInput) : base(stateMachine, character)
     {
@@ -24,9 +26,10 @@ public class PlayerAttackState : PlayerState
     public override void Enter()
     {
         base.Enter();
-
         animator = player.Animator;
-
+        player.SetGravity(false);
+        player.MotionDriver.SetFeetIk(false);
+        
         if (node == null)
         {
             node = player.Context.attackResolver.comboGraph.GetEntryNode(player.Context, attackInput);
@@ -60,6 +63,9 @@ public class PlayerAttackState : PlayerState
 
         if (node.moveWindow.IsValid(animNormalizedTime))
         {
+            float rate = movement.sqrMagnitude > smoothedMovement.sqrMagnitude ? player.acceleration : player.deceleration;
+            smoothedMovement = Vector2.SmoothDamp(smoothedMovement, movement, ref movementVelocity, 1f / rate);
+
             float t = Mathf.InverseLerp(node.moveWindow.startTime, node.moveWindow.endTime, animNormalizedTime);
             float motionAlpha = node.animMotionSpeed.Evaluate(t);
 
@@ -71,8 +77,8 @@ public class PlayerAttackState : PlayerState
 
             player.LocomotionMode.AddImpulse(direction, forwardDelta);
             player.LocomotionMode.AddImpulse(player.transform.up, upwardDelta);
-
-            player.LocomotionMode.Rotate(movement);
+            //player.LocomotionMode.Rotate(smoothedMovement);
+            SmoothRotate(smoothedMovement);
         }
 
         if (comboAttempted && node.comboWindow.IsValid(animNormalizedTime))
@@ -95,8 +101,10 @@ public class PlayerAttackState : PlayerState
     public override void Exit()
     {
         base.Exit();
+        player.SetGravity(true);
 
         inputManager.onAttack -= HandleAttack;
+        player.MotionDriver.SetFeetIk(true);
     }
 
     private void HandleAttack(AttackInput attackInput)
@@ -122,4 +130,28 @@ public class PlayerAttackState : PlayerState
 
         return node.animClip.length;
     }
+
+    private void SmoothRotate(Vector2 input)
+    {
+        if (input.sqrMagnitude < 0.01f)
+            return;
+
+        Vector3 desiredDir = player.LocomotionMode.GetDirection(input).normalized;
+
+        float influenceTime = Mathf.InverseLerp(node.moveWindow.startTime, node.moveWindow.endTime, animNormalizedTime);
+
+        float turnInfluence = node.turnInfluence.Evaluate(influenceTime);
+        float turnSpeed = node.attackTurnSpeed * turnInfluence;
+
+        Quaternion targetRotation = Quaternion.LookRotation(desiredDir);
+        Quaternion newRotation = Quaternion.RotateTowards(
+            player.transform.rotation,
+            targetRotation,
+            turnSpeed * Time.deltaTime * 60f
+        );
+
+        Quaternion delta = Quaternion.Inverse(player.transform.rotation) * newRotation;
+        player.Context.MotionAccumulator.AddRootRotation(delta);
+    }
+
 }

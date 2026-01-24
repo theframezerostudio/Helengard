@@ -19,29 +19,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0151901245
-      value: 1.018753
-      inSlope: 0.0056916093
-      outSlope: 0.0056916093
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.30379745
-    - serializedVersion: 3
-      time: 0.6863312
-      value: 0.6668544
-      inSlope: -1.4735142
-      outSlope: -1.4735142
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.0101318
-      value: 0.012500763
+      time: 0
+      value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -62,10 +53,35 @@ MonoBehaviour:
     endTime: 0
   moveWindow:
     startTime: 0
-    endTime: 0.27
-  forwardAttackForce: 12
-  upwardAttackForce: 0
-  requiresGround: 1
+    endTime: 0.3
+  attackTurnSpeed: 6
+  turnInfluence:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  forwardAttackForce: 0
+  upwardAttackForce: 5
+  requiresGround: 0
   requiresAir: 0
   requiresSprint: 0
   requiresDash: 0
