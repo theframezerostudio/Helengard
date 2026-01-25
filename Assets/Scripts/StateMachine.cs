@@ -7,7 +7,7 @@ public abstract class StateMachine : MonoBehaviour
 
     public bool IsTransitioningState { get; private set; } = false;
 
-    public void InitializeState(BaseState state)
+    public void Initialize(BaseState state)
     {
         CurrentState = state;
         CurrentState?.Enter();

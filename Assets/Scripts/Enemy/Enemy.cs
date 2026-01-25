@@ -1,22 +1,33 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : Character
 {
-    private EnemyStateMachine _stateMachine;
+    public Transform temporaryTargetForNow;
+
+
+
+    private EnemyStateMachine stateMachine;
+
+    public NavMeshAgent agent;
+    public AgentMotionHandler motionHandler;
+    public CharacterController controller;
 
     [Header("States")]
-    public EnemyIdleState IdleState;
+    public EnemyLocomotionState IdleState;
 
     protected override void Awake()
     {
         base.Awake();
 
-        _stateMachine = GetComponent<EnemyStateMachine>();
+        stateMachine = GetComponent<EnemyStateMachine>();
     }
 
     private void Start()
     {
-        IdleState = new EnemyIdleState(_stateMachine, this);
+        IdleState = new EnemyLocomotionState(stateMachine, this);
+
+        stateMachine.Initialize(IdleState);
     }
 }

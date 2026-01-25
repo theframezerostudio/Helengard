@@ -34,7 +34,7 @@ public class PlayerDashState : PlayerState
             return;
         }
 
-        player.LocomotionMode.AddImpulse(moveInput, player.dashSpeed);
+        player.LocomotionMode.AddImpulse(moveInput, player.dashSpeed * Time.deltaTime);
     }
 
     public override void Exit()

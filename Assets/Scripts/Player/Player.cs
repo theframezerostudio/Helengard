@@ -85,7 +85,7 @@ public class Player : Character
         freeMoveMode = new FreeMoveMode(this, motionAccumulator);
 
         LocomotionMode = freeMoveMode;
-        stateMachine.InitializeState(IdleState);
+        stateMachine.Initialize(IdleState);
 
         verticalVelocity = groundSnapForce;
     }

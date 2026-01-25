@@ -25,7 +25,7 @@ public class PlayerState : BaseState
 
     public override void LateUpdate()
     {
-        player.motionAccumulator.Consume(out Vector3 moveDelta, out Quaternion rotDelta);
+        character.motionAccumulator.Consume(out Vector3 moveDelta, out Quaternion rotDelta);
 
         float dt = Time.deltaTime;
         if (dt > 0f)
