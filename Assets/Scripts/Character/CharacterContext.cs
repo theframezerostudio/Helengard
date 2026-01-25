@@ -8,7 +8,6 @@ public class CharacterContext : MonoBehaviour
 
     public JumpResolver jumpResolver;
     public AttackResolver attackResolver;
-    public MotionAccumulator MotionAccumulator { get; private set; } = new MotionAccumulator();
 
     public bool isSprinting;
     public bool isGrounded;

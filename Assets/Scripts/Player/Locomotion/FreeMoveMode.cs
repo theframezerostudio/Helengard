@@ -6,7 +6,7 @@ public class FreeMoveMode : LocomotionMode
     private readonly Camera mainCamera;
     private float smoothingTime = 0.2f;
 
-    public FreeMoveMode(Player player) : base(player)
+    public FreeMoveMode(Player player, MotionAccumulator motion) : base(player, motion)
     {
         mainCamera = Camera.main;
     }
@@ -37,7 +37,7 @@ public class FreeMoveMode : LocomotionMode
         Vector3 smoothTarget = Vector3.Lerp(currentVelocity, targetVelocity, alpha);
         currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, player.acceleration * dt);
         //currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref velocityHelper, 0.2f);
-        player.Context.MotionAccumulator.AddExtraDelta(currentVelocity * dt);
+        motion.AddExtraDelta(currentVelocity * dt);
 
         player.Context.horizontalVelocity = currentVelocity;
     }
@@ -62,9 +62,7 @@ public class FreeMoveMode : LocomotionMode
 
         currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, player.acceleration * dt);
 
-        player.Context.MotionAccumulator.AddExtraDelta(currentVelocity * dt);
-
-        player.Context.horizontalVelocity = currentVelocity;
+        motion.AddExtraDelta(currentVelocity * dt);
     }
 
     public override void AddImpulse(Vector2 input, float distance)
@@ -76,9 +74,7 @@ public class FreeMoveMode : LocomotionMode
         Vector3 delta = distance * dir;
 
         //currentVelocity = Vector3.SmoothDamp(currentVelocity, delta, ref velocityHelper, 0.2f);
-        player.Context.MotionAccumulator.AddExtraDelta(delta);
-
-        player.Context.horizontalVelocity = delta / Time.deltaTime;
+        motion.AddExtraDelta(delta);
     }
 
     public override void AddImpulse(Vector3 direction, float distance)
@@ -89,9 +85,7 @@ public class FreeMoveMode : LocomotionMode
         Vector3 delta = distance * direction;
 
         //currentVelocity = Vector3.SmoothDamp(currentVelocity, velocity, ref velocityHelper, 0.2f);
-        player.Context.MotionAccumulator.AddExtraDelta(delta);
-
-        player.Context.horizontalVelocity = delta / Time.deltaTime;
+        motion.AddExtraDelta(delta);
     }
 
     public override void Rotate(Vector2 input)
@@ -117,13 +111,7 @@ public class FreeMoveMode : LocomotionMode
             alpha
         );
 
-        player.Context.MotionAccumulator.AddRootRotation(smoothDelta);
-    }
-
-    public override void PerformDash(Vector2 dir)
-    {
-        Vector3 dashDir = GetDirection(dir);
-        player.Controller.Move(dashDir * player.dashSpeed);
+        motion.AddRotation(smoothDelta);
     }
 
     public override void PlayAnimation(Vector3 input)

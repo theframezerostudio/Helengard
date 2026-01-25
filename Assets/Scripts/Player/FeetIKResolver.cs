@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class MotionDriver : MonoBehaviour
+public class FeetIKResolver : MonoBehaviour
 {
-    private MotionAccumulator _motionAccumulator;
     private Vector3 _rightFootPosition, _leftFootPosition, _leftFootIkPosition, _rightFootIkPosition;
 
     private Quaternion _leftFootIkRotation,
@@ -34,11 +33,6 @@ public class MotionDriver : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void Initialize(MotionAccumulator motionAccumulator)
-    {
-        _motionAccumulator = motionAccumulator;
-    }
-
     public void SetFeetIk(bool enabled)
     {
         enableFeetIk = enabled;
@@ -55,11 +49,6 @@ public class MotionDriver : MonoBehaviour
         //find and raycast to the ground to find positions
         FeetPositionSolver(_rightFootPosition, ref _rightFootIkPosition, ref _rightFootIkRotation);// handle the solver for right foot
         FeetPositionSolver(_leftFootPosition, ref _leftFootIkPosition, ref _leftFootIkRotation);//Left foot 
-    }
-    private void OnAnimatorMove()
-    {
-        _motionAccumulator.AddRootDelta(_animator.deltaPosition);
-        _motionAccumulator.AddRootRotation(_animator.deltaRotation);
     }
 
     private void OnAnimatorIK(int layerIndex)

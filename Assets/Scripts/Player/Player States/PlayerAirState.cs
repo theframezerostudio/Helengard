@@ -32,7 +32,7 @@ public class PlayerAirState : PlayerState
         startTime = Time.time;
         AirState = AirStateType.Rising;
 
-        player.MotionDriver.SetFeetIk(false);
+        player.FeetIKResolver.SetFeetIk(false);
 
         if (jumpProfile)
         {
@@ -127,6 +127,6 @@ public class PlayerAirState : PlayerState
     public override void Exit()
     {
         base.Exit();
-        player.MotionDriver.SetFeetIk(true);
+        player.FeetIKResolver.SetFeetIk(true);
     }
 }

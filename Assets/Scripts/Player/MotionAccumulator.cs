@@ -15,12 +15,12 @@ public class MotionAccumulator
     private Vector3 extraDelta;
     private Quaternion rootRotation = Quaternion.identity;
 
-    public void AddRootDelta(Vector3 delta)
+    public void AddDelta(Vector3 delta)
     {
         rootDelta += delta;
     }
 
-    public void AddRootRotation(Quaternion delta)
+    public void AddRotation(Quaternion delta)
     {
         rootRotation = delta * rootRotation;
     }

@@ -80,7 +80,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   forwardAttackForce: 0
-  upwardAttackForce: 5
+  upwardAttackForce: 0
   requiresGround: 0
   requiresAir: 0
   requiresSprint: 0

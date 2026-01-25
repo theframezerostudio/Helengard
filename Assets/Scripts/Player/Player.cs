@@ -26,7 +26,6 @@ public class Player : Character
     public PlayerInputHandler InputHandler { get; private set; }
     [field: SerializeField] public CharacterContext Context { get; private set; }
     private PlayerStateMachine stateMachine;
-    public MotionDriver MotionDriver;
 
     [Header("Abilities")]
     [SerializeField] private AbilityData[] startingAbilities;
@@ -64,8 +63,10 @@ public class Player : Character
     [Header("Guard Settings")]
     public float perfectGuardWindow = 0.2f;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         stateMachine = GetComponent<PlayerStateMachine>();
         Controller = GetComponent<CharacterController>();
         InputHandler = GetComponent<PlayerInputHandler>();
@@ -81,8 +82,7 @@ public class Player : Character
         Context.InitializeAbilities(startingAbilities);
         InputHandler.Initialize(Context);
 
-        freeMoveMode = new FreeMoveMode(this);
-        MotionDriver.Initialize(Context.MotionAccumulator);
+        freeMoveMode = new FreeMoveMode(this, motionAccumulator);
 
         LocomotionMode = freeMoveMode;
         stateMachine.InitializeState(IdleState);
@@ -102,7 +102,7 @@ public class Player : Character
 
     public void EnabletargetLock(Target target)
     {
-        targetLockMode = new TargetLockMode(this, target);
+        targetLockMode = new TargetLockMode(this, motionAccumulator, target);
         LocomotionMode = targetLockMode;
     }
 

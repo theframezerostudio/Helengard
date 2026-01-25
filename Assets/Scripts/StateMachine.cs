@@ -51,7 +51,6 @@ public abstract class StateMachine : MonoBehaviour
         }
 
         IsTransitioningState = true;
-        Debug.Log(CurrentState.GetType().Name + " -> " + newState.GetType().Name);
         CurrentState.Exit();
         CurrentState = newState;
         CurrentState.Enter();

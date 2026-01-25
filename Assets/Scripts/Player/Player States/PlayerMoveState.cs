@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMoveState : PlayerGroundedState
@@ -6,8 +5,6 @@ public class PlayerMoveState : PlayerGroundedState
     private Vector2 movement = Vector2.zero;
     private Vector2 smoothedMovement;
     private Vector2 movementVelocity;
-
-    private readonly float momentumOffset = 1.5f;
 
     public PlayerMoveState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {

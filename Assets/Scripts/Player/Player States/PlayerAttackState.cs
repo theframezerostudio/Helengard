@@ -28,7 +28,7 @@ public class PlayerAttackState : PlayerState
         base.Enter();
         animator = player.Animator;
         player.SetGravity(false);
-        player.MotionDriver.SetFeetIk(false);
+        player.FeetIKResolver.SetFeetIk(false);
         
         if (node == null)
         {
@@ -104,7 +104,7 @@ public class PlayerAttackState : PlayerState
         player.SetGravity(true);
 
         inputManager.onAttack -= HandleAttack;
-        player.MotionDriver.SetFeetIk(true);
+        player.FeetIKResolver.SetFeetIk(true);
     }
 
     private void HandleAttack(AttackInput attackInput)
@@ -151,7 +151,7 @@ public class PlayerAttackState : PlayerState
         );
 
         Quaternion delta = Quaternion.Inverse(player.transform.rotation) * newRotation;
-        player.Context.MotionAccumulator.AddRootRotation(delta);
+        player.motionAccumulator.AddRotation(delta);
     }
 
 }

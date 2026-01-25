@@ -5,15 +5,17 @@ public abstract class LocomotionMode
     protected Player player;
     public Vector3 currentVelocity = Vector3.zero;
     protected Vector3 velocityHelper;
+    protected readonly MotionAccumulator motion;
 
-    public LocomotionMode(Player player)
+    public LocomotionMode(Player player, MotionAccumulator motion)
     {
         this.player = player;
+        this.motion = motion;
     }
 
     public void SetLocomotion(MovementMotionPolicy movementPolicy, RotationMotionPolicy rotationPolicy)
     {
-        player.Context.MotionAccumulator.SetMotionData(movementPolicy, rotationPolicy, player.transform);
+        motion.SetMotionData(movementPolicy, rotationPolicy, player.transform);
     }
 
     public abstract void Move(Vector3 dir, float movementSpeed);
@@ -23,7 +25,6 @@ public abstract class LocomotionMode
     public abstract void Rotate(Vector2 dir);
     public abstract void PlayAnimation(Vector3 input);
     public abstract void StopAnimation();
-    public abstract void PerformDash(Vector2 dir);
     public abstract Vector3 GetDirection(Vector2 input);
     public abstract void ResetVelocity();
 }

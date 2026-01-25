@@ -4,7 +4,7 @@ public class TargetLockMode : LocomotionMode
 {
     private Target target;
 
-    public TargetLockMode(Player player, Target target) : base(player)
+    public TargetLockMode(Player player, MotionAccumulator motion, Target target) : base(player, motion)
     {
         this.target = target;
     }
@@ -14,10 +14,6 @@ public class TargetLockMode : LocomotionMode
     }
 
     public override void Move(Vector2 input, float movementSpeed)
-    {
-    }
-
-    public override void PerformDash(Vector2 dir)
     {
     }
 
