@@ -9,7 +9,7 @@ public class GroundSmash_ReactionModule : ReactionModule
     [SerializeField] private float minDownwardForce = -12f;
     [SerializeField] private AnimationCurve horizontalDecay = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
-    [SerializeField] private float horizontalForce = 1f;  // Pull toward attacker
+    //[SerializeField] private float horizontalForce = 1f;  // Pull toward attacker
     [SerializeField] private AnimationCurve gravityCurve; // Controls falling speed profile
     [SerializeField] private float maxSlamTime = 1.0f;
 

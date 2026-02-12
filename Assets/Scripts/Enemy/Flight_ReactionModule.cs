@@ -10,8 +10,8 @@ public class Flight_ReactionModule : ReactionModule
     [SerializeField] private float minimumVerticalBoost = 3f;
     [SerializeField] private AnimationCurve horizontalAirCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
-    [SerializeField] private float verticalLaunchStrength = 6f;
-    [SerializeField] private float horizontalLaunchStrength = 2f;
+    //[SerializeField] private float verticalLaunchStrength = 6f;
+    //[SerializeField] private float horizontalLaunchStrength = 2f;
     [SerializeField] private AnimationCurve gravityCurve;
     [SerializeField] private float safetyTime = 1.5f;
     [SerializeField] private string launchAnim = "Hit_Launch";

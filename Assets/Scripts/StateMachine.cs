@@ -35,7 +35,7 @@ public class StateMachine : MonoBehaviour
 
     public void TransitionToState(BaseState newState, bool force = false)
     {
-        if (IsTransitioningState || newState == null)
+        if ((IsTransitioningState && !force) || newState == null)
             return;
 
         if (CurrentState != null && !force)

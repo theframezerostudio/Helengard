@@ -146,6 +146,7 @@ public class PlayerAttackState : PlayerState
     {
         base.Exit();
 
+            Debug.LogWarning("Exiting PlayerAttackState with null node reference.");
         if (node == null)
         {
             return;

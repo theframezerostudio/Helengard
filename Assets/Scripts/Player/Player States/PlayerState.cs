@@ -57,17 +57,17 @@ public class PlayerState : BaseState
     {
         if (!player.Context.isGrounded)
         {
-            stateMachine.TransitionToState(new PlayerAirState(stateMachine, player, null));
+            stateMachine.ForceState(new PlayerAirState(stateMachine, player, null));
             return;
         }
         
         if (InputManager.Instance.MoveInput == Vector2.zero)
         {
-            stateMachine.TransitionToState(player.IdleState);
+            stateMachine.ForceState(player.IdleState);
         }
         else
         {
-            stateMachine.TransitionToState(player.MoveState);
+            stateMachine.ForceState(player.MoveState);
         }
     }
 }
