@@ -13,7 +13,6 @@ public class SelfCasting : CastingStrategy
         this.castingManager = castingManager;
 
         castingManager.SetCurrentStrategy(this);
-        Debug.Log("Started");
 
         if (spell.castingProperties.spellVFX != null)
         {
@@ -24,12 +23,10 @@ public class SelfCasting : CastingStrategy
 
     public override void Performing()
     {
-        Debug.Log("Performing");   
     }
 
     public override void Stopped()
     {
-        Debug.Log("Released");
         castingManager.ClearCurrentStrategy();
     }
 }

@@ -30,7 +30,7 @@ public class PlayerState : BaseState
         float dt = Time.deltaTime;
         if (dt > 0f)
         {
-            player.Context.horizontalVelocity = moveDelta / dt;
+            player.Context.Velocity = moveDelta / dt;
         }
 
         player.DeltaMove(moveDelta);

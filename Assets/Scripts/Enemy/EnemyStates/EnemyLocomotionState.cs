@@ -3,8 +3,8 @@ using UnityEngine.AI;
 
 public class EnemyLocomotionState : EnemyState
 {
-    private AgentMotionHandler motionHandler;
-    private NavMeshAgent agent;
+    private readonly AgentMotionHandler motionHandler;
+    private readonly NavMeshAgent agent;
 
     public EnemyLocomotionState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
@@ -17,6 +17,7 @@ public class EnemyLocomotionState : EnemyState
         base.Enter();
 
         agent.SetDestination(enemy.temporaryTargetForNow.position);
+        character.PlayAnim("Movement", 0.1f);
     }
 
     public override void Update()
@@ -27,8 +28,6 @@ public class EnemyLocomotionState : EnemyState
 
         Vector2 intent = motionHandler.GetMoveIntent();
         character.Animator.SetFloat("Speed", intent.magnitude, 0.1f, Time.deltaTime);
-
-        Debug.Log(intent.magnitude);
 
         Quaternion deltaRotation = motionHandler.GetRotationDelta();
         character.motionAccumulator.AddRotation(deltaRotation);

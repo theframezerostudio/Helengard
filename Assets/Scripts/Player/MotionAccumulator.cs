@@ -37,6 +37,12 @@ public class MotionAccumulator
         motionData.characterTransform = characterTransform;
     }
 
+    public void GetMotionData(out MovementMotionPolicy movementPolicy, out RotationMotionPolicy rotationPolicy)
+    {
+        movementPolicy = motionData.movementPolicy;
+        rotationPolicy = motionData.rotationPolicy;
+    }
+
     public void Consume(out Vector3 position, out Quaternion rotation)
     {
         position = FilterRootMotion(rootDelta, motionData.movementPolicy, motionData.characterTransform) + extraDelta;

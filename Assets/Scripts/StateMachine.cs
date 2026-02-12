@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public abstract class StateMachine : MonoBehaviour
+public class StateMachine : MonoBehaviour
 {
-    protected BaseState CurrentState;
+    protected BaseState CurrentState; 
     protected BaseState QueuedState;
 
     public bool IsTransitioningState { get; private set; } = false;
@@ -15,7 +15,7 @@ public abstract class StateMachine : MonoBehaviour
 
     private void Update()
     {
-        CurrentState.Update();
+        CurrentState?.Update();
 
         if (QueuedState != null)
         {
@@ -25,7 +25,7 @@ public abstract class StateMachine : MonoBehaviour
 
     private void LateUpdate()
     {
-        CurrentState.LateUpdate();
+        CurrentState?.LateUpdate();
     }
 
     public void ForceState(BaseState newState)

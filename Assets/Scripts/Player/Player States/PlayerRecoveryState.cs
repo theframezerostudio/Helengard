@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerRecoveryState : PlayerState
@@ -31,14 +30,12 @@ public class PlayerRecoveryState : PlayerState
         stateTimer += Time.deltaTime;
         if (InputManager.Instance.MoveInput.sqrMagnitude > 0 && actionData.cancelWindow.IsValid(stateTimer))
         {
-            Debug.Log("Recovery cancelled into locomotion.");
             SwitchToLocomotion();
             return;
         }
 
         if (stateTimer >= actionData.duration)
         {
-            Debug.Log("Recovery completed, switching to locomotion.");
             SwitchToLocomotion();
         }
     }

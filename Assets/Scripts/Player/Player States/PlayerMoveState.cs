@@ -33,7 +33,7 @@ public class PlayerMoveState : PlayerGroundedState
 
         if (movement.sqrMagnitude < 0.1f)
         {
-            if (player.Context.horizontalVelocity.sqrMagnitude > 20f)
+            if (player.Context.Velocity.sqrMagnitude > 165f)
             {
                 stateMachine.TransitionToState(new PlayerRecoveryState(stateMachine, player, player.ActionProvider.sprintStop));
             }

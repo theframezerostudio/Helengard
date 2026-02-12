@@ -18,7 +18,7 @@ public class CharacterContext : MonoBehaviour
     [SerializeField] private bool isGuarding;
     public bool isPerfectGuarding;
 
-    public Vector3 horizontalVelocity;
+    public Vector3 Velocity;
     public float UngroundedTime { get; private set; }
 
     public void UpdateGrounded(bool isGrounded, float deltaTime)

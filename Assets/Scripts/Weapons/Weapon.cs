@@ -1,0 +1,48 @@
+﻿using System;
+using UnityEngine;
+
+public class Weapon : MonoBehaviour
+{
+    public ComboGraph comboGraph;
+    public Hitbox[] hitboxes;
+
+    public Action<DamageEvent> OnHit;
+
+    private void Start()
+    {
+        foreach (var hitbox in hitboxes)
+        {
+            hitbox.OnHit += HandleHit;
+        }
+    }
+
+    public void StartAttack(ComboNode node)
+    {
+        foreach (var hitbox in hitboxes)
+        {
+            hitbox.InitiateHit(node.attackProfile);
+        }
+    }
+
+    public void EndAttack()
+    {
+        foreach (var hitbox in hitboxes)
+        {
+            hitbox.TerminateHit();
+        }
+    }
+
+    private void HandleHit(HitData data)
+    {
+        data.target.TakeDamage(data.damageEvent);
+        OnHit?.Invoke(data.damageEvent);
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var hitbox in hitboxes)
+        {
+            hitbox.OnHit -= HandleHit;
+        }
+    }
+}

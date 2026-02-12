@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class FreeMoveMode : LocomotionMode
 {
     private readonly Camera mainCamera;
-    private float smoothingTime = 0.2f;
+    private readonly float smoothingTime = 0.2f;
 
     public FreeMoveMode(Player player, MotionAccumulator motion) : base(player, motion)
     {
@@ -39,7 +38,7 @@ public class FreeMoveMode : LocomotionMode
         //currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref velocityHelper, 0.2f);
         motion.AddExtraDelta(currentVelocity * dt);
 
-        player.Context.horizontalVelocity = currentVelocity;
+        player.Context.Velocity = currentVelocity;
     }
 
     public override void Move(Vector2 input, float speed)
@@ -103,13 +102,9 @@ public class FreeMoveMode : LocomotionMode
         if (dt <= 0f)
             return;
 
-        float alpha = GetSmoothingDelta(dt, player.rotationTime );
+        float alpha = GetSmoothingDelta(dt, player.rotationTime);
 
-        Quaternion smoothDelta = Quaternion.Slerp(
-            Quaternion.identity,
-            deltaRotation,
-            alpha
-        );
+        Quaternion smoothDelta = Quaternion.Slerp(Quaternion.identity, deltaRotation, alpha);
 
         motion.AddRotation(smoothDelta);
     }
@@ -142,6 +137,6 @@ public class FreeMoveMode : LocomotionMode
     {
         currentVelocity = Vector3.zero;
         velocityHelper = Vector3.zero;
-        player.Context.horizontalVelocity = Vector3.zero;
+        player.Context.Velocity = Vector3.zero;
     }
 }

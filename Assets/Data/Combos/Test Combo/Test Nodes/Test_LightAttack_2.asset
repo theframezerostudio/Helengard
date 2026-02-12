@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c7d56ca324e44249a1da548ef331a2b, type: 3}
-  m_Name: Test_LightAttack_1
+  m_Name: Test_LightAttack_2
   m_EditorClassIdentifier: Assembly-CSharp::ComboNode
   input: 0
   motionPolicy: 1
   rotationPolicy: 0
+  attackProfile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
   animMotionSpeed:
     serializedVersion: 2
     m_Curve:
@@ -39,22 +40,25 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  animationStateName: LightAttack_1
-  animClip: {fileID: -203655887218126122, guid: 9ba147f39f069c74b8855b264f1d60aa, type: 3}
+  animationStateName: LightAttack_2
+  animClip: {fileID: -203655887218126122, guid: 06b23f05cd3fba547a7662bb9c573298, type: 3}
   transitionTime: 0.1
   comboWindow:
-    startTime: 0.8
+    startTime: 0.5
     endTime: 1
+  attackWindow:
+    startTime: 0.26
+    endTime: 0.33
   cancelWindow:
-    startTime: 0
-    endTime: 0
+    startTime: 0.55
+    endTime: 1
   invincibleWindow:
     startTime: 0
     endTime: 0
   moveWindow:
     startTime: 0
-    endTime: 0.5
-  attackTurnSpeed: 7
+    endTime: 0
+  attackTurnSpeed: 6
   turnInfluence:
     serializedVersion: 2
     m_Curve:
@@ -68,10 +72,10 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.9794763
-      value: 2.0535514
-      inSlope: 2
-      outSlope: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -85,6 +89,8 @@ MonoBehaviour:
   requiresAir: 0
   requiresSprint: 0
   requiresDash: 0
+  amplitude: 0.1
+  frequency: 2
   transitions:
   - attackInput: 0
-    targetNode: {fileID: 11400000, guid: b88cd7e9a478b9a4fbb20255ea37b76c, type: 2}
+    targetNode: {fileID: 11400000, guid: eb180e00c008ca041852d161cf1196c4, type: 2}

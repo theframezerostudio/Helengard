@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -47,6 +48,8 @@ public class PlayerAirState : PlayerState
 
         gravity = player.gravity;
         airMoveDirection = inputManager.MoveInput;
+
+        inputManager.onAttack += HandleAttack;
     }
 
     public override void Update()
@@ -124,9 +127,15 @@ public class PlayerAirState : PlayerState
         }
     }
 
+    private void HandleAttack(AttackInput input)
+    {
+        stateMachine.TransitionToState(new PlayerAttackState(stateMachine, character, input));
+    }
+
     public override void Exit()
     {
         base.Exit();
         player.FeetIKResolver.SetFeetIk(true);
+        inputManager.onAttack -= HandleAttack;
     }
 }

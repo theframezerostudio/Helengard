@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComboGraph : MonoBehaviour
+[CreateAssetMenu(fileName = "ComboGraph", menuName = "Combo/ComboGraph")]
+public class ComboGraph : ScriptableObject
 {
     public List<ComboNode> entryNodes = new();
 

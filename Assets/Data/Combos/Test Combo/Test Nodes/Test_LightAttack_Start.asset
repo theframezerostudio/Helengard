@@ -15,6 +15,7 @@ MonoBehaviour:
   input: 0
   motionPolicy: 1
   rotationPolicy: 0
+  attackProfile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
   animMotionSpeed:
     serializedVersion: 2
     m_Curve:
@@ -45,6 +46,9 @@ MonoBehaviour:
   comboWindow:
     startTime: 0.8
     endTime: 1
+  attackWindow:
+    startTime: 0.65
+    endTime: 0.85
   cancelWindow:
     startTime: 0
     endTime: 0
@@ -81,10 +85,12 @@ MonoBehaviour:
     m_RotationOrder: 4
   forwardAttackForce: 0
   upwardAttackForce: 0
-  requiresGround: 0
+  requiresGround: 1
   requiresAir: 0
   requiresSprint: 0
   requiresDash: 0
+  amplitude: 0.1
+  frequency: 2
   transitions:
   - attackInput: 0
     targetNode: {fileID: 11400000, guid: d575d9b9c4a746047b7ad7c80aae75f8, type: 2}

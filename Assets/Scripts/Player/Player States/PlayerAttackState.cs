@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerAttackState : PlayerState
@@ -12,6 +13,9 @@ public class PlayerAttackState : PlayerState
     private float animDuration;
     private Vector2 smoothedMovement;
     private Vector2 movementVelocity;
+    private bool isAttacking = false;
+    private float hoverBaseHeight;
+    private float hoverTime;
 
     public PlayerAttackState(StateMachine stateMachine, Character character, AttackInput attackInput) : base(stateMachine, character)
     {
@@ -26,10 +30,8 @@ public class PlayerAttackState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        animator = player.Animator;
-        player.SetGravity(false);
-        player.FeetIKResolver.SetFeetIk(false);
-        
+
+        // First try to use the provided node, if any. If not, resolve based on attack input.
         if (node == null)
         {
             node = player.Context.attackResolver.comboGraph.GetEntryNode(player.Context, attackInput);
@@ -42,25 +44,44 @@ public class PlayerAttackState : PlayerState
             }
         }
 
+        animator = player.Animator;
+
+        // Handling air attack setup and Hover Float initialization
+        hoverBaseHeight = player.transform.position.y;
+        hoverTime = 0f;
+
+        player.Context.GravityScale = 0f;
+        player.verticalVelocity = 0f;
+
+        // Animation Feel Adjustments
+        player.FeetIKResolver.SetFeetIk(false);
         player.LocomotionMode.SetLocomotion(node.motionPolicy, node.rotationPolicy);
 
         player.PlayAnim(node.animationStateName, node.transitionTime);
         animDuration = GetStateDuration();
+
+        // Reset combo and attack state
         comboAttempted = false;
         animNormalizedTime = 0f;
-
+        isAttacking = false;
+        
         inputManager.onAttack += HandleAttack;
+        character.CurrentWeapon.OnHit += HandleHit;
     }
 
     public override void Update()
     {
         base.Update();
 
+        if (node == null)
+            return;
+
         attackTimer += Time.deltaTime;
         animNormalizedTime = Mathf.InverseLerp(0, animDuration, attackTimer);
 
         movement = inputManager.MoveInput;
 
+        // Apply movement forces during the move window
         if (node.moveWindow.IsValid(animNormalizedTime))
         {
             float rate = movement.sqrMagnitude > smoothedMovement.sqrMagnitude ? player.acceleration : player.deceleration;
@@ -81,6 +102,28 @@ public class PlayerAttackState : PlayerState
             SmoothRotate(smoothedMovement);
         }
 
+        // Handle air attack hover float
+        if (!player.Context.isGrounded && node.requiresAir)
+        {
+            ApplyHoverFloat();
+        }
+
+        // Handle attack hitbox activation
+        if (node.attackWindow.IsValid(animNormalizedTime))
+        {
+            if (!isAttacking)
+            {
+                character.CurrentWeapon.StartAttack(node);
+                isAttacking = true;
+            }
+        }
+        else if (isAttacking)
+        {
+            character.CurrentWeapon.EndAttack();
+            isAttacking = false;
+        }
+
+        // Handle combo input and chain attacks
         if (comboAttempted && node.comboWindow.IsValid(animNormalizedTime))
         {
             ComboNode nextNode = player.Context.attackResolver.Resolve(player.Context, attackInput, node);
@@ -92,6 +135,7 @@ public class PlayerAttackState : PlayerState
             comboAttempted = false;
         }
 
+        // Transition back to locomotion after attack finishes or if player tries to move during cancel window
         if ((node.cancelWindow.IsValid(animNormalizedTime) && inputManager.MoveInput != Vector2.zero) || animNormalizedTime >= 1f)
         {
             SwitchToLocomotion();
@@ -101,9 +145,21 @@ public class PlayerAttackState : PlayerState
     public override void Exit()
     {
         base.Exit();
-        player.SetGravity(true);
+
+        if (node == null)
+        {
+            return;
+        }
 
         inputManager.onAttack -= HandleAttack;
+        character.CurrentWeapon.OnHit -= HandleHit;
+
+        //player.SetGravity(true);
+        player.Context.GravityScale = 1f;
+
+        if (character.CurrentWeapon)
+            character.CurrentWeapon.EndAttack();
+
         player.FeetIKResolver.SetFeetIk(true);
     }
 
@@ -115,6 +171,35 @@ public class PlayerAttackState : PlayerState
             comboAttempted = true;
         }
     }
+
+    private void HandleHit(DamageEvent ev)
+    {
+        // TODO: Add a short cooldown timer to prevent multiple hits from the same attack from applying multiple rotations
+
+        Vector3 attackDirection = ev.Defender.position - character.transform.position; 
+        attackDirection.y = 0;
+
+        Quaternion lookDirection = Quaternion.LookRotation(attackDirection);
+        Quaternion delta = lookDirection * Quaternion.Inverse(character.transform.rotation);
+
+        player.motionAccumulator.AddRotation(delta);
+    }
+
+    private void ApplyHoverFloat()
+    {
+        hoverTime += Time.deltaTime;
+
+        float amplitude = node.amplitude;   
+        float frequency = node.frequency;  
+
+        float offset = Mathf.Sin(hoverTime * Mathf.PI * 2f * frequency) * amplitude;
+
+        Vector3 pos = player.transform.position;
+        pos.y = hoverBaseHeight + offset;
+
+        player.motionAccumulator.AddExtraDelta(pos - player.transform.position);
+    }
+
 
     public float GetStateDuration()
     {
@@ -153,5 +238,4 @@ public class PlayerAttackState : PlayerState
         Quaternion delta = Quaternion.Inverse(player.transform.rotation) * newRotation;
         player.motionAccumulator.AddRotation(delta);
     }
-
 }

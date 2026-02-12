@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,7 +14,9 @@ public class Enemy : Character
     public CharacterController controller;
 
     [Header("States")]
-    public EnemyLocomotionState IdleState;
+    public EnemyLocomotionState LocomotionState;
+
+    public bool IsAlive => true; // Needs to be updated
 
     protected override void Awake()
     {
@@ -26,8 +27,31 @@ public class Enemy : Character
 
     private void Start()
     {
-        IdleState = new EnemyLocomotionState(stateMachine, this);
+        LocomotionState = new EnemyLocomotionState(stateMachine, this);
+        stateMachine.Initialize(LocomotionState);
+        //stateMachine.Initialize(new EnemyState(stateMachine, this));
+    }
 
-        stateMachine.Initialize(IdleState);
+    private void Update()
+    {
+        float vv = ApplyGravity(Time.deltaTime);
+
+        motionAccumulator.AddExtraDelta(Vector3.up * vv);
+    }
+
+    public override void Suspend(float duration)
+    {
+        stateMachine.TransitionToState(new EnemySuspendedState(stateMachine, this, duration));
+    }
+
+    public override void Recover(ActionData actionData)
+    {
+        stateMachine.TransitionToState(new EnemyRecoveryState(stateMachine, this, actionData));
+    }
+
+    public override void Unsuspend()
+    {
+        // Unsuspend characeter
+        stateMachine.TransitionToState(LocomotionState);
     }
 }
