@@ -1,21 +1,23 @@
-using System;
 using UnityEngine;
 
 public class PlayerAttackState : PlayerState
 {
-    private ComboNode node;
-    private Vector2 movement;
-    private AttackInput attackInput;
-    private bool comboAttempted = false;
-    private float animNormalizedTime = 0f;
     private Animator animator;
-    private float attackTimer = 0f;
-    private float animDuration;
+    private ComboNode node;
+    private AttackInput attackInput;
+
+    private Vector2 movement;
     private Vector2 smoothedMovement;
     private Vector2 movementVelocity;
-    private bool isAttacking = false;
+
+    private float animNormalizedTime = 0f;
+    private float attackTimer = 0f;
+    private float animDuration;
     private float hoverBaseHeight;
     private float hoverTime;
+
+    private bool isAttacking = false;
+    private bool comboAttempted = false;
 
     public PlayerAttackState(StateMachine stateMachine, Character character, AttackInput attackInput) : base(stateMachine, character)
     {
@@ -34,11 +36,24 @@ public class PlayerAttackState : PlayerState
         // First try to use the provided node, if any. If not, resolve based on attack input.
         if (node == null)
         {
+            // Checking if air attacks are Possible
+            if (!character.Context.isGrounded)
+            {
+                if (character.Context.airComboDone)
+                {
+                    SwitchToLocomotion();
+                    return;
+                }
+                else
+                {
+                    character.Context.airComboDone = true;
+                }
+            }
+
             node = player.Context.attackResolver.comboGraph.GetEntryNode(player.Context, attackInput);
 
             if (node == null)
             {
-                Debug.LogWarning("No valid entry node found for attack input: " + attackInput);
                 SwitchToLocomotion();
                 return;
             }
@@ -146,7 +161,6 @@ public class PlayerAttackState : PlayerState
     {
         base.Exit();
 
-            Debug.LogWarning("Exiting PlayerAttackState with null node reference.");
         if (node == null)
         {
             return;

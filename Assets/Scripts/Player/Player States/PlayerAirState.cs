@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -14,8 +13,6 @@ public class PlayerAirState : PlayerState
     public override int Priority => 5;
 
     private AirStateType AirState;
-    private float gravity;
-    private readonly bool jump;
     private readonly JumpProfile jumpProfile;
     private Vector2 airMoveDirection;
     private float startTime;
@@ -23,7 +20,6 @@ public class PlayerAirState : PlayerState
     public PlayerAirState(StateMachine stateMachine, Character character, JumpProfile jumpProfile = null) : base(stateMachine, character)
     {
         this.jumpProfile = jumpProfile;
-        jump = jumpProfile == null;
     }
 
     public override void Enter()
@@ -46,7 +42,6 @@ public class PlayerAirState : PlayerState
             player.StartCoroutine(StartFall());
         }
 
-        gravity = player.gravity;
         airMoveDirection = inputManager.MoveInput;
 
         inputManager.onAttack += HandleAttack;

@@ -8,6 +8,7 @@ public class CharacterContext : MonoBehaviour
 
     public JumpResolver jumpResolver;
     public AttackResolver attackResolver;
+    public float UngroundedTime { get; private set; }
 
     public bool isSprinting;
     public bool isGrounded;
@@ -16,10 +17,11 @@ public class CharacterContext : MonoBehaviour
     //Serialized for testing purposes
     [SerializeField] private bool isLockedOn;
     [SerializeField] private bool isGuarding;
-    public bool isPerfectGuarding;
+
+    [HideInInspector] public bool isPerfectGuarding;
+    [HideInInspector] public bool airComboDone = false;
 
     public Vector3 Velocity;
-    public float UngroundedTime { get; private set; }
 
     public void UpdateGrounded(bool isGrounded, float deltaTime)
     {
@@ -27,6 +29,7 @@ public class CharacterContext : MonoBehaviour
         {
             this.isGrounded = true;
             UngroundedTime = 0f;
+            airComboDone = false;
         }
         else
         {

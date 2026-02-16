@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -12,7 +9,6 @@ public class Player : Character
     public PlayerIdleState IdleState;
     public PlayerMoveState MoveState;
     public PlayerGuardState GuardState;
-    public PlayerAirState AirState;
     public PlayerDashState DashState;
 
     [Header("Locomotion Modes")]
@@ -60,7 +56,7 @@ public class Player : Character
 
     private void Start()
     {
-        IdleState = new PlayerIdleState(stateMachine,this);
+        IdleState = new PlayerIdleState(stateMachine, this);
         MoveState = new PlayerMoveState(stateMachine, this);
         GuardState = new PlayerGuardState(stateMachine, this);
         DashState = new PlayerDashState(stateMachine, this);

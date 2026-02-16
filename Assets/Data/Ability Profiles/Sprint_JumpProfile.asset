@@ -14,6 +14,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JumpProfile
   jumpForce: 15
   forwardForce: 5
+  maxFallSpeed: -25
+  gravityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0045048594
+      value: 0.60872316
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4938591
+      value: 1.4729313
+      inSlope: 0.3453322
+      outSlope: 0.3453322
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.22670488
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9994084
+      value: 0.6181302
+      inSlope: -2.5731485
+      outSlope: -2.5731485
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23899771
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   airControlMultiplier: 1
   jumpAnim: {fileID: 7400000, guid: 79fef3be1ee187041b6a4f078eb60d60, type: 2}
   fallAnim: {fileID: 7400000, guid: e7d905f44cda1f64bbd95e329ca5cc7d, type: 2}

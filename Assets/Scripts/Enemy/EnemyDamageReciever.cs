@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyDamageReceiver : MonoBehaviour, IDamageable
 {
     [SerializeField] private float health;
-    [SerializeField] private EnemyReactionController reactionController;
+    [SerializeField] private ReactionController reactionController;
 
     public bool IsAlive => health > 0;
 

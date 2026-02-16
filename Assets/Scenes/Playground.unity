@@ -2396,6 +2396,7 @@ MonoBehaviour:
   isLockedOn: 0
   isGuarding: 0
   isPerfectGuarding: 0
+  airComboDone: 0
   Velocity: {x: 0, y: 0, z: 0}
 --- !u!4 &1326828033
 Transform:
@@ -3259,6 +3260,7 @@ MonoBehaviour:
   isLockedOn: 0
   isGuarding: 0
   isPerfectGuarding: 0
+  airComboDone: 0
   Velocity: {x: 0, y: 0, z: 0}
 --- !u!4 &1684997013
 Transform:
@@ -3892,7 +3894,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2075069644}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d4c134431781434892504a3017590ae, type: 3}
   m_Name: 
@@ -4081,8 +4083,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  verticalLaunchStrength: 0
-  horizontalLaunchStrength: 0
   gravityCurve:
     serializedVersion: 2
     m_Curve:
@@ -4237,7 +4237,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  horizontalForce: 0
   gravityCurve:
     serializedVersion: 2
     m_Curve:

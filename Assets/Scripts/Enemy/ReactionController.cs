@@ -2,25 +2,25 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class EnemyReactionController : MonoBehaviour
+public class ReactionController : MonoBehaviour
 {
+    [SerializeField] private Character character;
     [SerializeField] private List<ReactionModule> modules = new();
-    [SerializeField] private ReactionModule active;
 
+    private ReactionModule active;
     private ReactionContext ctx;
-    private Enemy enemy;
 
     private Queue<DamageEvent> queue = new();
 
     private void Awake()
     {
-        enemy = GetComponent<Enemy>();
+        character = GetComponent<Character>();
 
-        Animator animator = enemy.Animator;
-        ReactionMotionAdapter motion = new (enemy);
+        Animator animator = character.Animator;
+        ReactionMotionAdapter motion = new (character);
 
         ctx = new ReactionContext(
-            enemy,
+            character,
             animator,
             motion,
             //stateMachine,
@@ -93,9 +93,9 @@ public class EnemyReactionController : MonoBehaviour
         if (queue.Count != 0) return;
 
         if (recoveryData == null)
-            enemy.Unsuspend();
+            character.Unsuspend();
         else
-            enemy.Recover(recoveryData);
+            character.Recover(recoveryData);
     }
 
     private void EnqueueHit(DamageEvent ev)
