@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour
     public Hitbox[] hitboxes;
 
     public Action<DamageEvent> OnHit;
+    public FeedbackPlayer feedbackPlayer;
 
     private void Start()
     {
@@ -36,6 +37,9 @@ public class Weapon : MonoBehaviour
     {
         data.target.TakeDamage(data.damageEvent);
         OnHit?.Invoke(data.damageEvent);
+
+        if (feedbackPlayer != null)
+            feedbackPlayer.Play();
     }
 
     private void OnDestroy()

@@ -39,7 +39,6 @@ public class Stagger_ReactionModule : ReactionModule
     private async Task SuspendCharacterAsync(DamageEvent ev, ReactionContext ctx)
     {
         totalDuration = await animatorFollower.ApplyHit(ev);
-        Debug.Log("Suspend" + totalDuration);
         timer = 0f;
 
         if (ev.StunDuration > 0f)

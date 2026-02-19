@@ -24,8 +24,7 @@ public class EnemyRecoveryState : EnemyState
         
         if (startTime + actionData.duration <= Time.time)
         {
-            Debug.Log("Enemy recovered from " + actionData.animState);
-            // Use resolver to determine next state
+            // TODO: Use resolver to determine next state
             stateMachine.TransitionToState(enemy.LocomotionState);
         }
     }

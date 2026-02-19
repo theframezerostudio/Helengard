@@ -27,7 +27,6 @@ public class AnimatorFollower : MonoBehaviour
 
     public void EndHitAnim()
     {
-        Debug.Log("Ending hit animation");
         if (endRoutine != null)
         {
             StopCoroutine(endRoutine);

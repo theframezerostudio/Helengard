@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74d0b82e1cfa32419ecd1fe0926c2cf, type: 3}
+  m_Name: PlayerSFX_MixerProfile
+  m_EditorClassIdentifier: Assembly-CSharp::AudioMixerProfile
+  <ID>k__BackingField: 
+  <MixerGroup>k__BackingField: {fileID: 24300002, guid: ff9306108597e3e4c92f1a85ee2a5953, type: 2}
+  <MaxLimit>k__BackingField: 5
