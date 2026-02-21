@@ -7,7 +7,7 @@ public class Enemy : Character
 
 
 
-    private EnemyStateMachine stateMachine;
+    private EnemyStateMachine stateMachine; // TODO: Replace with new AI State Machine
 
     public NavMeshAgent agent;
     public AgentMotionHandler motionHandler;
@@ -22,13 +22,13 @@ public class Enemy : Character
     {
         base.Awake();
 
-        stateMachine = GetComponent<EnemyStateMachine>();
+        //stateMachine = GetComponent<EnemyStateMachine>();
     }
 
     private void Start()
     {
-        LocomotionState = new EnemyLocomotionState(stateMachine, this);
-        stateMachine.Initialize(LocomotionState);
+        //LocomotionState = new EnemyLocomotionState(stateMachine, this);
+        //stateMachine.Initialize(LocomotionState);
         //stateMachine.Initialize(new EnemyState(stateMachine, this));
     }
 
@@ -41,17 +41,17 @@ public class Enemy : Character
 
     public override void Suspend(float duration)
     {
-        stateMachine.TransitionToState(new EnemySuspendedState(stateMachine, this, duration));
+        //stateMachine.TransitionToState(new EnemySuspendedState(stateMachine, this, duration));
     }
 
     public override void Recover(ActionData actionData)
     {
-        stateMachine.TransitionToState(new EnemyRecoveryState(stateMachine, this, actionData));
+        //stateMachine.TransitionToState(new EnemyRecoveryState(stateMachine, this, actionData));
     }
 
     public override void Unsuspend()
     {
         // Unsuspend characeter
-        stateMachine.TransitionToState(LocomotionState);
+        //stateMachine.TransitionToState(LocomotionState);
     }
 }
