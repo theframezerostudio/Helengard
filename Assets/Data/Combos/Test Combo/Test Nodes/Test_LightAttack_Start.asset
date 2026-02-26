@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c7d56ca324e44249a1da548ef331a2b, type: 3}
   m_Name: Test_LightAttack_Start
   m_EditorClassIdentifier: Assembly-CSharp::ComboNode
-  input: 0
+  input: 1
   motionPolicy: 1
   rotationPolicy: 0
   attackProfile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
@@ -92,7 +92,7 @@ MonoBehaviour:
   amplitude: 0.1
   frequency: 2
   transitions:
-  - attackInput: 0
-    targetNode: {fileID: 11400000, guid: d575d9b9c4a746047b7ad7c80aae75f8, type: 2}
   - attackInput: 1
+    targetNode: {fileID: 11400000, guid: d575d9b9c4a746047b7ad7c80aae75f8, type: 2}
+  - attackInput: 2
     targetNode: {fileID: 11400000, guid: 7a83d766ebf4e32429f957c36612953a, type: 2}

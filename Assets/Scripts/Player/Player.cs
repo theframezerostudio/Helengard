@@ -17,7 +17,6 @@ public class Player : Character
     private TargetLockMode targetLockMode;
 
     [Header("References")]
-    public CharacterController Controller { get; private set; }
     [field: SerializeField] public LocomotionActionProvider ActionProvider { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     private PlayerStateMachine stateMachine;
@@ -50,7 +49,6 @@ public class Player : Character
         base.Awake();
 
         stateMachine = GetComponent<PlayerStateMachine>();
-        Controller = GetComponent<CharacterController>();
         InputHandler = GetComponent<PlayerInputHandler>();
     }
 

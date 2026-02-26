@@ -6,8 +6,9 @@ public class CharacterContext : MonoBehaviour
 {
     public AbilitySystem abilitySystem;
 
+    public CombatDataAggregator dataAggregator;
     public JumpResolver jumpResolver;
-    public AttackResolver attackResolver;
+
     public float UngroundedTime { get; private set; }
 
     public bool isSprinting;
@@ -22,6 +23,13 @@ public class CharacterContext : MonoBehaviour
     [HideInInspector] public bool airComboDone = false;
 
     public Vector3 Velocity;
+
+    public CombatSnapshot CombatData => dataAggregator.Snapshot;
+
+    private void Awake()
+    {
+        dataAggregator = new CombatDataAggregator();
+    }
 
     public void UpdateGrounded(bool isGrounded, float deltaTime)
     {

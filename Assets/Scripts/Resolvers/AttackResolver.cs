@@ -1,8 +1,16 @@
-using UnityEngine;
-
-public class AttackResolver : MonoBehaviour
+public class AttackResolver
 {
-    public ComboGraph comboGraph;
+    private ComboGraph comboGraph;
+
+    public AttackResolver (ComboGraph comboGraph)
+    {
+        this.comboGraph = comboGraph;
+    }
+
+    public ComboNode GetEntryNode(CharacterContext ctx, AttackInput attackInput)
+    {
+        return comboGraph.GetEntryNode(ctx, attackInput);
+    }
 
     public ComboNode Resolve(CharacterContext ctx, AttackInput attackInput, ComboNode currNode)
     {

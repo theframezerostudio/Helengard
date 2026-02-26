@@ -16,7 +16,7 @@ public class EnemyLocomotionState : EnemyState
     {
         base.Enter();
 
-        agent.SetDestination(enemy.temporaryTargetForNow.position);
+        //agent.SetDestination(enemy.temporaryTargetForNow.position);
         character.PlayAnim("Movement", 0.1f);
     }
 
@@ -24,7 +24,7 @@ public class EnemyLocomotionState : EnemyState
     {
         base.Update();
 
-        agent.SetDestination(enemy.temporaryTargetForNow.position);
+        //agent.SetDestination(enemy.temporaryTargetForNow.position);
 
         Vector2 intent = motionHandler.GetMoveIntent();
         character.Animator.SetFloat("Speed", intent.magnitude, 0.1f, Time.deltaTime);

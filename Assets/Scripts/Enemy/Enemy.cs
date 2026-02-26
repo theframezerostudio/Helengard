@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class Enemy : Character
 {
-    public Transform temporaryTargetForNow;
+    //public Transform temporaryTargetForNow;
 
 
 
@@ -11,7 +11,6 @@ public class Enemy : Character
 
     public NavMeshAgent agent;
     public AgentMotionHandler motionHandler;
-    public CharacterController controller;
 
     [Header("States")]
     public EnemyLocomotionState LocomotionState;

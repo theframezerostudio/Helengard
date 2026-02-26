@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     [field: SerializeField] public Animator Animator { get; protected set; }
+    public CharacterController Controller { get; private set; }
     [field: SerializeField] public CharacterContext Context { get; private set; }
     [field: SerializeField] public FeetIKResolver FeetIKResolver { get; protected set; }
     [field: SerializeField] public Weapon CurrentWeapon { get; protected set; }
@@ -30,6 +31,7 @@ public abstract class Character : MonoBehaviour
     protected virtual void Awake()
     {
         motionAccumulator = new MotionAccumulator();
+        Controller = GetComponent<CharacterController>();
     }
 
     private void FixedUpdate()

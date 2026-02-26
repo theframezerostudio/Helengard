@@ -30,6 +30,7 @@ public class ComboGraph : ScriptableObject
             return false;
         if (node.requiresDash && !ctx.isDashing)
             return false;
+
         return true;
     }
 }

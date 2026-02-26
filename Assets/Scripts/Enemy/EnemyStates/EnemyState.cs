@@ -26,7 +26,7 @@ public class EnemyState : BaseState
     public override void LateUpdate()
     {
         character.motionAccumulator.Consume(out Vector3 moveDelta, out Quaternion rotDelta);
-        enemy.controller.Move(moveDelta);
+        enemy.Controller.Move(moveDelta);
         enemy.transform.rotation = rotDelta * enemy.transform.rotation;
     }
 

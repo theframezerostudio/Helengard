@@ -2,5 +2,6 @@ using UnityEngine;
 
 public abstract class Condition : MonoBehaviour
 {
-    public abstract bool Evaluate();
+    [field: SerializeField] public string Label {  get; protected set; }
+    public abstract bool Evaluate(AICombatContext combatContext);
 }

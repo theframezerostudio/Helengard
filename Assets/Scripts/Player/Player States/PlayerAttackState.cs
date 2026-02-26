@@ -50,7 +50,7 @@ public class PlayerAttackState : PlayerState
                 }
             }
 
-            node = player.Context.attackResolver.comboGraph.GetEntryNode(player.Context, attackInput);
+            node = player.CurrentWeapon.InitiateAttack(player.Context, attackInput);
 
             if (node == null)
             {
@@ -141,7 +141,7 @@ public class PlayerAttackState : PlayerState
         // Handle combo input and chain attacks
         if (comboAttempted && node.comboWindow.IsValid(animNormalizedTime))
         {
-            ComboNode nextNode = player.Context.attackResolver.Resolve(player.Context, attackInput, node);
+            ComboNode nextNode = player.CurrentWeapon.NextAttack(player.Context, attackInput, node);
             if (nextNode)
             {
                 stateMachine.TransitionToState(new PlayerAttackState(stateMachine, player, nextNode));

@@ -8,9 +8,7 @@ public class AIState
     [field: SerializeField] public AIAction[] Actions { get; private set; }
     [field: SerializeField] public AIDecision[] Decisions {  get; private set; }
 
-    //private 
-
-    public void Enter(Character Owner)
+    public void Enter(Character Owner, StateContext stateContext)
     {
         if (!string.IsNullOrEmpty(animName))
         {
@@ -19,7 +17,7 @@ public class AIState
 
         foreach (AIAction action in Actions)
         {
-            action.Enter();
+            action.Enter(Owner, stateContext);
         }
     }
 

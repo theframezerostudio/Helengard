@@ -3,10 +3,11 @@ using UnityEngine;
 
 public enum AttackInput
 {
+    None,
     Light,
     Heavy,
     LightHold,
-    HeavyHold
+    HeavyHold,
 }
 
 public enum MovementMotionPolicy
