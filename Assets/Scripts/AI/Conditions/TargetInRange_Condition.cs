@@ -24,7 +24,7 @@ public class TargetInRange_Condition : Condition
         colliders = new Collider[5];
     }
 
-    public override bool Evaluate(AICombatContext combatContext)
+    public override bool Evaluate(AICombatData combatContext)
     {
         Vector3 center = transform.position + offset;
 
@@ -54,7 +54,7 @@ public class TargetInRange_Condition : Condition
                 if (currentTarget == null)
                     return false;
 
-                combatContext.target = currentTarget;
+                combatContext.Target = currentTarget;
                 wasInRange = true;
                 return true;
             }
@@ -77,7 +77,7 @@ public class TargetInRange_Condition : Condition
             return false;
         }
 
-        combatContext.target = currentTarget;
+        combatContext.Target = currentTarget;
         return true;
     }
 

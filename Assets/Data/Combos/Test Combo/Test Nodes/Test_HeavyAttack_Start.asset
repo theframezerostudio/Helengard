@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c7d56ca324e44249a1da548ef331a2b, type: 3}
   m_Name: Test_HeavyAttack_Start
   m_EditorClassIdentifier: Assembly-CSharp::ComboNode
-  input: 1
+  input: 2
   motionPolicy: 1
   rotationPolicy: 0
   attackProfile: {fileID: 11400000, guid: caa74dd1204aa314696465e5fd9340ad, type: 2}
@@ -41,7 +41,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   animationStateName: HeavyAttack_Start
-  animClip: {fileID: -203655887218126122, guid: 7ddc6e90afa79ac448da7a9b7f3c1ea4, type: 3}
+  animClip: {fileID: -203655887218126122, guid: 9ba147f39f069c74b8855b264f1d60aa, type: 3}
   transitionTime: 0.2
   comboWindow:
     startTime: 0.8
@@ -86,13 +86,13 @@ MonoBehaviour:
   forwardAttackForce: 0
   upwardAttackForce: 0
   requiresGround: 0
-  requiresAir: 1
+  requiresAir: 0
   requiresSprint: 0
   requiresDash: 0
   amplitude: 0.05
   frequency: 2.5
   transitions:
-  - attackInput: 1
+  - attackInput: 2
     targetNode: {fileID: 11400000, guid: 7a83d766ebf4e32429f957c36612953a, type: 2}
-  - attackInput: 0
+  - attackInput: 1
     targetNode: {fileID: 11400000, guid: d575d9b9c4a746047b7ad7c80aae75f8, type: 2}

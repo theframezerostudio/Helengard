@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27abe249cf311174396c84d7f172a537, type: 3}
+  m_Name: Optimal_CombatPersona
+  m_EditorClassIdentifier: Assembly-CSharp::CombatPersona
+  attackBase: 1.1
+  attackEntryBonus: 3
+  attackDecayRate: 0.2
+  recoverBase: 1
+  recoverEntryBonus: 1.5
+  recoverDecayRate: 0.3
+  recoverTimeGrowth: 0.1
+  defendBase: 1
+  defendEntryBonus: 2
+  defendDecayRate: 0.2
+  dodgeBase: 1
+  dodgeEntryBonus: 2
+  dodgeDecayRate: 0.2
+  attackBackBonus: 0.2
+  attackVsOpenBonus: 0.5
+  attackVsBlockBonus: 0.3
+  attackDecayVsThreat: 0.5
+  attackDecayOnHit: 0.1
+  recoverDecayOnHit: 0.3
+  recoverDecayOnLightAttacks: 0.2
+  recoverDecayOnHeavyAttacks: 0.3
+  defendVsLightBonus: 0.3
+  defendDecayWhenSafe: 0.3
+  defendDecayWhenThreat: 0.3
+  defenseAttackBuildupRate: 0.2
+  defenseAttackBuildupMax: 3
+  dodgeVsHeavyBonus: 0.4
+  dodgeDecayWhenSafe: 0.3
+  dodgeDecayWhenThreat: 0.3
+  dodgeAttackBuildupRate: 0.2
+  dodgeAttackBuildupMax: 3

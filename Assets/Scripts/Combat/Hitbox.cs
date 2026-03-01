@@ -85,11 +85,19 @@ public class Hitbox : MonoBehaviour
             HitDirection dir = HitUtilities.ComputeHitDirection(targetRoot, attackerRoot, hitPoint);
             HitHeight height = HitUtilities.ComputeHitHeight(targetRoot, hitPoint);
 
-            DamageEvent damageEvent = new (profile.damage, profile.effect, hitPoint, hitNormal,
-                attackerRoot.TransformDirection(profile.hitForce), attackerRoot, col.transform, dir, height, profile.swingType,
-                profile.canChain, profile.stunDuration, profile.hitStop);
+            try
+            {
+                DamageEvent damageEvent = new(profile.damage, profile.effect, hitPoint, hitNormal,
+                    attackerRoot.TransformDirection(profile.hitForce), attackerRoot, col.transform, dir, height, profile.swingType,
+                    profile.canChain, profile.stunDuration, profile.hitStop);
 
-            OnHit?.Invoke(new HitData(damageable, damageEvent));
+                OnHit?.Invoke(new HitData(damageable, damageEvent));
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                Debug.Log((profile == null) + " " + col == null);
+            }
             //damageable.TakeDamage(damageEvent);
         }
 

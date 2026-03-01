@@ -1,12 +1,10 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Chase_AIAction : AIAction
 {
     [SerializeField] private float stoppingDistance;
 
     private AgentMotionHandler motionHandler;
-    private NavMeshAgent agent;
     private Transform target;
 
     public override void Enter(Character Owner, StateContext stateContext)
@@ -16,16 +14,14 @@ public class Chase_AIAction : AIAction
         target = context.Target.transform;
 
         motionHandler = stateContext.MotionHandler;
-        agent = stateContext.Agent;
 
-        agent.stoppingDistance = stoppingDistance;
-
-        agent.SetDestination(target.position);
+        motionHandler.SetStoppingDistance(stoppingDistance);
+        motionHandler.SetDestination(target.position);
     }
 
     public override void Tick()
     {
-        agent.SetDestination(target.position);
+        motionHandler.SetDestination(target.position);
 
         Vector2 intent = motionHandler.GetMoveIntent();
         owner.Animator.SetFloat("Speed", intent.magnitude, 0.1f, Time.deltaTime);

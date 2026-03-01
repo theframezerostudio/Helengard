@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27abe249cf311174396c84d7f172a537, type: 3}
+  m_Name: Aggressive_CombatPersona
+  m_EditorClassIdentifier: Assembly-CSharp::CombatPersona
+  attackBase: 1
+  attackEntryBonus: 3
+  attackDecayRate: 1
+  recoverBase: 2
+  recoverEntryBonus: 2
+  recoverDecayRate: 0.5
+  recoverTimeGrowth: 2
+  defendBase: 3
+  defendEntryBonus: 2
+  defendDecayRate: 1
+  dodgeBase: 1
+  dodgeEntryBonus: 2
+  dodgeDecayRate: 1.2
+  attackBackBonus: 3
+  attackVsOpenBonus: 4
+  attackVsBlockBonus: 2
+  attackDecayVsThreat: 1.5
+  attackDecayOnHit: 1
+  defendVsLightBonus: 4
+  defendDecayWhenSafe: 1.5
+  defendDecayWhenThreat: 1
+  dodgeVsHeavyBonus: 5
+  dodgeDecayWhenSafe: 1.5
+  dodgeDecayWhenThreat: 1

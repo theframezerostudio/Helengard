@@ -1,10 +1,12 @@
 using UnityEngine;
-using System.Collections;
+using System;
 
-public class EnemyDamageReceiver : MonoBehaviour, IDamageable
+public class DamageReciever : MonoBehaviour, IDamageable
 {
-    [SerializeField] private float health;
+    [SerializeField] private float health = 100f;
     [SerializeField] private ReactionController reactionController;
+    
+    public Action onDamageRecieved;
 
     public bool IsAlive => health > 0;
 
@@ -14,8 +16,10 @@ public class EnemyDamageReceiver : MonoBehaviour, IDamageable
         if (!CanBeHit(ev)) return;
 
         health -= ev.Damage;
+        onDamageRecieved?.Invoke();
 
-        reactionController.OnDamageReceived(ev);
+        if (reactionController)
+            reactionController.OnDamageReceived(ev);
     }
 
     bool CanBeHit(DamageEvent ev)

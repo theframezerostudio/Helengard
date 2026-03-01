@@ -4,6 +4,7 @@ public abstract class LocomotionMode
 {
     protected Player player;
     public Vector3 currentVelocity = Vector3.zero;
+    protected Vector3 lastPosition = Vector3.zero;
     protected Vector3 velocityHelper;
     protected readonly MotionAccumulator motion;
 

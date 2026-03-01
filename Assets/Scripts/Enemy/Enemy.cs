@@ -31,10 +31,11 @@ public class Enemy : Character
         //stateMachine.Initialize(new EnemyState(stateMachine, this));
     }
 
-    private void Update()
+    protected override void Update()
     {
-        float vv = ApplyGravity(Time.deltaTime);
+        base.Update();
 
+        float vv = ApplyGravity(Time.deltaTime);
         motionAccumulator.AddExtraDelta(Vector3.up * vv);
     }
 

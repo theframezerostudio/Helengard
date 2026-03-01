@@ -1,12 +1,11 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterContext : MonoBehaviour
 {
     public AbilitySystem abilitySystem;
 
-    public CombatDataAggregator dataAggregator;
+    public DataAggregator dataAggregator;
     public JumpResolver jumpResolver;
 
     public float UngroundedTime { get; private set; }
@@ -22,13 +21,22 @@ public class CharacterContext : MonoBehaviour
     [HideInInspector] public bool isPerfectGuarding;
     [HideInInspector] public bool airComboDone = false;
 
-    public Vector3 Velocity;
+    private Vector3 velocity;
+    public Vector3 Velocity
+    {
+        get => velocity;
+        set
+        {
+            dataAggregator.SetVelocity(value);
+            velocity = value;
+        }
+    }
 
     public CombatSnapshot CombatData => dataAggregator.Snapshot;
 
     private void Awake()
     {
-        dataAggregator = new CombatDataAggregator();
+        dataAggregator = new DataAggregator();
     }
 
     public void UpdateGrounded(bool isGrounded, float deltaTime)

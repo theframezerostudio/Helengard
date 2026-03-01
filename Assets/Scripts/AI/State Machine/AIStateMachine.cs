@@ -7,6 +7,8 @@ public class AIStateMachine : MonoBehaviour
     [SerializeField] private StateContext StateContext;
     [SerializeField] private AIState[] states;
 
+    private CharacterContext context;
+
     [SerializeField, ReadOnly] private AIState currentState = null;
 
     private readonly Dictionary<string, int> statesDict = new();
@@ -17,6 +19,7 @@ public class AIStateMachine : MonoBehaviour
             enabled = false;
 
         Initialize(states[0]);
+        context = Owner.Context;
     }
 
     private void Initialize(AIState state)
@@ -40,6 +43,17 @@ public class AIStateMachine : MonoBehaviour
     private void LateUpdate()
     {
         Owner.motionAccumulator.Consume(out Vector3 moveDelta, out Quaternion rotDelta);
+
+        Vector3 velocity = moveDelta / Time.deltaTime;
+
+        Vector3 roundedVelocity = new Vector3(
+        Mathf.Round(velocity.x * 100f) / 100f,
+        Mathf.Round(velocity.y * 100f) / 100f,
+        Mathf.Round(velocity.z * 100f) / 100f
+        );
+
+        context.Velocity = roundedVelocity;
+
         Owner.Controller.Move(moveDelta);
         Owner.transform.rotation = rotDelta * Owner.transform.rotation;
     }
@@ -59,7 +73,7 @@ public class AIStateMachine : MonoBehaviour
     {
         foreach (AIDecision decision in currentState.Decisions)
         {
-            string targetState = decision.ValidState(StateContext.CombatContext);
+            string targetState = decision.ValidState(StateContext.CombatData);
 
             if (string.IsNullOrEmpty(targetState))
                 continue;

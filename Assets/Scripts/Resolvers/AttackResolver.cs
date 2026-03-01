@@ -1,6 +1,8 @@
 public class AttackResolver
 {
-    private ComboGraph comboGraph;
+    private readonly ComboGraph comboGraph;
+
+    public AttackResolver() { }
 
     public AttackResolver (ComboGraph comboGraph)
     {
@@ -29,7 +31,7 @@ public class AttackResolver
         return null;
     }
 
-    private bool IsValid(CharacterContext ctx, ComboNode targetNode)
+    public bool IsValid(CharacterContext ctx, ComboNode targetNode)
     {
         if (targetNode.requiresGround && !ctx.isGrounded)
             return false;

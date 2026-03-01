@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c7d56ca324e44249a1da548ef331a2b, type: 3}
   m_Name: Test_HeavyHoldAttack_Start
   m_EditorClassIdentifier: Assembly-CSharp::ComboNode
-  input: 3
+  input: 4
   motionPolicy: 1
   rotationPolicy: 1
+  attackProfile: {fileID: 0}
   animMotionSpeed:
     serializedVersion: 2
     m_Curve:
@@ -45,6 +46,9 @@ MonoBehaviour:
   comboWindow:
     startTime: 0.4
     endTime: 1
+  attackWindow:
+    startTime: 0.2
+    endTime: 1
   cancelWindow:
     startTime: 0.45
     endTime: 1
@@ -54,14 +58,23 @@ MonoBehaviour:
   moveWindow:
     startTime: 0.29
     endTime: 0.35
+  attackTurnSpeed: 6
+  turnInfluence:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   forwardAttackForce: 25
   upwardAttackForce: 0
-  requiresGround: 1
+  requiresGround: 0
   requiresAir: 0
   requiresSprint: 0
   requiresDash: 0
+  amplitude: 0.05
+  frequency: 2.5
   transitions:
-  - attackInput: 1
+  - attackInput: 2
     targetNode: {fileID: 11400000, guid: 7a83d766ebf4e32429f957c36612953a, type: 2}
-  - attackInput: 0
+  - attackInput: 1
     targetNode: {fileID: 11400000, guid: d575d9b9c4a746047b7ad7c80aae75f8, type: 2}

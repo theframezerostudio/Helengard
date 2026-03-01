@@ -20,6 +20,8 @@ public class PlayerRecoveryState : PlayerState
 
         player.PlayAnim(actionData.animState, 0.1f);
 
+        character.Context.dataAggregator.SetInRecovery(true);
+
         inputManager.onJump += HandleJump;
     }
 
@@ -55,6 +57,8 @@ public class PlayerRecoveryState : PlayerState
     public override void Exit()
     {
         base.Exit();
+
+        character.Context.dataAggregator.SetInRecovery(false);
 
         inputManager.onJump -= HandleJump;
     }

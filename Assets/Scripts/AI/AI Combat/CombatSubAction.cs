@@ -1,27 +1,41 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class CombatSubAction : MonoBehaviour
 {
-    public string label;
+    [field: SerializeField] public string Label { get; protected set; }
+    public bool useLock;
 
-    [Range(0, 10)] public float baseScore = 1f;
+    protected Character owner;
 
-    public List<Condition> conditions;
+    protected StateContext stateContext;
+    protected AICombatData combatData;
+    protected AICombatMemory combatMemory;
 
-    public virtual float Evaluate(AICombatContext combatContext)
+    protected float stateTimer;
+
+    public void Initialize(Character owner, StateContext context)
     {
-        float score = baseScore;
+        this.owner = owner;
 
-        foreach (var c in conditions)
-        {
-            if (!c.Evaluate(combatContext))
-                score *= 0.25f;
-        }
-        return score;
+        stateContext = context;
+        combatData = context.CombatData;
+        combatMemory = context.CombatMemory;
     }
 
-    public abstract void Enter(Character owner, AICombatContext context);
-    public abstract void Tick();
-    public abstract void Exit();
+    public virtual void Enter()
+    {
+        stateTimer = 0f;
+    }
+
+    public virtual void Tick()
+    {
+        stateTimer += Time.deltaTime;
+    }
+
+    public virtual void Exit() 
+    {
+        stateTimer = 0f;
+    }
+
+    public abstract float Evaluate(CombatPersona persona);
 }

@@ -15,6 +15,8 @@ public class PlayerGuardState : PlayerGroundedState
         player.PlayAnim("Guard", 0.1f);
         stateTimer = Time.time;
 
+        player.Context.dataAggregator.SetDefending(true);
+
         isPerfectGuarding = true;
         player.Context.isPerfectGuarding = true;
     }
@@ -37,6 +39,8 @@ public class PlayerGuardState : PlayerGroundedState
     public override void Exit()
     {
         base.Exit();
+
+        player.Context.dataAggregator.SetDefending(false);
         player.Context.isPerfectGuarding = false;
     }
 }

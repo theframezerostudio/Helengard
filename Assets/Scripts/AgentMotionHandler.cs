@@ -17,6 +17,16 @@ public class AgentMotionHandler : MonoBehaviour
         agent.updateUpAxis = false;
     }
 
+    public void SetDestination(Vector3 destination)
+    {
+        agent.SetDestination(destination);
+    }
+
+    public void SetStoppingDistance(float dist)
+    {
+        agent.stoppingDistance = dist;
+    }
+
     public Vector2 GetMoveIntent()
     {
         if (!agent.hasPath || agent.remainingDistance <= agent.stoppingDistance)

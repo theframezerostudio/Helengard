@@ -1,47 +1,166 @@
+using UnityEngine;
+
+/// <summary>
+/// Calculates score for different attack types inside AttackSubState.
+/// Utility-based, persona-driven, memory-aware.
+/// </summary>
 public class AttackScoreCalculator
 {
-    public float Light(AICombatContext ctx)
+    private AttackPersona persona;
+
+    public AttackScoreCalculator(AttackPersona persona)
     {
-        return (ctx.PlayerIsAttacking * 0.7f) +
-            (ctx.AIUnderPressure * 0.5f) +
-            (CalculateIntents(ctx).defensive * 0.6f) +
-            ((1 - ctx.DistanceNormalized) * 0.8f) +
-            (ctx.AIStaminaNormalized * 0.4f);
+        this.persona = persona;
     }
 
-    public float Heavy(AICombatContext ctx)
-    {
-        float riskPenalty = ctx.AIHealthNormalized < 0.3f ? 0.3f : 0;
+    // ============================================================
+    // LIGHT ATTACK
+    // ============================================================
 
-        return (ctx.PlayerIsOpen * 1.0f) +
-            (CalculateIntents(ctx).aggressive * 0.8f) +
-            ((1 - ctx.AIUnderPressure) * 0.7f) +
-            (ctx.DistanceNormalized * 0.4f) -
+    public float Light(AICombatData data, AICombatMemory memory)
+    {
+        var intent = CalculateIntents(data);
+
+        float score =
+            (data.AIUnderPressure * persona.lightPressureBonus) +
+            (data.TargetIsRecovering * persona.lightRecoveryBonus) +
+            (data.IdealRangeScore * persona.lightRangeWeight) +
+            (data.AIStaminaNormalized * persona.lightStaminaWeight) +
+            (data.AIHasInitiative * persona.initiativeBonus) +
+            (GetFacingScore(data) * persona.facingBonus) +
+            (intent.defensive * 0.6f);
+
+        score += ApplyMemoryModifiers(memory);
+
+        score -= AirbornePenalty(data);
+
+        return Mathf.Max(0f, score);
+    }
+
+    // ============================================================
+    // HEAVY ATTACK
+    // ============================================================
+
+    public float Heavy(AICombatData data, AICombatMemory memory)
+    {
+        var intent = CalculateIntents(data);
+
+        float riskPenalty =
+            data.AIHealthNormalized < 0.3f
+            ? persona.heavyRiskPenaltyLowHP
+            : 0f;
+
+        float score =
+            (data.TargetIsOpen * persona.heavyOpenBonus) +
+            (data.TargetIsRecovering * persona.heavyRecoveryBonus) +
+            (intent.aggressive * 0.8f) +
+            ((1f - data.AIUnderPressure) * 0.6f) +
+            (data.IdealRangeScore * 0.6f) +
+            (data.AIHasInitiative * persona.initiativeBonus) +
+            (GetFacingScore(data) * persona.facingBonus) -
+            (data.AIUnderPressure * persona.heavyUnderPressurePenalty) -
             riskPenalty;
+
+        score += ApplyMemoryModifiers(memory);
+
+        score -= AirbornePenalty(data);
+
+        return Mathf.Max(0f, score);
     }
 
-    public float LightHold(AICombatContext ctx)
+    // ============================================================
+    // LIGHT HOLD
+    // ============================================================
+
+    public float LightHold(AICombatData data, AICombatMemory memory)
     {
-        return (ctx.PlayerIsBlocking * 0.9f) +
-            (CalculateIntents(ctx).aggressive * 0.7f) +
-            (ctx.PlayerIsOpen * 0.5f) +
-            (ctx.AIStaminaNormalized * 0.4f);
+        var intent = CalculateIntents(data);
+
+        float score =
+            (data.TargetIsBlocking * 0.9f) +
+            (intent.aggressive * persona.holdAggressionWeight) +
+            (data.TargetIsOpen * 0.5f) +
+            (data.AIStaminaNormalized * 0.5f) +
+            (data.IdealRangeScore * 0.6f) +
+            (data.AIHasInitiative * persona.initiativeBonus) +
+            (GetFacingScore(data) * persona.facingBonus);
+
+        score += ApplyMemoryModifiers(memory);
+
+        score -= AirbornePenalty(data);
+
+        return Mathf.Max(0f, score);
     }
 
-    public float HeavyHold(AICombatContext ctx)
+    // ============================================================
+    // HEAVY HOLD
+    // ============================================================
+
+    public float HeavyHold(AICombatData data, AICombatMemory memory)
     {
-        return (ctx.PlayerIsOpen * 1.0f) +
-            (CalculateIntents(ctx).aggressive * 0.9f) +
-            (ctx.AIStaminaNormalized * 0.7f) -
-            (ctx.AIUnderPressure * 0.8f);
+        var intent = CalculateIntents(data);
+
+        float score =
+            (data.TargetIsOpen * 1.2f) +
+            (data.TargetIsRecovering * 1.5f) +
+            (intent.aggressive * persona.holdAggressionWeight) +
+            (data.AIStaminaNormalized * 0.7f) -
+            (data.AIUnderPressure * persona.heavyUnderPressurePenalty) +
+            (GetFacingScore(data) * persona.facingBonus);
+
+        score += ApplyMemoryModifiers(memory);
+
+        score -= AirbornePenalty(data);
+
+        return Mathf.Max(0f, score);
     }
 
-    public (float aggressive, float defensive, float opportunistic) CalculateIntents(AICombatContext ctx)
+    // ============================================================
+    // INTENT MODEL
+    // ============================================================
+
+    private (float aggressive, float defensive, float opportunistic)
+        CalculateIntents(AICombatData data)
     {
-        float aggressive = ctx.AIStaminaNormalized * (1 - ctx.AIUnderPressure);
-        float defensive = ctx.AIUnderPressure * (1 - ctx.AIStaminaNormalized);
-        float opportunistic = ctx.PlayerIsOpen;
+        float aggressive =
+            data.AIStaminaNormalized *
+            (1f - data.AIUnderPressure);
+
+        float defensive =
+            data.AIUnderPressure *
+            (1f - data.AIStaminaNormalized);
+
+        float opportunistic =
+            data.TargetVulnerableWindow *
+            data.IdealRangeScore;
 
         return (aggressive, defensive, opportunistic);
+    }
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+
+    private float GetFacingScore(AICombatData data)
+    {
+        // FacingAlignment is -1 (behind target) to 1 (in front)
+        return Mathf.Clamp01((data.FacingAlignment + 1f) * 0.5f);
+    }
+
+    private float AirbornePenalty(AICombatData data)
+    {
+        return data.AIIsAirborne > 0.5f
+            ? persona.airbornePenalty
+            : 0f;
+    }
+
+    private float ApplyMemoryModifiers(AICombatMemory memory)
+    {
+        float score = 0f;
+
+        score -= memory.ConsecutiveMissedAttacks * persona.missPenalty;
+        score += memory.ConsecutiveSuccessfulAttacks * persona.successMomentumBonus;
+
+        return score;
     }
 }

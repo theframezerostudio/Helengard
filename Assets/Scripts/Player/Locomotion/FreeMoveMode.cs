@@ -37,7 +37,8 @@ public class FreeMoveMode : LocomotionMode
         currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, player.acceleration * dt);
         //currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref velocityHelper, 0.2f);
         motion.AddExtraDelta(currentVelocity * dt);
-
+        
+        //Debug.Log($"Current Velocity: {currentVelocity}");
         player.Context.Velocity = currentVelocity;
     }
 
@@ -60,6 +61,7 @@ public class FreeMoveMode : LocomotionMode
         Vector3 smoothTarget = Vector3.Lerp(currentVelocity, targetVelocity, alpha);
 
         currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, player.acceleration * dt);
+        //player.Context.Velocity = currentVelocity;
 
         motion.AddExtraDelta(currentVelocity * dt);
     }

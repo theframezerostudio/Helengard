@@ -70,10 +70,11 @@ public class Player : Character
         verticalVelocity = groundSnapForce;
     }
 
-    private void Update()
+    protected override void Update()
     {
-        float vv = ApplyGravity(Time.deltaTime);
+        base.Update();
 
+        float vv = ApplyGravity(Time.deltaTime);
         LocomotionMode.AddImpulse(Vector3.up, vv);
     }
 

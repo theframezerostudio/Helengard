@@ -79,7 +79,10 @@ public class PlayerAttackState : PlayerState
         comboAttempted = false;
         animNormalizedTime = 0f;
         isAttacking = false;
-        
+
+        bool isLightAttack = node.input == AttackInput.Light || node.input == AttackInput.LightHold;
+        character.Context.dataAggregator.SetAttacking(true, isLightAttack);
+
         inputManager.onAttack += HandleAttack;
         character.CurrentWeapon.OnHit += HandleHit;
     }
@@ -154,6 +157,7 @@ public class PlayerAttackState : PlayerState
         if ((node.cancelWindow.IsValid(animNormalizedTime) && inputManager.MoveInput != Vector2.zero) || animNormalizedTime >= 1f)
         {
             SwitchToLocomotion();
+            character.Context.dataAggregator.SetAttacking(false);
         }
     }
 
@@ -163,6 +167,7 @@ public class PlayerAttackState : PlayerState
 
         if (node == null)
         {
+            character.Context.dataAggregator.SetAttacking(false);
             return;
         }
 

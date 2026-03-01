@@ -39,6 +39,11 @@ public abstract class Character : MonoBehaviour
         CheckGround();
     }
 
+    protected virtual void Update()
+    {
+        Context.dataAggregator.SetPosition(transform.position, transform.forward);
+    }
+
     protected float ApplyGravity(float dt)
     {
         if (!hasGravity)

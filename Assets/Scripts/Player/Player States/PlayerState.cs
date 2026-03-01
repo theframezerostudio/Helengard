@@ -6,12 +6,17 @@ public class PlayerState : BaseState
     protected readonly Player player;
     protected readonly Camera mainCamera;
     protected readonly InputManager inputManager;
+    //protected readonly CombatDataAggregator dataAggregator;
+
+    private CharacterContext context;
 
     public PlayerState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
         player = character as Player;
         mainCamera = Camera.main;
         inputManager = InputManager.Instance;
+        context = character.Context;
+        //dataAggregator = character.Context.dataAggregator;
     }
 
     public override void Enter()
@@ -26,12 +31,16 @@ public class PlayerState : BaseState
     public override void LateUpdate()
     {
         character.motionAccumulator.Consume(out Vector3 moveDelta, out Quaternion rotDelta);
+        
+        Vector3 velocity = moveDelta / Time.deltaTime;
 
-        float dt = Time.deltaTime;
-        if (dt > 0f)
-        {
-            player.Context.Velocity = moveDelta / dt;
-        }
+        Vector3 roundedVelocity = new Vector3(
+        Mathf.Round(velocity.x * 100f) / 100f,
+        Mathf.Round(velocity.y * 100f) / 100f,
+        Mathf.Round(velocity.z * 100f) / 100f
+        );
+
+        context.Velocity = roundedVelocity;
 
         player.DeltaMove(moveDelta);
         player.DeltaRotate(rotDelta);
