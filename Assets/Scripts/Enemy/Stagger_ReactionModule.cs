@@ -60,6 +60,7 @@ public class Stagger_ReactionModule : ReactionModule
 
         Vector3 frameForce = forcePerSecond * deltaTime;
         motor.AddPositionDelta(frameForce);
+
         if (timer >= totalDuration)
         {
             IsFinished = true;

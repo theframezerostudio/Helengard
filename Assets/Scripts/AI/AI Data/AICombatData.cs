@@ -1,15 +1,18 @@
+using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
 public class AICombatData
 {
+    public Target Target;
+
     // =========================
     // SNAPSHOT REFERENCES
     // =========================
     public CombatSnapshot AISnapshot { get; private set; }
     public CombatSnapshot TargetSnapshot { get; private set; }
-
-    public Target Target;
 
     // =========================
     // SPATIAL DATA (Normalized)
@@ -60,6 +63,8 @@ public class AICombatData
     // =========================
     public float MaxCombatRange = 6f;
     public float IdealCombatRangeRatio = 0.7f;
+
+    private Coroutine resetHitCoroutine;
 
     // ==============================================================
     // BUILD

@@ -1,29 +1,30 @@
 using UnityEngine;
 using System;
 
-public class DamageReciever : MonoBehaviour, IDamageable
+[Obsolete("Damage Reciever is deprecated. Use Target and ReactionController instead.")]
+public class DamageReciever : MonoBehaviour
 {
-    [SerializeField] private float health = 100f;
-    [SerializeField] private ReactionController reactionController;
+    //[SerializeField] private float health = 100f;
+    //[SerializeField] private ReactionController reactionController;
     
-    public Action onDamageRecieved;
+    //public Action<DamageEvent> onDamageRecieved;
 
-    public bool IsAlive => health > 0;
+    //public bool IsAlive => health > 0;
 
-    public void TakeDamage(DamageEvent ev)
-    {
-        if (!IsAlive) return;
-        if (!CanBeHit(ev)) return;
+    //public void TakeDamage(DamageEvent ev)
+    //{
+    //    if (!IsAlive) return;
+    //    if (!CanBeHit(ev)) return;
 
-        health -= ev.Damage;
-        onDamageRecieved?.Invoke();
+    //    health -= ev.Damage;
+    //    onDamageRecieved?.Invoke(ev);
 
-        if (reactionController)
-            reactionController.OnDamageReceived(ev);
-    }
+    //    //if (reactionController)
+    //    //    reactionController.OnDamageReceived(ev);
+    //}
 
-    bool CanBeHit(DamageEvent ev)
-    {
-        return true;
-    }
+    //bool CanBeHit(DamageEvent ev)
+    //{
+    //    return true;
+    //}
 }

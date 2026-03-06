@@ -5,6 +5,8 @@ public class StateContext : MonoBehaviour
 {
     [field: SerializeField] public NavMeshAgent Agent { get; private set; }
     [field: SerializeField] public AgentMotionHandler MotionHandler { get; private set; }
+    
+    public AIState State { get; private set; }
     public AICombatData CombatData { get; private set; }
     public AICombatMemory CombatMemory { get; private set; } 
 
@@ -15,5 +17,10 @@ public class StateContext : MonoBehaviour
     {
         CombatData = new AICombatData();
         CombatMemory = new AICombatMemory();
+    }
+
+    public void SetState(AIState state)
+    {
+        State = state;
     }
 }

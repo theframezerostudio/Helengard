@@ -1,32 +1,38 @@
 using System;
 using UnityEngine;
 
-public class Target : MonoBehaviour
+public class Target : MonoBehaviour, IDamageable
 {
-    [SerializeField] private DamageReciever damageReciever;
-
     [Tooltip("Character Context of Character, if applicable")]
     [field: SerializeField] public CharacterContext Context { get; private set; }
 
-    private void Start()
-    {
-        if (damageReciever == null)
-        {
-            Debug.LogWarning("DamageReciever not assigned on Target", this);
-            return;
-        }
+    // TODO: Update isAlive logic to be based on health or other conditions as needed
+    public bool IsAlive => true;
 
-        damageReciever.onDamageRecieved += HandleDamageRecieved;
+    public event Action<DamageEvent> onHit;
+
+    private DamageEvent damageEvent = null;
+    private float lastHitTime;
+    private readonly float hitMemoryDuration = 0.5f;
+
+    public void TakeDamage(DamageEvent damageEvent)
+    {
+        onHit?.Invoke(damageEvent);
+        RegisterHit(damageEvent);
+        Context.dataAggregator.MarkAsTargetted();
     }
 
-    private void HandleDamageRecieved()
+    public void RegisterHit(DamageEvent ev)
     {
-         Context.dataAggregator.MarkAsTargetted();
+        damageEvent = ev;
+        lastHitTime = Time.time;
     }
 
-    private void OnDestroy()
+    public DamageEvent GetRecentHit()
     {
-        if (damageReciever != null)
-            damageReciever.onDamageRecieved -= HandleDamageRecieved;
+        if (Time.time - lastHitTime <= hitMemoryDuration)
+            return damageEvent;
+
+        return null;
     }
 }

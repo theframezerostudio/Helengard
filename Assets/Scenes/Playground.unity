@@ -2129,6 +2129,8 @@ GameObject:
   - component: {fileID: 356122264}
   - component: {fileID: 356122256}
   - component: {fileID: 356122261}
+  - component: {fileID: 356122267}
+  - component: {fileID: 356122268}
   m_Layer: 8
   m_Name: State Machine
   m_TagString: Untagged
@@ -2225,6 +2227,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AIStateMachine
   Owner: {fileID: 1964950895}
   StateContext: {fileID: 356122259}
+  transitionCheckInterval: 0.1
+  globalDecisions:
+  - condition: {fileID: 356122268}
+    TrueState: Hit
+    FalseState: 
   states:
   - <Label>k__BackingField: Idle
     animName: Movement
@@ -2234,6 +2241,7 @@ MonoBehaviour:
     - condition: {fileID: 356122256}
       TrueState: Patrol
       FalseState: 
+    lockCount: 0
   - <Label>k__BackingField: Patrol
     animName: 
     <Actions>k__BackingField:
@@ -2242,6 +2250,7 @@ MonoBehaviour:
     - condition: {fileID: 356122261}
       TrueState: Attack
       FalseState: 
+    lockCount: 0
   - <Label>k__BackingField: Attack
     animName: 
     <Actions>k__BackingField:
@@ -2250,11 +2259,22 @@ MonoBehaviour:
     - condition: {fileID: 356122256}
       TrueState: 
       FalseState: Idle
+    lockCount: 0
+  - <Label>k__BackingField: Hit
+    animName: 
+    <Actions>k__BackingField:
+    - {fileID: 356122267}
+    <Decisions>k__BackingField:
+    - condition: {fileID: 356122261}
+      TrueState: Attack
+      FalseState: Idle
+    lockCount: 0
   currentState:
     <Label>k__BackingField: 
     animName: 
     <Actions>k__BackingField: []
     <Decisions>k__BackingField: []
+    lockCount: 0
 --- !u!114 &356122261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2288,7 +2308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9be81d21ee7104ca0ad8bf780a6e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Attack_CombatAction
-  <Label>k__BackingField: 
+  <Label>k__BackingField: Attack combat
   useLock: 0
   attackPersona: {fileID: 11400000, guid: 3028bdae6588bf042bb38511a2a40e9c, type: 2}
   combatDecision:
@@ -2361,7 +2381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344a2c22a0c5433489f200d5984c6cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dodge_CombatAction
-  <Label>k__BackingField: 
+  <Label>k__BackingField: Dodge Combat
   useLock: 0
 --- !u!114 &356122265
 MonoBehaviour:
@@ -2375,7 +2395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1ad43c0e1afc34d99d37b62ac2724f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Defense_CombatAction
-  <Label>k__BackingField: 
+  <Label>k__BackingField: Defense Combat
   useLock: 0
 --- !u!114 &356122266
 MonoBehaviour:
@@ -2389,8 +2409,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4e75e04798b2734090b5e3fc38813a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Recovery_CombatAction
-  <Label>k__BackingField: 
+  <Label>k__BackingField: Recovery Combat
   useLock: 0
+--- !u!114 &356122267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356122254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7acd33c13f655af43a96105c74a2f77d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitReact_AIAction
+  target: {fileID: 1964950900}
+  reactionController: {fileID: 1418209927}
+--- !u!114 &356122268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356122254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9fada8d009ca5b47828a178d395eca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetHit_Condition
+  <Label>k__BackingField: Hit Condition
+  requiredHits: 1
+  hitResetTime: 1
+  target: {fileID: 1964950900}
+  currHits: 0
 --- !u!1 &356685522
 GameObject:
   m_ObjectHideFlags: 0
@@ -3611,6 +3662,7 @@ GameObject:
   - component: {fileID: 657877099}
   - component: {fileID: 657877097}
   - component: {fileID: 657877096}
+  - component: {fileID: 657877100}
   m_Layer: 8
   m_Name: New_Prototype
   m_TagString: Untagged
@@ -3697,6 +3749,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &657877100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657877095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d510a7255206341873b3e6b520b85a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatorFollower
+  hitLayerIndex: 1
 --- !u!1 &658340708
 GameObject:
   m_ObjectHideFlags: 0
@@ -8651,6 +8716,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1418209925}
+  - component: {fileID: 1418209927}
+  - component: {fileID: 1418209926}
   m_Layer: 8
   m_Name: Reaction Controller
   m_TagString: Untagged
@@ -8673,6 +8740,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1964950892}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1418209926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418209924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 684b7117256ab6946beeb0bd6e1c430d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stagger_ReactionModule
+  recoveryData: {fileID: 0}
+  defaultHitstun: 0.2
+  animatorFollower: {fileID: 657877100}
+--- !u!114 &1418209927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418209924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05ef0e498976c204ca1abc8c30e561f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReactionController
+  character: {fileID: 1964950895}
+  modules:
+  - {fileID: 1418209926}
 --- !u!1 &1420035759
 GameObject:
   m_ObjectHideFlags: 0
@@ -10348,7 +10445,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc8efd4a4dfc5a2409320f9a91cb51e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Target
-  damageReciever: {fileID: 1669870533}
   <Context>k__BackingField: {fileID: 1684997012}
 --- !u!114 &1669870533
 MonoBehaviour:
@@ -10362,8 +10458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec326d39f2b6592419a0af35e06fb791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDamageReceiver
-  health: 0
-  reactionController: {fileID: 0}
 --- !u!1 &1673860910
 GameObject:
   m_ObjectHideFlags: 0
@@ -13042,7 +13136,6 @@ GameObject:
   - component: {fileID: 1964950896}
   - component: {fileID: 1964950895}
   - component: {fileID: 1964950897}
-  - component: {fileID: 1964950899}
   - component: {fileID: 1964950900}
   m_Layer: 8
   m_Name: Modular AI Test
@@ -13164,20 +13257,6 @@ NavMeshAgent:
   m_BaseOffset: -0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1964950899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964950889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec326d39f2b6592419a0af35e06fb791, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AIDamageReceiver
-  health: 1e+10
-  reactionController: {fileID: 0}
 --- !u!114 &1964950900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13190,7 +13269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc8efd4a4dfc5a2409320f9a91cb51e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Target
-  damageReciever: {fileID: 1964950899}
   <Context>k__BackingField: {fileID: 678808418}
 --- !u!1 &1966055307
 GameObject:
@@ -13692,8 +13770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec326d39f2b6592419a0af35e06fb791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDamageReceiver
-  health: 10000
-  reactionController: {fileID: 2075069658}
 --- !u!114 &2075069658
 MonoBehaviour:
   m_ObjectHideFlags: 0

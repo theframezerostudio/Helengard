@@ -13,12 +13,13 @@ public class CombatScheduler_AIAction : AIAction
     [SerializeField, ReadOnly] private AICombatData combatData;
 
     private AICombatMemory memory;
-    
     private Target target;
 
     private CombatSnapshot targetCombat;
     private CombatSnapshot selfCombat;
-    
+
+    private Coroutine evaluationRoutine = null;
+
     private bool falseTarget = false;
     private bool isActive = false;
     private bool hasInitialized = false;
@@ -48,7 +49,14 @@ public class CombatScheduler_AIAction : AIAction
         }
 
         isActive = true;
-        StartCoroutine(StateEvaluation());
+
+        if (evaluationRoutine != null)
+        {
+            StopCoroutine(evaluationRoutine);
+            evaluationRoutine = null;
+        }
+
+        evaluationRoutine = StartCoroutine(StateEvaluation());
         //combatData.Build(selfCombat, targetCombat);
     }
 
@@ -69,6 +77,12 @@ public class CombatScheduler_AIAction : AIAction
     public override void Exit()
     {
         current?.Exit();
+
+        if (evaluationRoutine != null)
+        {
+            StopCoroutine(evaluationRoutine);
+            evaluationRoutine = null;
+        }
 
         memory.ResetAll();
 
@@ -105,6 +119,8 @@ public class CombatScheduler_AIAction : AIAction
 
             yield return new WaitForSeconds(0.1f);
         }
+
+        evaluationRoutine = null;
     }
 
     private CombatSubAction ChooseBestAction()

@@ -160,6 +160,8 @@ public class Attack_CombatAction : CombatSubAction
     private void OnWeaponHit(DamageEvent ev)
     {
         attackSuccessful = true;
+        
+        owner.Context.dataAggregator.SetAttackStatus(true);
         combatMemory.AttackConnected();
     }
 

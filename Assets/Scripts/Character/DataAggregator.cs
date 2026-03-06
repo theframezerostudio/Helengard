@@ -22,6 +22,8 @@ public struct CombatSnapshot
     public bool isDefending;
     public bool isInRecovery;
 
+    public bool attackConnected;
+
     public float lastTimeAttacked;
     public float timeInAttackState;
 }
@@ -116,6 +118,12 @@ public class DataAggregator
         {
             ScheduleAttackReset();
         }
+    }
+
+    public void SetAttackStatus(bool attackConnection)
+    {
+        snapshot.attackConnected = attackConnection;
+        MarkDirty();
     }
 
     private void StartAttack(bool isLight)

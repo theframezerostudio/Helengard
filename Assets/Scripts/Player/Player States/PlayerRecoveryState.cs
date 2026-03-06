@@ -18,7 +18,7 @@ public class PlayerRecoveryState : PlayerState
 
         stateTimer = 0;
 
-        player.PlayAnim(actionData.animState, 0.1f);
+        character.PlayAnim(actionData.animState, 0.1f);
 
         character.Context.dataAggregator.SetInRecovery(true);
 

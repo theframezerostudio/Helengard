@@ -8,8 +8,13 @@ public class AIState
     [field: SerializeField] public AIAction[] Actions { get; private set; }
     [field: SerializeField] public AIDecision[] Decisions {  get; private set; }
 
+    [SerializeField, ReadOnly] private int lockCount;
+    public bool IsLocked => lockCount > 0;
+
     public void Enter(Character Owner, StateContext stateContext)
     {
+        lockCount = 0;
+
         if (!string.IsNullOrEmpty(animName))
         {
             Owner.PlayAnim(animName);
@@ -36,4 +41,13 @@ public class AIState
             action.Exit();
         }
     }
+
+    public void Lock()
+    {
+        lockCount++;
+        Debug.Log($"State {Label} locked. Lock count: {lockCount}");
+    }
+
+    public void Unlock() => lockCount = Mathf.Max(0, lockCount - 1);
+
 }

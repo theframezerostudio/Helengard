@@ -96,7 +96,6 @@ public class Hitbox : MonoBehaviour
             catch (Exception e)
             {
                 Debug.LogException(e);
-                Debug.Log((profile == null) + " " + col == null);
             }
             //damageable.TakeDamage(damageEvent);
         }

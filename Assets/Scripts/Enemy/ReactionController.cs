@@ -10,12 +10,11 @@ public class ReactionController : MonoBehaviour
     private ReactionModule active;
     private ReactionContext ctx;
 
-    private Queue<DamageEvent> queue = new();
+    private readonly Queue<DamageEvent> queue = new();
+    public bool IsReacting => (active != null && !active.IsFinished);
 
-    private void Awake()
+    private void Start()
     {
-        character = GetComponent<Character>();
-
         Animator animator = character.Animator;
         ReactionMotionAdapter motion = new (character);
 
@@ -48,7 +47,8 @@ public class ReactionController : MonoBehaviour
         }
     }
 
-    public void OnDamageReceived(DamageEvent ev)
+
+    public void HandleHit(DamageEvent ev)
     {
         TryStart(ev);
     }

@@ -24,7 +24,15 @@ public class TargetInRange_Condition : Condition
         colliders = new Collider[5];
     }
 
-    public override bool Evaluate(AICombatData combatContext)
+    public override void Initialize(Character owner, AICombatData combatData)
+    {
+        base.Initialize(owner, combatData);
+
+        wasInRange = false;
+        currentTarget = null;
+    }
+
+    public override bool Evaluate()
     {
         Vector3 center = transform.position + offset;
 
@@ -54,7 +62,7 @@ public class TargetInRange_Condition : Condition
                 if (currentTarget == null)
                     return false;
 
-                combatContext.Target = currentTarget;
+                CombatData.Target = currentTarget;
                 wasInRange = true;
                 return true;
             }
@@ -77,7 +85,7 @@ public class TargetInRange_Condition : Condition
             return false;
         }
 
-        combatContext.Target = currentTarget;
+        CombatData.Target = currentTarget;
         return true;
     }
 

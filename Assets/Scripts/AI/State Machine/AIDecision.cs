@@ -6,9 +6,14 @@ public class AIDecision
     public string TrueState = "";
     public string FalseState = "";
 
-    public string ValidState(AICombatData combatContext)
+    public void Initialize(Character owner, AICombatData combatData)
     {
-        if (condition.Evaluate(combatContext))
+        condition.Initialize(owner, combatData);
+    }
+
+    public string ValidState()
+    {
+        if (condition.Evaluate())
             return TrueState;
 
         return FalseState;
