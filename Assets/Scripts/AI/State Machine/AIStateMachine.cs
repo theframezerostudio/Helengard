@@ -144,7 +144,6 @@ public class AIStateMachine : MonoBehaviour
             if (!statesDict.TryGetValue(targetState, out int index))
                 continue;
 
-            Debug.Log(currentState.Label + " is valid with decision " + decision.condition);
             TransitionToState(states[index]);
             return true;
         }
@@ -164,7 +163,6 @@ public class AIStateMachine : MonoBehaviour
             if (!statesDict.TryGetValue(targetState, out int index))
                 continue;
 
-            Debug.Log("Global decision " + decision.condition + " is valid, transitioning to " + targetState);
             TransitionToState(states[index]);
             return true;
         }

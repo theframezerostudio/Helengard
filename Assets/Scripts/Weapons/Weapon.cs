@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
 
     public Action<DamageEvent> OnHit;
     public FeedbackPlayer feedbackPlayer;
+    public LayerMask attackLayer;
 
     public AttackResolver AttackResolver {  get; private set; }
 
@@ -20,6 +21,7 @@ public class Weapon : MonoBehaviour
     {
         foreach (var hitbox in hitboxes)
         {
+            hitbox.Initialize(attackLayer);
             hitbox.OnHit += HandleHit;
         }
     }

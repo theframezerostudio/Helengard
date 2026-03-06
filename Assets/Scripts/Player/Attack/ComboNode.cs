@@ -33,22 +33,31 @@ public class ComboNode : ScriptableObject
     public RotationMotionPolicy rotationPolicy;
     public AttackProfile attackProfile;
 
+    [Space]
+
     public AnimationCurve animMotionSpeed = AnimationCurve.Linear(0f, 1f, 1f, 1f);
     public string animationStateName;
     public AnimationClip animClip;
     public float transitionTime;
 
+    [Space]
+    [Header("Frame Windows")]
     public FrameWindow comboWindow;
     public FrameWindow attackWindow;
     public FrameWindow cancelWindow;
     public FrameWindow invincibleWindow;
     public FrameWindow moveWindow;
 
+    [Space]
+
     public float attackTurnSpeed = 6f;          
     public AnimationCurve turnInfluence;        
 
     public float forwardAttackForce;
     public float upwardAttackForce;
+    public float attackRange;
+
+    [Space(25)]
 
     //public bool hasInputMotion;
     public bool requiresGround;

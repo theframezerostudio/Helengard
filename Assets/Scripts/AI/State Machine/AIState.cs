@@ -45,7 +45,6 @@ public class AIState
     public void Lock()
     {
         lockCount++;
-        Debug.Log($"State {Label} locked. Lock count: {lockCount}");
     }
 
     public void Unlock() => lockCount = Mathf.Max(0, lockCount - 1);

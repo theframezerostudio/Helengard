@@ -27,7 +27,6 @@ public class HitReact_AIAction : AIAction
     {
         if (isLocked && !reactionController.IsReacting)
         {
-            print("Unlocking state from HitReact_AIAction");
             isLocked = false;
             context.State.Unlock();
         }

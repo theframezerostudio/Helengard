@@ -30,6 +30,11 @@ public class Hitbox : MonoBehaviour
 
     public Action<HitData> OnHit;
 
+    public void Initialize(LayerMask hitLayer)
+    {
+        hurtboxMask = hitLayer;
+    }
+
     public void InitiateHit(AttackProfile attackProfile)
     {
         profile = attackProfile;

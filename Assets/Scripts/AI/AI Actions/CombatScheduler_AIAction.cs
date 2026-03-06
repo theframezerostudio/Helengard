@@ -111,7 +111,6 @@ public class CombatScheduler_AIAction : AIAction
             if (next != current)
             {
                 current?.Exit();
-                Debug.Log($"Switching to {next.Label}");
                 memory.OnStateChanged(next);
                 next.Enter();
                 current = next;

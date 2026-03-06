@@ -19,6 +19,8 @@ public class PlayerAttackState : PlayerState
     private bool isAttacking = false;
     private bool comboAttempted = false;
 
+    private Transform motionWarpTarget;
+
     public PlayerAttackState(StateMachine stateMachine, Character character, AttackInput attackInput) : base(stateMachine, character)
     {
         this.attackInput = attackInput;
@@ -83,6 +85,11 @@ public class PlayerAttackState : PlayerState
         bool isLightAttack = node.input == AttackInput.Light || node.input == AttackInput.LightHold;
         character.Context.dataAggregator.SetAttacking(true, isLightAttack);
 
+        motionWarpTarget = TargetResolver.ResolveTarget(player, inputManager.MoveInput, node.attackRange,
+            character.CurrentWeapon.attackLayer);
+
+        ApplyMotionWarpDash();
+
         inputManager.onAttack += HandleAttack;
         character.CurrentWeapon.OnHit += HandleHit;
     }
@@ -108,7 +115,23 @@ public class PlayerAttackState : PlayerState
             float t = Mathf.InverseLerp(node.moveWindow.startTime, node.moveWindow.endTime, animNormalizedTime);
             float motionAlpha = node.animMotionSpeed.Evaluate(t);
 
-            Vector3 direction = movement == Vector2.zero ? player.transform.forward : player.LocomotionMode.GetDirection(movement);
+            //Vector3 direction = movement == Vector2.zero ? player.transform.forward : player.LocomotionMode.GetDirection(movement);
+            Vector3 direction;
+
+            if (motionWarpTarget != null)
+            {
+                direction = motionWarpTarget.position - player.transform.position;
+                direction.y = 0;
+            }
+            else
+            {
+                direction = movement == Vector2.zero
+                    ? player.transform.forward
+                    : player.LocomotionMode.GetDirection(movement);
+            }
+
+            direction.Normalize();
+
             direction.Normalize();
 
             float forwardDelta = (node.forwardAttackForce * motionAlpha) * Time.deltaTime;
@@ -117,7 +140,9 @@ public class PlayerAttackState : PlayerState
             player.LocomotionMode.AddImpulse(direction, forwardDelta);
             player.LocomotionMode.AddImpulse(player.transform.up, upwardDelta);
             //player.LocomotionMode.Rotate(smoothedMovement);
-            SmoothRotate(smoothedMovement);
+
+            RotateToTarget();
+            //SmoothRotate(smoothedMovement);
         }
 
         // Handle air attack hover float
@@ -194,15 +219,30 @@ public class PlayerAttackState : PlayerState
 
     private void HandleHit(DamageEvent ev)
     {
-        // TODO: Add a short cooldown timer to prevent multiple hits from the same attack from applying multiple rotations
+        // TODO: Remove
+    }
 
-        Vector3 attackDirection = ev.Defender.position - character.transform.position; 
-        attackDirection.y = 0;
+    private void ApplyMotionWarpDash()
+    {
+        if (motionWarpTarget == null) return;
 
-        Quaternion lookDirection = Quaternion.LookRotation(attackDirection);
-        Quaternion delta = lookDirection * Quaternion.Inverse(character.transform.rotation);
+        Vector3 toTarget = motionWarpTarget.position - player.transform.position;
+        toTarget.y = 0;
 
-        player.motionAccumulator.AddRotation(delta);
+        float distance = toTarget.magnitude;
+
+        float idealRange = node.attackRange;
+        float warpRange = idealRange * 1.3f;
+
+        if (distance > idealRange && distance < warpRange)
+        {
+            float dash = distance - idealRange * 0.8f;
+
+            player.LocomotionMode.AddImpulse(
+                toTarget.normalized,
+                dash
+            );
+        }
     }
 
     private void ApplyHoverFloat()
@@ -234,6 +274,38 @@ public class PlayerAttackState : PlayerState
         }
 
         return node.animClip.length;
+    }
+
+    private void RotateToTarget()
+    {
+        Vector3 desiredDir;
+
+        if (motionWarpTarget != null)
+        {
+            desiredDir = motionWarpTarget.position - player.transform.position;
+            desiredDir.y = 0;
+        }
+        else if (smoothedMovement.sqrMagnitude > 0.01f)
+        {
+            desiredDir = player.LocomotionMode.GetDirection(smoothedMovement);
+        }
+        else
+        {
+            return;
+        }
+
+        desiredDir.Normalize();
+
+        Quaternion targetRot = Quaternion.LookRotation(desiredDir);
+
+        Quaternion newRot = Quaternion.RotateTowards(
+            player.transform.rotation,
+            targetRot,
+            node.attackTurnSpeed * Time.deltaTime * 60f
+        );
+
+        Quaternion delta = Quaternion.Inverse(player.transform.rotation) * newRot;
+        player.motionAccumulator.AddRotation(delta);
     }
 
     private void SmoothRotate(Vector2 input)
