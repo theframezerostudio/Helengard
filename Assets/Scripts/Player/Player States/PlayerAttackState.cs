@@ -91,7 +91,6 @@ public class PlayerAttackState : PlayerState
         ApplyMotionWarpDash();
 
         inputManager.onAttack += HandleAttack;
-        character.CurrentWeapon.OnHit += HandleHit;
     }
 
     public override void Update()
@@ -197,7 +196,6 @@ public class PlayerAttackState : PlayerState
         }
 
         inputManager.onAttack -= HandleAttack;
-        character.CurrentWeapon.OnHit -= HandleHit;
 
         //player.SetGravity(true);
         player.Context.GravityScale = 1f;
@@ -215,11 +213,6 @@ public class PlayerAttackState : PlayerState
             this.attackInput = attackInput;
             comboAttempted = true;
         }
-    }
-
-    private void HandleHit(DamageEvent ev)
-    {
-        // TODO: Remove
     }
 
     private void ApplyMotionWarpDash()
@@ -305,29 +298,6 @@ public class PlayerAttackState : PlayerState
         );
 
         Quaternion delta = Quaternion.Inverse(player.transform.rotation) * newRot;
-        player.motionAccumulator.AddRotation(delta);
-    }
-
-    private void SmoothRotate(Vector2 input)
-    {
-        if (input.sqrMagnitude < 0.01f)
-            return;
-
-        Vector3 desiredDir = player.LocomotionMode.GetDirection(input).normalized;
-
-        float influenceTime = Mathf.InverseLerp(node.moveWindow.startTime, node.moveWindow.endTime, animNormalizedTime);
-
-        float turnInfluence = node.turnInfluence.Evaluate(influenceTime);
-        float turnSpeed = node.attackTurnSpeed * turnInfluence;
-
-        Quaternion targetRotation = Quaternion.LookRotation(desiredDir);
-        Quaternion newRotation = Quaternion.RotateTowards(
-            player.transform.rotation,
-            targetRotation,
-            turnSpeed * Time.deltaTime * 60f
-        );
-
-        Quaternion delta = Quaternion.Inverse(player.transform.rotation) * newRotation;
         player.motionAccumulator.AddRotation(delta);
     }
 }

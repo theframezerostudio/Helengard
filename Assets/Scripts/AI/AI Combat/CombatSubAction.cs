@@ -3,7 +3,6 @@ using UnityEngine;
 public abstract class CombatSubAction : MonoBehaviour
 {
     [field: SerializeField] public string Label { get; protected set; }
-    public bool useLock;
 
     protected Character owner;
 

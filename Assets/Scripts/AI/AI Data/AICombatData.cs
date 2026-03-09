@@ -63,6 +63,7 @@ public class AICombatData
     // =========================
     public float MaxCombatRange = 6f;
     public float IdealCombatRangeRatio = 0.7f;
+    public float DesiredRange = 2f;
 
     private Coroutine resetHitCoroutine;
 

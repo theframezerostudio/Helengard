@@ -85,6 +85,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   forwardAttackForce: 0
   upwardAttackForce: 0
+  attackRange: 3
   requiresGround: 0
   requiresAir: 1
   requiresSprint: 0

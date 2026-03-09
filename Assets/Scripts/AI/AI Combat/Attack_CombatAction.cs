@@ -49,9 +49,11 @@ public class Attack_CombatAction : CombatSubAction
     {
         if (node == null)
             return;
-
+        Debug.Log("Csallef" + node.name);
         if (isAttacking)
             EndAttack();
+
+        combatData.DesiredRange = node.attackRange;
 
         // TODO: For debuuging only, remove later
         attackInput = node.input;
@@ -88,11 +90,11 @@ public class Attack_CombatAction : CombatSubAction
 
         if (node.moveWindow.IsValid(animNormalizedTime))
         {
-            // Impulse basecd on facing direction and move speed curve
+            // Impulse based on facing direction and move speed curve
         }
 
-        Quaternion deltaRot = motionHandler.GetRotationDelta();
-        owner.motionAccumulator.AddRotation(deltaRot);
+        //Quaternion deltaRot = motionHandler.GetRotationDelta();
+        //owner.motionAccumulator.AddRotation(deltaRot);
 
         if (node.attackWindow.IsValid(animNormalizedTime))
         {
@@ -114,12 +116,12 @@ public class Attack_CombatAction : CombatSubAction
 
             if (chainInput != AttackInput.None)
             {
+                Debug.Log(animNormalizedTime);
                 node = weapon.NextAttack(owner.Context, chainInput, node);
                 SetupAttack();
                 return;
             }
         }
-
 
         if (animNormalizedTime >= 1f)
         {
@@ -131,15 +133,6 @@ public class Attack_CombatAction : CombatSubAction
                 return;
             }
         }
-    }
-
-    private void EndAttack()
-    {
-        weapon.EndAttack();
-        isAttacking = false;
-
-        if (!attackSuccessful)
-            combatMemory.AttackMiised();
     }
 
     public override void Exit()
@@ -163,6 +156,15 @@ public class Attack_CombatAction : CombatSubAction
         
         owner.Context.dataAggregator.SetAttackStatus(true);
         combatMemory.AttackConnected();
+    }
+
+    private void EndAttack()
+    {
+        weapon.EndAttack();
+        isAttacking = false;
+
+        if (!attackSuccessful)
+            combatMemory.AttackMiised();
     }
 
     private float GetStateDuration()

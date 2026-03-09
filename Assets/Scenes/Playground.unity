@@ -2127,10 +2127,12 @@ GameObject:
   - component: {fileID: 356122266}
   - component: {fileID: 356122265}
   - component: {fileID: 356122264}
+  - component: {fileID: 356122270}
   - component: {fileID: 356122256}
   - component: {fileID: 356122261}
   - component: {fileID: 356122267}
   - component: {fileID: 356122268}
+  - component: {fileID: 356122269}
   m_Layer: 8
   m_Name: State Machine
   m_TagString: Untagged
@@ -2169,7 +2171,7 @@ MonoBehaviour:
   detectionLayer:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 4
+  detectionRange: 6
   threshold: 0
   offset: {x: 0, y: 0, z: 0}
   gizmoColor: {r: 1, g: 0.8431373, b: 0, a: 1}
@@ -2309,7 +2311,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Attack_CombatAction
   <Label>k__BackingField: Attack combat
-  useLock: 0
   attackPersona: {fileID: 11400000, guid: 3028bdae6588bf042bb38511a2a40e9c, type: 2}
   combatDecision:
     lightScore: 0
@@ -2334,6 +2335,7 @@ MonoBehaviour:
   - {fileID: 356122266}
   - {fileID: 356122265}
   - {fileID: 356122264}
+  - {fileID: 356122270}
   persona: {fileID: 11400000, guid: b80c9bfd8e6411545be8f40717ff3059, type: 2}
   current: {fileID: 0}
   combatData:
@@ -2365,6 +2367,7 @@ MonoBehaviour:
     ThreatLevel: 0
     MaxCombatRange: 6
     IdealCombatRangeRatio: 0.7
+    DesiredRange: 0
   attackScore: 0
   defenseScore: 0
   recoveryScore: 0
@@ -2382,7 +2385,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dodge_CombatAction
   <Label>k__BackingField: Dodge Combat
-  useLock: 0
 --- !u!114 &356122265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2396,7 +2398,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Defense_CombatAction
   <Label>k__BackingField: Defense Combat
-  useLock: 0
 --- !u!114 &356122266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2410,7 +2411,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Recovery_CombatAction
   <Label>k__BackingField: Recovery Combat
-  useLock: 0
 --- !u!114 &356122267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2442,6 +2442,35 @@ MonoBehaviour:
   hitResetTime: 1
   target: {fileID: 1964950900}
   currHits: 0
+--- !u!114 &356122269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356122254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e27b67555d6e0449d1e34571b0d008, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MaintainRange_AIAction
+  minRange: 3
+  maxRange: 5
+--- !u!114 &356122270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356122254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48936aca537ada4cb1ac6890c520588, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MaintainRange_CombatAction
+  <Label>k__BackingField: 
+  minRange: 0
+  maxRange: 0
 --- !u!1 &356685522
 GameObject:
   m_ObjectHideFlags: 0
@@ -13230,7 +13259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AgentMotionHandler
   agent: {fileID: 1964950898}
-  character: {fileID: 1964950895}
+  owner: {fileID: 1964950895}
 --- !u!195 &1964950898
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -13716,7 +13745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AgentMotionHandler
   agent: {fileID: 2075069653}
-  character: {fileID: 2075069652}
+  owner: {fileID: 0}
 --- !u!114 &2075069655
 MonoBehaviour:
   m_ObjectHideFlags: 0

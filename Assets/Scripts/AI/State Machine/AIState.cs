@@ -48,5 +48,4 @@ public class AIState
     }
 
     public void Unlock() => lockCount = Mathf.Max(0, lockCount - 1);
-
 }
