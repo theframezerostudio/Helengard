@@ -5,7 +5,8 @@ public class HitReact_AIAction : AIAction
 {
     [SerializeField] private Target target;
     [SerializeField] private ReactionController reactionController;
-    
+
+    private AgentMotionHandler motionHandler;
     private bool isLocked = false;
 
     public override void Enter(Character Owner, StateContext stateContext)
@@ -15,17 +16,22 @@ public class HitReact_AIAction : AIAction
         DamageEvent lastHit = target.GetRecentHit();
         OnHit(lastHit);
 
+        motionHandler = stateContext.MotionHandler;
+        motionHandler.rotationMode = RotationMode.FaceTarget;
+
         target.onHit += OnHit;
     }
 
     public override void Exit()
     {
         target.onHit -= OnHit;
+
+        motionHandler.rotationMode = RotationMode.FaceMovement;
     }
 
     public override void Tick()
     {
-        if (isLocked && !reactionController.IsReacting)
+        if (isLocked && !reactionController.IsCancellable)
         {
             isLocked = false;
             context.State.Unlock();

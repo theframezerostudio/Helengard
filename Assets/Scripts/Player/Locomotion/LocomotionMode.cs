@@ -19,6 +19,11 @@ public abstract class LocomotionMode
         motion.SetMotionData(movementPolicy, rotationPolicy, player.transform);
     }
 
+    public void RestoreLocomotion()
+    {
+        motion.RestoreMotionData();
+    }
+
     public abstract void Move(Vector3 dir, float movementSpeed);
     public abstract void Move(Vector2 input, float movementSpeed);
     public abstract void AddImpulse(Vector2 input, float distance);

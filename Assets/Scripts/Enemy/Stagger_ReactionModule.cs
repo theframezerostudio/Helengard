@@ -3,17 +3,27 @@ using UnityEngine;
 
 public class Stagger_ReactionModule : ReactionModule
 {
-    [SerializeField] private float defaultHitstun = 0.2f;
-
+    [Tooltip("Animator Follower of the Character")]
     [SerializeField] private AnimatorFollower animatorFollower;
-    public override ReactionPriority Priority => ReactionPriority.Low;
-    public override bool AllowChaining => true;
+    [Tooltip("Fallback if Reaction Duration could not be found")]
+    [SerializeField] private float defaultHitstun = 0.2f;
+    [Tooltip("Amplify incoming Hit Force")]
+    [SerializeField] private float forceMultiplier = 1f;
 
+    [Header("Impulse Info")]
+    [SerializeField] private float impulseDuration = 0.05f;
+    private float impulseTimer = 0f;
+    private Vector3 impulseVelocity;
     private Vector3 forcePerSecond;
 
+    [Header("Reaction Timings")]
     private ReactionMotionAdapter motor;
     private float timer = 0f;
     private float totalDuration = 0f;
+    private float normalizedTime = 0f;
+
+    public override ReactionPriority Priority => ReactionPriority.Low;
+    public override bool AllowChaining => true;
 
     public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
     {
@@ -48,7 +58,8 @@ public class Stagger_ReactionModule : ReactionModule
 
         if (totalDuration <= 0f) totalDuration = defaultHitstun;
 
-        forcePerSecond = ev.HitForce / totalDuration;
+        impulseVelocity = ev.HitForce * forceMultiplier;
+        impulseTimer = impulseDuration;
 
         ctx.Self.Suspend(totalDuration);
     }
@@ -56,22 +67,32 @@ public class Stagger_ReactionModule : ReactionModule
     public override void Tick(float deltaTime)
     {
         timer += deltaTime;
+
+        if (impulseTimer > 0f)
+        {
+            float dt = Mathf.Min(deltaTime, impulseTimer);
+            motor.AddPositionDelta(impulseVelocity * dt);
+            impulseTimer -= dt;
+        }
+
+        normalizedTime = timer / totalDuration;
+
+        if (normalizedTime > cancelTime)
+            CanBreak = true;
+
+        // Stop Execution temporarily until Total Duration is
+        // not identified by SuspendCharacterAsync
         if (totalDuration == 0) return;
 
-        Vector3 frameForce = forcePerSecond * deltaTime;
-        motor.AddPositionDelta(frameForce);
-
         if (timer >= totalDuration)
-        {
             IsFinished = true;
-        }
     }
 
     public override void Exit(ReactionContext ctx)
     {
         base.Exit(ctx);
 
-        animatorFollower.EndHitAnim();
+        animatorFollower.EndHitAnim(forceExit);
         //ctx.StateMachine.SetHitReactionEnd();
     }
 }

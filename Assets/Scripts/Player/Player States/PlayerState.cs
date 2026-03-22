@@ -19,8 +19,10 @@ public class PlayerState : BaseState
         //dataAggregator = character.Context.dataAggregator;
     }
 
+    #region State Cycle
     public override void Enter()
     {
+        player.Target.onHit += HandleHit;
     }
 
     public override void Update()
@@ -48,8 +50,11 @@ public class PlayerState : BaseState
 
     public override void Exit()
     {
+        player.Target.onHit -= HandleHit;
     }
+    #endregion
 
+    #region Trigger Functions
     public override void OnTriggerEnter(Collider other)
     {
     }
@@ -60,6 +65,12 @@ public class PlayerState : BaseState
 
     public override void OnTriggerStay(Collider other)
     {
+    }
+    #endregion
+    
+    private void HandleHit(DamageEvent ev)
+    {
+        stateMachine.TransitionToState(new PlayerHitState(stateMachine, character, ev), true);
     }
 
     protected void SwitchToLocomotion()

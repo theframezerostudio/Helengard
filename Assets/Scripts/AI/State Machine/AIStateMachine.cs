@@ -142,7 +142,10 @@ public class AIStateMachine : MonoBehaviour
                 continue;
 
             if (!statesDict.TryGetValue(targetState, out int index))
+            {
+                Debug.LogWarning("Invalid State Found In" + Owner.name + "\nState: " + targetState);
                 continue;
+            }
 
             TransitionToState(states[index]);
             return true;

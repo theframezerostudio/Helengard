@@ -18,7 +18,7 @@ public struct HitData
 public class Hitbox : MonoBehaviour
 {
     public AttackProfile profile;
-    public Transform attackerRoot;
+    private Transform attackerRoot;
 
     public LayerMask hurtboxMask;
     public Vector3 boxHalfExtents = Vector3.one;
@@ -29,6 +29,11 @@ public class Hitbox : MonoBehaviour
     private Coroutine attackRoutine;
 
     public Action<HitData> OnHit;
+
+    private void Awake()
+    {
+        attackerRoot = transform.root;
+    }
 
     public void Initialize(LayerMask hitLayer)
     {
@@ -70,8 +75,21 @@ public class Hitbox : MonoBehaviour
 
     public void FireHit()
     {
+        if (profile == null)
+        {
+            Debug.LogWarning("Hitbox profile is NULL");
+            return;
+        }
+
+        if (attackerRoot == null)
+        {
+            Debug.LogWarning("AttackerRoot is NULL");
+            return;
+        }
+
         Vector3 center = transform.position + transform.TransformDirection(boxOffset);
         Collider[] hits = Physics.OverlapBox(center, boxHalfExtents, transform.rotation, hurtboxMask);
+
         foreach (var col in hits)
         {
             var damageable = col.GetComponentInParent<IDamageable>();
@@ -81,28 +99,39 @@ public class Hitbox : MonoBehaviour
 
             damageables.Add(damageable);
 
-            // compute hit point & normal
             Vector3 hitPoint = col.ClosestPoint(center);
             Vector3 hitNormal = (hitPoint - center).normalized;
 
-            // compute direction/height relative to target
             Transform targetRoot = col.transform.root;
             HitDirection dir = HitUtilities.ComputeHitDirection(targetRoot, attackerRoot, hitPoint);
             HitHeight height = HitUtilities.ComputeHitHeight(targetRoot, hitPoint);
 
             try
             {
-                DamageEvent damageEvent = new(profile.damage, profile.effect, hitPoint, hitNormal,
-                    attackerRoot.TransformDirection(profile.hitForce), attackerRoot, col.transform, dir, height, profile.swingType,
-                    profile.canChain, profile.stunDuration, profile.hitStop);
+                Vector3 force = attackerRoot.TransformDirection(profile.hitForce);
+
+                DamageEvent damageEvent = new DamageEvent(
+                    profile.damage,
+                    profile.effect,
+                    hitPoint,
+                    hitNormal,
+                    force,
+                    attackerRoot,
+                    col.transform,
+                    dir,
+                    height,
+                    profile.swingType,
+                    profile.canChain,
+                    profile.stunDuration,
+                    profile.hitStop
+                );
 
                 OnHit?.Invoke(new HitData(damageable, damageEvent));
             }
             catch (Exception e)
             {
-                Debug.LogException(e);
+                Debug.LogError("Hitbox Error: " + e);
             }
-            //damageable.TakeDamage(damageEvent);
         }
 
         if (debugDraw)

@@ -10,6 +10,7 @@ public struct MotionData
 public class MotionAccumulator
 {
     private MotionData motionData;
+    private MotionData lastMotionData;
 
     private Vector3 rootDelta;
     private Vector3 extraDelta;
@@ -32,9 +33,17 @@ public class MotionAccumulator
 
     public void SetMotionData(MovementMotionPolicy movementPolicy, RotationMotionPolicy rotationPolicy, Transform characterTransform)
     {
+        lastMotionData = motionData;
+
         motionData.movementPolicy = movementPolicy;
         motionData.rotationPolicy = rotationPolicy;
         motionData.characterTransform = characterTransform;
+    }
+
+    public void RestoreMotionData()
+    {
+        if (lastMotionData.characterTransform != null)
+            motionData = lastMotionData;
     }
 
     public void GetMotionData(out MovementMotionPolicy movementPolicy, out RotationMotionPolicy rotationPolicy)

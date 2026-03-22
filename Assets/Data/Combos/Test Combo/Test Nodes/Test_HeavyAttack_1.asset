@@ -15,7 +15,7 @@ MonoBehaviour:
   input: 2
   motionPolicy: 0
   rotationPolicy: 0
-  attackProfile: {fileID: 0}
+  attackProfile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
   animMotionSpeed:
     serializedVersion: 2
     m_Curve:
@@ -47,8 +47,8 @@ MonoBehaviour:
     startTime: 0
     endTime: 0
   attackWindow:
-    startTime: 0.2
-    endTime: 1
+    startTime: 0.25
+    endTime: 0.33
   cancelWindow:
     startTime: 0
     endTime: 0

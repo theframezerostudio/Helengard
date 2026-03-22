@@ -15,6 +15,8 @@ public class MaintainRange_AIAction : AIAction
 
         target = context.Target.transform;
         motionHandler = context.MotionHandler;
+
+        motionHandler.rotationMode = RotationMode.FaceTarget;
     }
 
     public override void Tick()
@@ -42,5 +44,8 @@ public class MaintainRange_AIAction : AIAction
         owner.motionAccumulator.AddRotation(deltaRotation);
     }
 
-    public override void Exit() { }
+    public override void Exit() 
+    {
+        motionHandler.rotationMode = RotationMode.FaceMovement;
+    }
 }

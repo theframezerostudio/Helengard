@@ -914,6 +914,8 @@ MonoBehaviour:
   groundRays: 4
   minSlope: 70
   <ActionProvider>k__BackingField: {fileID: 1826398831}
+  <ReactionController>k__BackingField: {fileID: 0}
+  <Target>k__BackingField: {fileID: 0}
   startingAbilities:
   - {fileID: 11400000, guid: 68a64c751ff56034b97e02a2f16786ab, type: 2}
   - {fileID: 11400000, guid: 0ba80390ad355064ebde852d8e0e3e65, type: 2}
@@ -2271,7 +2273,7 @@ MonoBehaviour:
     - {fileID: 356122267}
     <Decisions>k__BackingField:
     - condition: {fileID: 356122261}
-      TrueState: Attack
+      TrueState: Combat
       FalseState: Idle
     lockCount: 0
   currentState:
@@ -2963,7 +2965,7 @@ MonoBehaviour:
   feedbackPlayer: {fileID: 0}
   attackLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!1 &428666306
 GameObject:
   m_ObjectHideFlags: 0
@@ -3442,6 +3444,75 @@ Transform:
   - {fileID: 1224360570}
   m_Father: {fileID: 1750843299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &579711071
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 579711072}
+  - component: {fileID: 579711074}
+  - component: {fileID: 579711073}
+  m_Layer: 8
+  m_Name: Reaction Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &579711072
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579711071}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1669870526}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &579711073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579711071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 684b7117256ab6946beeb0bd6e1c430d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stagger_ReactionModule
+  recoveryData: {fileID: 0}
+  cancelTime: 0.2
+  forceExit: 0
+  <IsFinished>k__BackingField: 0
+  <CanBreak>k__BackingField: 0
+  animatorFollower: {fileID: 5382490922141604083}
+  defaultHitstun: 0.2
+  forceMultiplier: 1
+  impulseDuration: 0.05
+--- !u!114 &579711074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579711071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05ef0e498976c204ca1abc8c30e561f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReactionController
+  character: {fileID: 1669870529}
+  modules:
+  - {fileID: 579711073}
 --- !u!1 &582737710
 GameObject:
   m_ObjectHideFlags: 0
@@ -5456,7 +5527,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   profile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
-  attackerRoot: {fileID: 136572692}
   hurtboxMask:
     serializedVersion: 2
     m_Bits: 256
@@ -8803,8 +8873,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stagger_ReactionModule
   recoveryData: {fileID: 0}
-  defaultHitstun: 0.2
+  cancelTime: 1
+  forceExit: 0
+  <IsFinished>k__BackingField: 0
+  <CanBreak>k__BackingField: 0
   animatorFollower: {fileID: 657877100}
+  defaultHitstun: 0.2
+  forceMultiplier: 1
+  impulseDuration: 0.05
 --- !u!114 &1418209927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10409,6 +10485,7 @@ Transform:
   - {fileID: 1684997013}
   - {fileID: 887540773}
   - {fileID: 2075476426}
+  - {fileID: 579711072}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1669870529
@@ -10443,6 +10520,8 @@ MonoBehaviour:
   groundRays: 4
   minSlope: 70
   <ActionProvider>k__BackingField: {fileID: 887540774}
+  <ReactionController>k__BackingField: {fileID: 579711074}
+  <Target>k__BackingField: {fileID: 1669870532}
   startingAbilities:
   - {fileID: 11400000, guid: 68a64c751ff56034b97e02a2f16786ab, type: 2}
   - {fileID: 11400000, guid: 0ba80390ad355064ebde852d8e0e3e65, type: 2}
@@ -12289,13 +12368,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   profile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
-  attackerRoot: {fileID: 1964950892}
   hurtboxMask:
     serializedVersion: 2
     m_Bits: 128
   boxHalfExtents: {x: 0.15, y: 1, z: 0.1}
   boxOffset: {x: 0, y: 0.4, z: 0}
-  debugDraw: 0
+  debugDraw: 1
 --- !u!4 &1900623120
 Transform:
   m_ObjectHideFlags: 0
@@ -13847,8 +13925,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stagger_ReactionModule
   recoveryData: {fileID: 0}
-  defaultHitstun: 0.2
+  cancelTime: 0
+  forceExit: 0
+  <IsFinished>k__BackingField: 0
+  <CanBreak>k__BackingField: 0
   animatorFollower: {fileID: 315489030}
+  defaultHitstun: 0.2
+  forceMultiplier: 1
+  impulseDuration: 0.05
 --- !u!114 &2075069660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13862,6 +13946,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaunchModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
+  cancelTime: 0
+  forceExit: 0
+  <IsFinished>k__BackingField: 0
+  <CanBreak>k__BackingField: 0
   verticalForceMultiplier: 1
   horizontalForceMultiplier: 1
   minimumVerticalBoost: 3
@@ -13964,6 +14052,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AirJuggle_ReactionModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
+  cancelTime: 0
+  forceExit: 0
+  <IsFinished>k__BackingField: 0
+  <CanBreak>k__BackingField: 0
   baseVerticalPop: 3
   baseHorizontalPush: 1
   juggleDecayRate: 0.75
@@ -14016,6 +14108,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundSmash_ReactionModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
+  cancelTime: 0
+  forceExit: 0
+  <IsFinished>k__BackingField: 0
+  <CanBreak>k__BackingField: 0
   horizontalForceMultiplier: 1
   verticalForceMultiplier: 1
   minDownwardForce: -12
@@ -14082,6 +14178,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Knockdown_ReactionModule
   recoveryData: {fileID: 0}
+  cancelTime: 0
+  forceExit: 0
+  <IsFinished>k__BackingField: 0
+  <CanBreak>k__BackingField: 0
   knockbackStrength: 12
   fallDuration: 0.6
   knockdownAnim: Hit_Knockdown
@@ -16977,7 +17077,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   profile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
-  attackerRoot: {fileID: 1669870526}
   hurtboxMask:
     serializedVersion: 2
     m_Bits: 256
@@ -18788,6 +18887,7 @@ GameObject:
   - component: {fileID: 5382490922141604080}
   - component: {fileID: 5382490922141604082}
   - component: {fileID: 5382490922141604081}
+  - component: {fileID: 5382490922141604083}
   m_Layer: 7
   m_Name: Prototype
   m_TagString: Untagged
@@ -19454,7 +19554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182e9ac38451c3942a3724e05b09c93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MotionDriver
-  enableFeetIk: 0
+  enableFeetIk: 1
   heightFromGroundRaycast: 1.14
   raycastDownDistance: 1.5
   enviromentLayer:
@@ -19466,7 +19566,7 @@ MonoBehaviour:
   leftFootAnimVariableName: LeftFootCurve
   rightFootAnimVariableName: RightFootCurve
   useProIkFeature: 1
-  showSolverDebug: 1
+  showSolverDebug: 0
 --- !u!114 &5382490922141604082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19480,6 +19580,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MotionDriver
   character: {fileID: 1669870529}
+--- !u!114 &5382490922141604083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4754009368825135701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d510a7255206341873b3e6b520b85a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatorFollower
+  hitLayerIndex: 1
 --- !u!1 &5415887580006289250
 GameObject:
   m_ObjectHideFlags: 0

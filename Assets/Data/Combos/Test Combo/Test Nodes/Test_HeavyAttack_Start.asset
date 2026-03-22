@@ -41,7 +41,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   animationStateName: HeavyAttack_Start
-  animClip: {fileID: -203655887218126122, guid: 7ddc6e90afa79ac448da7a9b7f3c1ea4, type: 3}
+  animClip: {fileID: 7400000, guid: fca21db66e8f3d64b807bfde01584571, type: 2}
   transitionTime: 0.2
   comboWindow:
     startTime: 0.8

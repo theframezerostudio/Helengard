@@ -90,7 +90,7 @@ BlendTree:
   m_Name: Hit Low
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 615284827b9e9694198bb4792acb1955, type: 3}
+    m_Motion: {fileID: 8338732804319002307, guid: 36fe30ba832ef4c42ac1961245b8cfbf, type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -506,7 +506,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 7ddc6e90afa79ac448da7a9b7f3c1ea4, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 9ba147f39f069c74b8855b264f1d60aa, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1304,7 +1304,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 7acd64cd4f8408947ab56adb40ca8ba3, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 06b23f05cd3fba547a7662bb9c573298, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

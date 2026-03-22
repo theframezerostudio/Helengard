@@ -68,6 +68,7 @@ public class Recovery_CombatAction : CombatSubAction
         }
     }
 
+    // TODO: Bias Weights can be added for increasing chances of a certain output
     private int DecideStrafe()
     {
         float num = Random.Range(-1f, 1f);
@@ -77,7 +78,7 @@ public class Recovery_CombatAction : CombatSubAction
         else if (num > 0.3f) 
             num = -1;
         else
-            num = -1;
+            num = 0;
 
         return (int)num;
     }

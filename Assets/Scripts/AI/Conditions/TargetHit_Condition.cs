@@ -10,7 +10,7 @@ public class TargetHit_Condition : Condition
     [Tooltip("Time in seconds after which hit count resets if no new hits are registered.")]
     [SerializeField] private float hitResetTime = 3f;
 
-    [Tooltip("Target Component associated with this cahracter")]
+    [Tooltip("Target Component associated with this character")]
     [SerializeField] private Target target;
 
     [SerializeField, ReadOnly] private int currHits = 0;

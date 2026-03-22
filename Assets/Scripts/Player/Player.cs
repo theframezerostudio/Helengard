@@ -18,6 +18,8 @@ public class Player : Character
 
     [Header("References")]
     [field: SerializeField] public LocomotionActionProvider ActionProvider { get; private set; }
+    [field: SerializeField] public ReactionController ReactionController { get; private set; }
+    [field: SerializeField] public Target Target { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     private PlayerStateMachine stateMachine;
 

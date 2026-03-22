@@ -3,17 +3,27 @@ using UnityEngine;
 
 public abstract class ReactionModule : MonoBehaviour, IReactionModule
 {
+    [Tooltip("Optional Recover Data For Followup Of Current Reaction")]
     [SerializeField] protected ActionData recoveryData;
+    [Tooltip("Normailed Time For Cancelling Reaction")]
+    [Range(0f, 1f), SerializeField] protected float cancelTime = 1f;
+    [Tooltip("Immediate Override Reaction Module On Cancel")]
+    [SerializeField] protected bool forceExit = false;
+
+    [field: SerializeField, ReadOnly] public bool IsFinished { get; protected set; } = false;
+    [field: SerializeField, ReadOnly] public bool CanBreak { get; protected set; } = false;
+    
+    public Action<ActionData> onExit;
+
     public abstract ReactionPriority Priority { get; }
-    public bool IsFinished { get; protected set; } = false;
     public virtual bool AllowChaining => false;
 
-    public Action<ActionData> onExit;
     public abstract bool CanHandle(DamageEvent ev, ReactionContext ctx);
 
     public virtual void Enter(DamageEvent ev, ReactionContext ctx)
     {
         IsFinished = false;
+        CanBreak = false;
 
         InitialRotation(ev, ctx);
     }
@@ -47,7 +57,7 @@ public abstract class ReactionModule : MonoBehaviour, IReactionModule
     public virtual void Exit(ReactionContext ctx)
     {
         IsFinished = true;
-
+        CanBreak = true;
         onExit?.Invoke(recoveryData);
     }
 }

@@ -11,7 +11,18 @@ public class ReactionController : MonoBehaviour
     private ReactionContext ctx;
 
     private readonly Queue<DamageEvent> queue = new();
-    public bool IsReacting => (active != null && !active.IsFinished);
+
+    /// <summary>
+    /// Is Reacting is set to false when the
+    /// whole reaction sequence of a particular module is completed
+    /// </summary>
+    public bool IsReacting => active != null && !active.IsFinished;
+
+    /// <summary>
+    /// Is Cancellable is to true when the 
+    /// active module can be broken mid animation
+    /// </summary>
+    public bool IsCancellable => active != null && active.CanBreak;
 
     private void Start()
     {
@@ -27,6 +38,7 @@ public class ReactionController : MonoBehaviour
         );
     }
 
+    //TODO: Shift to Enumerator based on event to reduce excessive calls
     private void Update()
     {
         if (active != null)
@@ -55,6 +67,9 @@ public class ReactionController : MonoBehaviour
 
     private void TryStart(DamageEvent ev)
     {
+        if (ev == null)
+            { return; }
+
         List<ReactionModule> candidates = modules.Where(m => m.CanHandle(ev, ctx)).ToList();
         if (candidates.Count == 0) return;
 
@@ -77,6 +92,18 @@ public class ReactionController : MonoBehaviour
 
         chosen = null;
         EnqueueHit(ev);
+    }
+
+    public bool TryCancel()
+    {
+        if (!IsCancellable) return false;
+
+        if (active != null)
+            active.Exit(ctx);
+
+        HandelModuleExit(null);
+
+        return true;
     }
 
     private void StartModule(ReactionModule module, DamageEvent ev)

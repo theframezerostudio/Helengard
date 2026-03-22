@@ -25,7 +25,7 @@ public class AnimatorFollower : MonoBehaviour
         animator.SetLayerWeight(hitLayerIndex, 0f);
     }
 
-    public void EndHitAnim()
+    public void EndHitAnim(bool forceEnd)
     {
         if (endRoutine != null)
         {
@@ -33,7 +33,14 @@ public class AnimatorFollower : MonoBehaviour
             endRoutine = null;
         }
 
-        endRoutine = StartCoroutine(EndHitAnimRoutine());
+        if (forceEnd)
+        {
+            ClearHit();
+        }
+        else
+        {
+            endRoutine = StartCoroutine(EndHitAnimRoutine());
+        }
     }
 
     private IEnumerator EndHitAnimRoutine()
