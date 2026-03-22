@@ -60,4 +60,11 @@ public abstract class ReactionModule : MonoBehaviour, IReactionModule
         CanBreak = true;
         onExit?.Invoke(recoveryData);
     }
+
+    public virtual void Chain(DamageEvent ev, ReactionContext ctx)
+    {
+        // Default = restart
+        Exit(ctx);
+        Enter(ev, ctx);
+    }
 }

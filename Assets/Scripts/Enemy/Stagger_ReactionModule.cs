@@ -21,6 +21,7 @@ public class Stagger_ReactionModule : ReactionModule
     private float timer = 0f;
     private float totalDuration = 0f;
     private float normalizedTime = 0f;
+    private int hitVersion = 0;
 
     public override ReactionPriority Priority => ReactionPriority.Low;
     public override bool AllowChaining => true;
@@ -35,32 +36,32 @@ public class Stagger_ReactionModule : ReactionModule
     {
         base.Enter(ev, ctx);
 
-        // TODO: Feedback
-
         motor = ctx.Motion;
 
-        totalDuration = 0;
-        _ = SuspendCharacterAsync(ev, ctx);
-
-        // ctx.Self -> Send to suspended state
-        //ctx.StateMachine.SetHitReactionStart();
-    }
-
-    private async Task SuspendCharacterAsync(DamageEvent ev, ReactionContext ctx)
-    {
-        totalDuration = await animatorFollower.ApplyHit(ev);
         timer = 0f;
-
-        if (ev.StunDuration > 0f)
-        {
-            // Handle stun after stagger
-        }
-
-        if (totalDuration <= 0f) totalDuration = defaultHitstun;
+        totalDuration = 0f;
+        normalizedTime = 0f;
 
         impulseVelocity = ev.HitForce * forceMultiplier;
         impulseTimer = impulseDuration;
 
+        hitVersion++;
+        int version = hitVersion;
+
+        _ = SuspendCharacterAsync(ev, ctx, version);
+    }
+
+    private async Task SuspendCharacterAsync(DamageEvent ev, ReactionContext ctx, int version)
+    {
+        float duration = await animatorFollower.ApplyHit(ev);
+
+        // Ignore old async calls
+        if (version != hitVersion) return;
+
+        if (duration <= 0f)
+            duration = defaultHitstun;
+
+        totalDuration = duration;
         ctx.Self.Suspend(totalDuration);
     }
 
@@ -70,19 +71,20 @@ public class Stagger_ReactionModule : ReactionModule
 
         if (impulseTimer > 0f)
         {
-            float dt = Mathf.Min(deltaTime, impulseTimer);
+            float dt = deltaTime;
             motor.AddPositionDelta(impulseVelocity * dt);
+            Debug.Log(impulseVelocity * dt);
             impulseTimer -= dt;
         }
+
+        // Stop Execution temporarily until Total Duration is
+        // not identified by SuspendCharacterAsync
+        if (totalDuration == 0) return;
 
         normalizedTime = timer / totalDuration;
 
         if (normalizedTime > cancelTime)
             CanBreak = true;
-
-        // Stop Execution temporarily until Total Duration is
-        // not identified by SuspendCharacterAsync
-        if (totalDuration == 0) return;
 
         if (timer >= totalDuration)
             IsFinished = true;
