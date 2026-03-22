@@ -51,11 +51,11 @@ Material:
     - _ShadeStrength: 1
     - _SpecularSmoothness: 0.1
     - _SpecularThreshold: 0.1
-    - _UseAdditionalLights: 0
+    - _UseAdditionalLights: 1
     - _UseAmbient: 0
     - _UseBlingPhong: 0
     - _UseEmission: 0
-    - _UseNormal: 0
+    - _UseNormal: 1
     - _UseWorldTiling: 0
     - _WorldTilingXMain: 1
     - _WorldTilingXShade: 1
@@ -67,7 +67,7 @@ Material:
     m_Colors:
     - _DiffuseColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 2, g: 1.8527926, b: 1.5786163, a: 1}
+    - _MainColor: {r: 0.050314426, g: 0.050314426, b: 0.050314426, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
