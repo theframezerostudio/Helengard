@@ -29,6 +29,7 @@ public class CombatScheduler_AIAction : AIAction
     [SerializeField, ReadOnly] private float defenseScore;
     [SerializeField, ReadOnly] private float recoveryScore;
     [SerializeField, ReadOnly] private float dodgeScore;
+    [SerializeField, ReadOnly] private float rangeScore;
 
     public override void Enter(Character Owner, StateContext stateContext)
     {
@@ -39,6 +40,9 @@ public class CombatScheduler_AIAction : AIAction
         memory = stateContext.CombatMemory;
 
         target = stateContext.Target;
+
+        stateContext.MotionHandler.SetTarget(target.transform);
+        stateContext.MotionHandler.canStrafe = true;
 
         InitializeStates();
 
@@ -86,6 +90,9 @@ public class CombatScheduler_AIAction : AIAction
 
         memory.ResetAll();
 
+        context.MotionHandler.SetTarget(null);
+        context.MotionHandler.canStrafe = false;
+
         isActive = false;
         current = null;
     }
@@ -107,7 +114,12 @@ public class CombatScheduler_AIAction : AIAction
     {
         while (isActive)
         {
+            yield return new WaitForSeconds(0.1f);
+
             CombatSubAction next = ChooseBestAction();
+            if (current && current.IsLocked)
+                continue;
+
             if (next != current)
             {
                 current?.Exit();
@@ -115,8 +127,6 @@ public class CombatScheduler_AIAction : AIAction
                 next.Enter();
                 current = next;
             }
-
-            yield return new WaitForSeconds(0.1f);
         }
 
         evaluationRoutine = null;
@@ -141,6 +151,8 @@ public class CombatScheduler_AIAction : AIAction
                     recoveryScore = score;
                 else if (act is Dodge_CombatAction)
                     dodgeScore = score;
+                else if (act is MaintainRange_CombatAction) 
+                    rangeScore = score;
             }
 
             if (score > bestScore)

@@ -13,7 +13,8 @@ public class Attack_CombatAction : CombatSubAction
     private Weapon weapon;
     private ComboNode node;
     private Animator animator;
-
+    private FrameWindow lockWindow;
+    
     private float attackTimer;
     private float animNormalizedTime;
     private float animDuration;
@@ -33,6 +34,9 @@ public class Attack_CombatAction : CombatSubAction
         motionHandler = stateContext.MotionHandler;
         weapon = owner.CurrentWeapon;
 
+        lockWindow = new FrameWindow(0.2f, 0.7f);
+
+        motionHandler.rotationMode = RotationMode.FaceTarget;
         combatDecision.Initialize(owner.Context);
 
         AttackInput entryInput = combatDecision.DecideEntry(combatData, combatMemory, weapon.comboGraph);
@@ -49,11 +53,12 @@ public class Attack_CombatAction : CombatSubAction
     {
         if (node == null)
             return;
-        Debug.Log("Csallef" + node.name);
+
         if (isAttacking)
             EndAttack();
 
-        combatData.DesiredRange = node.attackRange;
+        combatData.MinDesiredRange = 0f;
+        combatData.MaxDesiredRange = node.attackRange;
 
         // TODO: For debuuging only, remove later
         attackInput = node.input;
@@ -83,6 +88,18 @@ public class Attack_CombatAction : CombatSubAction
         if (node == null)
             return;
 
+        if (stateTimer < 0.1f && combatData.Distance > node.attackRange)
+            return;
+
+        if (!IsLocked && lockWindow.IsValid(animNormalizedTime))
+        {
+            Lock();
+        }
+        else if (IsLocked && !lockWindow.IsValid(animNormalizedTime))
+        {
+            Unlock();
+        }
+
         attackTimer += Time.deltaTime;
         animNormalizedTime = Mathf.Clamp01(attackTimer / animDuration);
 
@@ -109,14 +126,13 @@ public class Attack_CombatAction : CombatSubAction
             EndAttack();
         }
 
-
         if (node.comboWindow.IsValid(animNormalizedTime))
         {
-            AttackInput chainInput = combatDecision.DecideChain(combatData, combatMemory, node, animNormalizedTime);
+            Unlock();
 
+            AttackInput chainInput = combatDecision.DecideChain(combatData, combatMemory, node, animNormalizedTime);
             if (chainInput != AttackInput.None)
             {
-                Debug.Log(animNormalizedTime);
                 node = weapon.NextAttack(owner.Context, chainInput, node);
                 SetupAttack();
                 return;
@@ -125,6 +141,8 @@ public class Attack_CombatAction : CombatSubAction
 
         if (animNormalizedTime >= 1f)
         {
+            Unlock();
+
             AttackInput entryInput = combatDecision.DecideEntry(combatData, combatMemory, weapon.comboGraph);
             if (entryInput != AttackInput.None)
             {
@@ -141,6 +159,8 @@ public class Attack_CombatAction : CombatSubAction
 
         owner.Context.dataAggregator.SetAttacking(false);
         weapon.OnHit -= OnWeaponHit;
+
+        motionHandler.rotationMode = RotationMode.FaceMovement;
 
         if (isAttacking)
         {

@@ -24,10 +24,14 @@ public abstract class ReactionModule : MonoBehaviour, IReactionModule
         attackDirection.y = 0;
         Quaternion lookDirection;
 
-        if (ev.Direction == HitDirection.Front)
-            lookDirection = Quaternion.LookRotation(attackDirection);
-        else
-            lookDirection = Quaternion.LookRotation(-attackDirection);
+        // Character will always face at the attacker (y - axis) no matter the attacker Position
+        lookDirection = Quaternion.LookRotation(attackDirection);
+
+        // Show face to attacker
+        //if (ev.Direction == HitDirection.Front)
+        //    lookDirection = Quaternion.LookRotation(attackDirection);
+        //else // Show Back to attacker
+        //    lookDirection = Quaternion.LookRotation(-attackDirection);
 
         Quaternion delta = lookDirection * Quaternion.Inverse(transform.rotation);
 

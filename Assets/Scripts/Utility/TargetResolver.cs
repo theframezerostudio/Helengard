@@ -28,8 +28,6 @@ public class TargetResolver
             }
         }
 
-        Debug.Log(layerMask.ToString() + " " + colCount + " " + count);
-
         Transform bestMoveTarget = null;
         Transform bestFrontTarget = null;
         Transform attackingTarget = null;

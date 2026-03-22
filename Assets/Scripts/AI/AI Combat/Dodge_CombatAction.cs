@@ -4,6 +4,9 @@ public class Dodge_CombatAction : CombatSubAction
 {
     public override void Enter()
     {
+        combatData.MinDesiredRange = 0f;
+        combatData.MaxDesiredRange = float.PositiveInfinity;
+
         owner.PlayAnim("Dodge");
     }
 

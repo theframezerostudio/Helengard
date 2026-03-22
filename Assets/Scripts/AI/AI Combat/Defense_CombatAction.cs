@@ -6,7 +6,14 @@ public class Defense_CombatAction : CombatSubAction
 
     public override void Enter()
     {
+        base.Enter();
+
+        combatData.MinDesiredRange = 0f;
+        combatData.MaxDesiredRange = float.PositiveInfinity;
+
         motionHandler = stateContext.MotionHandler;
+
+        motionHandler.rotationMode = RotationMode.FaceTarget;
 
         owner.PlayAnim("Guard", 0.1f);
     }
@@ -14,6 +21,8 @@ public class Defense_CombatAction : CombatSubAction
     public override void Exit()
     {
         base.Exit();
+
+        motionHandler.rotationMode = RotationMode.FaceMovement;
     }
 
     public override void Tick()

@@ -2172,10 +2172,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   detectionRange: 6
-  threshold: 0
+  threshold: 2.5
   offset: {x: 0, y: 0, z: 0}
   gizmoColor: {r: 1, g: 0.8431373, b: 0, a: 1}
-  visualizeThreshold: 0
+  visualizeThreshold: 1
 --- !u!114 &356122257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2241,26 +2241,29 @@ MonoBehaviour:
     - {fileID: 356122258}
     <Decisions>k__BackingField:
     - condition: {fileID: 356122256}
-      TrueState: Patrol
+      TrueState: Chase
       FalseState: 
     lockCount: 0
-  - <Label>k__BackingField: Patrol
+  - <Label>k__BackingField: Chase
     animName: 
     <Actions>k__BackingField:
     - {fileID: 356122257}
     <Decisions>k__BackingField:
     - condition: {fileID: 356122261}
-      TrueState: Attack
+      TrueState: Combat
       FalseState: 
+    - condition: {fileID: 356122256}
+      TrueState: 
+      FalseState: Idle
     lockCount: 0
-  - <Label>k__BackingField: Attack
+  - <Label>k__BackingField: Combat
     animName: 
     <Actions>k__BackingField:
     - {fileID: 356122263}
     <Decisions>k__BackingField:
     - condition: {fileID: 356122256}
       TrueState: 
-      FalseState: Idle
+      FalseState: Chase
     lockCount: 0
   - <Label>k__BackingField: Hit
     animName: 
@@ -2311,6 +2314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Attack_CombatAction
   <Label>k__BackingField: Attack combat
+  lockCount: 0
   attackPersona: {fileID: 11400000, guid: 3028bdae6588bf042bb38511a2a40e9c, type: 2}
   combatDecision:
     lightScore: 0
@@ -2367,11 +2371,13 @@ MonoBehaviour:
     ThreatLevel: 0
     MaxCombatRange: 6
     IdealCombatRangeRatio: 0.7
-    DesiredRange: 0
+    MinDesiredRange: 0
+    MaxDesiredRange: 2
   attackScore: 0
   defenseScore: 0
   recoveryScore: 0
   dodgeScore: 0
+  rangeScore: 0
 --- !u!114 &356122264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2385,6 +2391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dodge_CombatAction
   <Label>k__BackingField: Dodge Combat
+  lockCount: 0
 --- !u!114 &356122265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2398,6 +2405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Defense_CombatAction
   <Label>k__BackingField: Defense Combat
+  lockCount: 0
 --- !u!114 &356122266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2411,6 +2419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Recovery_CombatAction
   <Label>k__BackingField: Recovery Combat
+  lockCount: 0
 --- !u!114 &356122267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2469,8 +2478,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MaintainRange_CombatAction
   <Label>k__BackingField: 
+  lockCount: 0
   minRange: 0
   maxRange: 0
+  errorMargin: 0.2
+  cooldown: 1
 --- !u!1 &356685522
 GameObject:
   m_ObjectHideFlags: 0
@@ -3768,7 +3780,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657877095}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: cc490567278211f4390f5e1e8a831705, type: 3}
+  m_Avatar: {fileID: 9000000, guid: a84405131e8ee8941a103c1a14aa7b1f, type: 3}
   m_Controller: {fileID: 9100000, guid: bf76cf3e037232e44a241fcbcabcf750, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -12283,7 +12295,7 @@ MonoBehaviour:
     m_Bits: 128
   boxHalfExtents: {x: 0.15, y: 1, z: 0.1}
   boxOffset: {x: 0, y: 0.4, z: 0}
-  debugDraw: 1
+  debugDraw: 0
 --- !u!4 &1900623120
 Transform:
   m_ObjectHideFlags: 0
@@ -13260,6 +13272,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AgentMotionHandler
   agent: {fileID: 1964950898}
   owner: {fileID: 1964950895}
+  rotationMode: 0
+  combatTarget: {fileID: 0}
+  canRotate: 0
+  canStrafe: 0
 --- !u!195 &1964950898
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -13746,6 +13762,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AgentMotionHandler
   agent: {fileID: 2075069653}
   owner: {fileID: 0}
+  rotationMode: 0
+  combatTarget: {fileID: 0}
+  canRotate: 0
+  canStrafe: 0
 --- !u!114 &2075069655
 MonoBehaviour:
   m_ObjectHideFlags: 0

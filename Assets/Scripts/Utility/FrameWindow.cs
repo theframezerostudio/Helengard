@@ -6,6 +6,12 @@ public class FrameWindow
     public float startTime = 0f;
     public float endTime = 0f;
 
+    public FrameWindow(float startTime, float endTime)
+    {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public bool IsValid(float currentTime)
     {
         if (endTime == 0f) return false;

@@ -16,7 +16,7 @@ MonoBehaviour:
   attackEntryBonus: 3
   attackDecayRate: 0.2
   recoverBase: 1
-  recoverEntryBonus: 1.5
+  recoverEntryBonus: 2
   recoverDecayRate: 0.3
   recoverTimeGrowth: 0.1
   defendBase: 1

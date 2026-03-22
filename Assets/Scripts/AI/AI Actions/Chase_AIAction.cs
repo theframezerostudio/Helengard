@@ -24,7 +24,7 @@ public class Chase_AIAction : AIAction
         motionHandler.SetDestination(target.position);
 
         Vector2 intent = motionHandler.GetMoveIntent();
-        owner.Animator.SetFloat("Speed", intent.magnitude, 0.1f, Time.deltaTime);
+        owner.Animator.SetFloat("Forward", intent.magnitude, 0.1f, Time.deltaTime);
 
         Quaternion deltaRotation = motionHandler.GetRotationDelta();
         owner.motionAccumulator.AddRotation(deltaRotation);

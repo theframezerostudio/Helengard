@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -18,13 +15,13 @@ public class AICombatData
     // SPATIAL DATA (Normalized)
     // =========================
     public float Distance;
-    public float DistanceNormalized;           
-    public float IdealRangeScore;              
-    public float RelativeSpeedNormalized;      
+    public float DistanceNormalized;
+    public float IdealRangeScore;
+    public float RelativeSpeedNormalized;
 
-    public float FacingAlignment;              
-    public float AIIsBehindTarget;             
-    public float TargetIsBehindAI;             
+    public float FacingAlignment;
+    public float AIIsBehindTarget;
+    public float TargetIsBehindAI;
 
     // =========================
     // AI STATUS
@@ -53,19 +50,18 @@ public class AICombatData
     // =========================
     // TACTICAL SIGNALS
     // =========================
-    public float AIUnderPressure;              
-    public float AIHasInitiative;              
-    public float TargetVulnerableWindow;       
-    public float ThreatLevel;                  
+    public float AIUnderPressure;
+    public float AIHasInitiative;
+    public float TargetVulnerableWindow;
+    public float ThreatLevel;
 
     // =========================
     // CONFIG
     // =========================
     public float MaxCombatRange = 6f;
     public float IdealCombatRangeRatio = 0.7f;
-    public float DesiredRange = 2f;
-
-    private Coroutine resetHitCoroutine;
+    public float MinDesiredRange = 0f;
+    public float MaxDesiredRange = 2f;
 
     // ==============================================================
     // BUILD
