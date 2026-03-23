@@ -39,9 +39,7 @@ public class PlayerHitState : PlayerState
         base.Update();
 
         if (!player.ReactionController.IsReacting)
-        {
-            stateMachine.TransitionToState(player.IdleState);
-        }
+            SwitchToLocomotion();
     }
 
     private void HandleAttack(AttackInput input)
@@ -55,6 +53,6 @@ public class PlayerHitState : PlayerState
     private void HandleMove(Vector2 vector)
     {
         if (player.ReactionController.TryCancel())
-            stateMachine.TransitionToState(player.MoveState);
+            SwitchToLocomotion();
     }
 }

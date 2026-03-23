@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerAttackState : PlayerState
@@ -212,6 +213,11 @@ public class PlayerAttackState : PlayerState
         {
             this.attackInput = attackInput;
             comboAttempted = true;
+        }
+
+        if (node.comboWindow.IsOver(animNormalizedTime))
+        {
+            stateMachine.TransitionToState(new PlayerAttackState(stateMachine, character, attackInput));
         }
     }
 

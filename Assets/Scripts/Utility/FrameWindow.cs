@@ -25,4 +25,9 @@ public class FrameWindow
 
         return currentTime >= (startTime - graceTime) && currentTime <= endTime;
     }
+
+    public bool IsOver(float currentTime)
+    {
+        return currentTime >= endTime;
+    }
 }

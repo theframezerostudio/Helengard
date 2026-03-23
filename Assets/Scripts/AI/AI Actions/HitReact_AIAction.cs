@@ -19,6 +19,9 @@ public class HitReact_AIAction : AIAction
         motionHandler = stateContext.MotionHandler;
         motionHandler.rotationMode = RotationMode.FaceTarget;
 
+        //context.State.Lock();
+        //isLocked = true;
+
         target.onHit += OnHit;
     }
 
@@ -31,8 +34,9 @@ public class HitReact_AIAction : AIAction
 
     public override void Tick()
     {
-        if (isLocked && !reactionController.IsCancellable)
+        if (isLocked && !reactionController.IsReacting)
         {
+            Debug.Log("Unlock");
             isLocked = false;
             context.State.Unlock();
         }

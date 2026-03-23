@@ -1,22 +1,25 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 public class ReactionController : MonoBehaviour
 {
     [SerializeField] private Character character;
     [SerializeField] private List<ReactionModule> modules = new();
 
-    private ReactionModule active;
+    [SerializeField, ReadOnly] private ReactionModule active;
     private ReactionContext ctx;
-
     private readonly Queue<DamageEvent> queue = new();
+
+    private Coroutine recoveryRoutine = null;
+    [SerializeField, ReadOnly] private bool isFinished = false;
 
     /// <summary>
     /// Is Reacting is set to false when the
     /// whole reaction sequence of a particular module is completed
     /// </summary>
-    public bool IsReacting => active != null && !active.IsFinished;
+    public bool IsReacting => !isFinished;
 
     /// <summary>
     /// Is Cancellable is to true when the 
@@ -108,6 +111,8 @@ public class ReactionController : MonoBehaviour
 
     private void StartModule(ReactionModule module, DamageEvent ev)
     {
+        isFinished = false;
+
         active = module;
         active.onExit += HandelModuleExit;
         module.Enter(ev, ctx);
@@ -119,10 +124,29 @@ public class ReactionController : MonoBehaviour
 
         if (queue.Count != 0) return;
 
-        if (recoveryData == null)
-            character.Unsuspend();
+        if (recoveryData != null)
+        {
+            if (recoveryRoutine != null)
+            {
+                StopCoroutine(recoveryRoutine);
+                recoveryRoutine = null;
+            }
+            recoveryRoutine = StartCoroutine(RecoveryRoutine(recoveryData));
+            //character.Recover(recoveryData);
+        }
         else
-            character.Recover(recoveryData);
+        {
+            isFinished = true;
+        }
+    }
+
+    private IEnumerator RecoveryRoutine(ActionData recoveryData)
+    {
+        character.PlayAnim(recoveryData.animState, recoveryData.transitionTime);
+        yield return new WaitForSeconds(recoveryData.duration);
+
+        isFinished = true;
+        recoveryRoutine = null;
     }
 
     private void EnqueueHit(DamageEvent ev)

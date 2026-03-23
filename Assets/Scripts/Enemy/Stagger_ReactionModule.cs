@@ -72,8 +72,14 @@ public class Stagger_ReactionModule : ReactionModule
         if (impulseTimer > 0f)
         {
             float dt = deltaTime;
-            motor.AddPositionDelta(impulseVelocity * dt);
-            Debug.Log(impulseVelocity * dt);
+
+            float t = impulseTimer / impulseDuration; 
+            float ease = t * t; // Ease-out curve
+
+            Vector3 currentVelocity = impulseVelocity * ease;
+
+            motor.AddPositionDelta(currentVelocity * dt);
+
             impulseTimer -= dt;
         }
 
