@@ -15,6 +15,8 @@ public class PlayerHitState : PlayerState
     {
         base.Enter();
 
+        player.FeetIKResolver.SetFeetIk(false);
+
         player.LocomotionMode.SetLocomotion(
             MovementMotionPolicy.NoRootMotion, RotationMotionPolicy.NoRotation);
 
@@ -27,6 +29,8 @@ public class PlayerHitState : PlayerState
     public override void Exit()
     {
         base.Exit();
+
+        player.FeetIKResolver.SetFeetIk(true);
 
         inputManager.onAttack -= HandleAttack;
         inputManager.onMove -= HandleMove;
