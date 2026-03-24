@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_CelshadeSimple 4
+  m_Name: Custom_CelshadeSimple 6
   m_Shader: {fileID: 4800000, guid: ee79f6ccea27bc24b871fc84887480c4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -55,7 +55,7 @@ Material:
     - _UseAmbient: 0
     - _UseBlingPhong: 0
     - _UseEmission: 0
-    - _UseNormal: 0
+    - _UseNormal: 1
     - _UseWorldTiling: 0
     - _WorldTilingXMain: 1
     - _WorldTilingXShade: 1
@@ -67,7 +67,7 @@ Material:
     m_Colors:
     - _DiffuseColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 1.4825872, g: 0, b: 95.87452, a: 1}
+    - _MainColor: {r: 1, g: 0.7999047, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
