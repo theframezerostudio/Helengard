@@ -22,7 +22,7 @@ public class AirJuggle_ReactionModule : ReactionModule
     private MovementMotionPolicy prevMovePolicy;
     private RotationMotionPolicy prevRotPolicy;
 
-    private float juggleMultiplier = 1f;
+    [SerializeField] private float juggleMultiplier = 1f;
     private Vector3 horizontalVelocity;
 
     public override ReactionPriority Priority => ReactionPriority.Medium;

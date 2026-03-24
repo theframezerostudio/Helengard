@@ -15,7 +15,7 @@ MonoBehaviour:
   input: 2
   motionPolicy: 1
   rotationPolicy: 0
-  attackProfile: {fileID: 11400000, guid: caa74dd1204aa314696465e5fd9340ad, type: 2}
+  attackProfile: {fileID: 11400000, guid: d80494f49c96d314a8242bdf9152add2, type: 2}
   animMotionSpeed:
     serializedVersion: 2
     m_Curve:

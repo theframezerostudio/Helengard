@@ -69,8 +69,8 @@ public class Flight_ReactionModule : ReactionModule
 
         horizontalForce.Normalize();
 
-        float horizontalMagnitude = Mathf.Max(force.magnitude * horizontalForceMultiplier, horizontalForce.magnitude);
-        horizontalVelocity = horizontalForce * horizontalMagnitude;
+        //float horizontalMagnitude = Mathf.Max(force.magnitude * horizontalForceMultiplier, horizontalForce.magnitude);
+        horizontalVelocity = horizontalForce * horizontalForceMultiplier;
 
         float verticalForce = force.y * verticalForceMultiplier;
         verticalForce = Math.Max(verticalForce, minimumVerticalBoost);

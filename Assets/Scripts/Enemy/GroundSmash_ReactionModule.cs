@@ -79,7 +79,7 @@ public class GroundSmash_ReactionModule : ReactionModule
         //horizontalVelocity = toAttacker * horizontalMagnitude;
 
         horizontalVelocity = force * horizontalForceMultiplier;
-        force.y = 0;
+        horizontalVelocity.y = 0;
 
         float verticalVelocity = Mathf.Min(force.y * verticalForceMultiplier, minDownwardForce);
         ctx.Self.verticalVelocity = verticalVelocity;
