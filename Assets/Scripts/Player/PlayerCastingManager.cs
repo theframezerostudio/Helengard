@@ -5,9 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerCastingManager : CharacterCastingManager
 {
+    private CastingData castingData;
 
-    [HideInInspector] public float horizontalMoveAmount;
-    [HideInInspector] public float verticalMoveAmount;
     protected override void Awake()
     {
         base.Awake();
@@ -26,6 +25,10 @@ public class PlayerCastingManager : CharacterCastingManager
     {
         verticalMoveAmount = vector.y;
         horizontalMoveAmount = vector.x;
+
+        castingData.horizontalMoveAmount = horizontalMoveAmount;
+        castingData.verticalMoveAmount = verticalMoveAmount;
+
         //Debug.Log(horizontalMoveAmount + " " + verticalMoveAmount);
     }
 
@@ -45,7 +48,7 @@ public class PlayerCastingManager : CharacterCastingManager
     {
         if (context.performed)
         {
-            spellCaster.OnCastPerform();
+            spellCaster.OnCastPerform(castingData);
         }
     }
 
@@ -55,16 +58,6 @@ public class PlayerCastingManager : CharacterCastingManager
         {
             spellCaster.OnCastRelease();    
         }
-    }
-
-    public override void ClearCurrentStrategy()
-    {
-        base.ClearCurrentStrategy();
-    }
-
-    public override void SetCurrentStrategy(CastingStrategy strategy)
-    {
-        base.SetCurrentStrategy(strategy);
     }
 
     private void UnsubscribeEvents()

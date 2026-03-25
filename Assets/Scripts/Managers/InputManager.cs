@@ -99,7 +99,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnCast(InputAction.CallbackContext context)
     {
-        if (permissionManager.IsAllowed(AbilityTag.Cast))
+        if (!permissionManager.IsAllowed(AbilityTag.Cast))
             return;
 
         onCast?.Invoke(context);

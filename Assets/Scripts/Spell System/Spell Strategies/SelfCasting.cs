@@ -7,26 +7,21 @@ public class SelfCasting : CastingStrategy
 {   
     // Instance objects
     private GameObject spellInstance;
-    public override void Started(Spell spell, CharacterCastingManager castingManager)
+
+    public override void Start()
     {
-        this.spell = spell;
-        this.castingManager = castingManager;
-
-        castingManager.SetCurrentStrategy(this);
-
-        if (spell.castingProperties.spellVFX != null)
+        if (properties.spellVFX != null)
         {
-            spellInstance = GameObject.Instantiate(spell.castingProperties.spellVFX);
-            GameObject.Destroy(spellInstance, spell.castingProperties.spellDuration);
+            spellInstance = GameObject.Instantiate(properties.spellVFX);
+            GameObject.Destroy(spellInstance, properties.spellDuration);
         }
     }
 
-    public override void Performing()
+    public override void Performing(CastingData data)
     {
     }
 
-    public override void Stopped()
+    public override void Stop()
     {
-        castingManager.ClearCurrentStrategy();
     }
 }

@@ -3,15 +3,13 @@ using UnityEngine;
 
 public class SpellCaster : MonoBehaviour
 {
-    public Spell[] spells;
-    public Spell currentSpell;
-    public CharacterCastingManager castingManager;
+    [SerializeReference, SubclassSelector] public CastingStrategy[] spells;
+    public CastingStrategy currentSpell;
 
     private bool isPerforming = false;
 
     private void Awake()
     {
-        castingManager = GetComponent<CharacterCastingManager>();
     }
 
     private void Start()
@@ -34,26 +32,26 @@ public class SpellCaster : MonoBehaviour
 
     public void OnCastStart()
     {
-        currentSpell.castingProperties.castingStrategy.Started(currentSpell, castingManager);
+        currentSpell.Start();
     }
 
-    public void OnCastPerform()
+    public void OnCastPerform(CastingData data)
     {
         isPerforming = true;
-        StartCoroutine(PerformCast());
+        StartCoroutine(PerformCast(data));
     }
 
     public void OnCastRelease()
     {
         isPerforming = false;
-        currentSpell.castingProperties.castingStrategy.Stopped();
+        currentSpell.Stop();
     }
 
-    private IEnumerator PerformCast()
+    private IEnumerator PerformCast(CastingData data)
     {
         while (isPerforming)
         {
-            currentSpell.castingProperties.castingStrategy.Performing();
+            currentSpell.Performing(data);
             yield return null;
         }
     }

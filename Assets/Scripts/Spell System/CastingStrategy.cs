@@ -1,23 +1,33 @@
 using UnityEngine;
 using System;
 
-[System.Serializable]
-public  class CastingStrategy
+[Serializable]
+public class CastingData
 {
-    protected Spell spell;
-    protected CharacterCastingManager castingManager;
+    public float horizontalMoveAmount;
+    public float verticalMoveAmount;
+}
 
-    public virtual void Started(Spell spell , CharacterCastingManager castingManager)
+[System.Serializable]
+public class CastingStrategy
+{
+    [SerializeField] protected CastingProperties properties;
+
+    public void Initialize(CastingProperties properties)
+    {
+        this.properties = properties;
+    }
+
+    public virtual void Start()
+    {
+    }
+
+    public virtual void Performing(CastingData data)
     {
 
     }
 
-    public virtual void Performing()
-    {
-
-    }
-
-    public virtual void Stopped()
+    public virtual void Stop()
     {
 
     }

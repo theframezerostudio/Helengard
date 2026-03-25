@@ -6,9 +6,6 @@ public class CastingProperties : ScriptableObject
     [field: SerializeField] public string spellName { get; private set; } // Name of the casted spell
     [field: SerializeField] public float spellDuration { get; private set; } // Duration of spell 
 
-    [field: Header("Conjuration Strategy")]
-    [field: SerializeReference, SubclassSelector] public CastingStrategy castingStrategy {  get; private set; }
-
     [field: Header("Blocked Abilities")]
     [field: SerializeField] public AbilityTag[] blockAbilities;
 

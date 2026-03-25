@@ -944,8 +944,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellCaster: {fileID: 0}
-  horizontalMoveAmount: 0
-  verticalMoveAmount: 0
 --- !u!114 &136572690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -959,11 +957,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spells:
-  - castingProperties: {fileID: 11400000, guid: b4a70f635cee9da4da1c855f5f9fcaf9, type: 2}
-  - castingProperties: {fileID: 11400000, guid: 8d739f0718bcce448be39f44670e1d37, type: 2}
+  - rid: -2
+  - rid: -2
   currentSpell:
-    castingProperties: {fileID: 0}
-  castingManager: {fileID: 0}
+    properties: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!143 &136572691
 CharacterController:
   m_ObjectHideFlags: 0
@@ -6847,6 +6849,80 @@ Transform:
   m_Children:
   - {fileID: 1405149700}
   m_Father: {fileID: 2110272414}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1076284421
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1076284424}
+  - component: {fileID: 1076284423}
+  - component: {fileID: 1076284422}
+  m_Layer: 0
+  m_Name: CASTING - ALPHA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1076284422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076284421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da004e3f3d4d6c4c80043e6a0a51f22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCastingManager
+  spellCaster: {fileID: 1076284423}
+--- !u!114 &1076284423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076284421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c960a906d311c428b05a9f0bf3db4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpellCaster
+  spells:
+  - rid: 2954478479595536497
+  - rid: 2954478479595536522
+  currentSpell:
+    properties: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 2954478479595536497
+      type: {class: AOECasting, ns: , asm: Assembly-CSharp}
+      data:
+        properties: {fileID: 11400000, guid: 8d739f0718bcce448be39f44670e1d37, type: 2}
+    - rid: 2954478479595536522
+      type: {class: SelfCasting, ns: , asm: Assembly-CSharp}
+      data:
+        properties: {fileID: 11400000, guid: b4a70f635cee9da4da1c855f5f9fcaf9, type: 2}
+--- !u!4 &1076284424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076284421}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.59745, y: 0.32274, z: 3.64374}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1079915030
 GameObject:
@@ -23638,3 +23714,4 @@ SceneRoots:
   - {fileID: 1964950892}
   - {fileID: 1412686802687759189}
   - {fileID: 136572692}
+  - {fileID: 1076284424}

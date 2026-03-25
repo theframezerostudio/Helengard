@@ -4,7 +4,6 @@ using System;
 [Serializable]
 public class AOECasting : CastingStrategy
 {   
-
     // private instances
     private GameObject castInstance;
     private GameObject spellInstance;
@@ -21,42 +20,36 @@ public class AOECasting : CastingStrategy
     private float horizontalValue;
     private float verticalValue;
 
-    public override void Started(Spell spell, CharacterCastingManager castingManager)
+    public override void Start()
     {
-        this.castingManager = castingManager;
-        this.spell = spell;
-        castingManager.SetCurrentStrategy(this);
-
         cameraTransform = Camera.main.transform; 
 
         // Start with a point in front of the camera
         targetPosition = cameraTransform.position + cameraTransform.forward * 5f;
 
-        if (castInstance == null && spell.castingProperties.castVFX != null)
+        if (castInstance == null && properties.castVFX != null)
         {
-            castInstance = GameObject.Instantiate(spell.castingProperties.castVFX, targetPosition, Quaternion.identity);
+            castInstance = GameObject.Instantiate(properties.castVFX, targetPosition, Quaternion.identity);
         }
     }
 
-    public override void Performing()
+    public override void Performing(CastingData data)
     {
         // Check if the spell properties are AOECastProperties
-        if (spell.castingProperties is AOECastProperties aoeProperties)
+        if (properties is AOECastProperties aoeProperties)
         {
             moveSpeed = aoeProperties.circleMoveSpeed;
             castRange = aoeProperties.circleRange;
             groundMask = aoeProperties.groundMask;
             effectRadius = aoeProperties.effectRadius;
         }
-        if (castingManager is PlayerCastingManager playerCastingManager)
-        {
-            horizontalValue = playerCastingManager.horizontalMoveAmount;
-            verticalValue = playerCastingManager.verticalMoveAmount;
-        }
         else
         {
             Debug.LogWarning("Spell properties are not configured for AOE casting");
         }
+
+        horizontalValue = data.horizontalMoveAmount;
+        verticalValue = data.verticalMoveAmount;
 
         // Ground snapping using raycast (maybe remove)
         if (Physics.Raycast(targetPosition + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 6f, groundMask))
@@ -84,17 +77,15 @@ public class AOECasting : CastingStrategy
             castInstance.transform.position = targetPosition;
     }
 
-    public override void Stopped()
+    public override void Stop()
     {   
         if(castInstance)
             GameObject.Destroy(castInstance);
 
-        if(spell.castingProperties.spellVFX != null)
+        if(properties.spellVFX != null)
         {
-            spellInstance = GameObject.Instantiate(spell.castingProperties.spellVFX, targetPosition , Quaternion.identity);
-            GameObject.Destroy(spellInstance,spell.castingProperties.spellDuration);
+            spellInstance = GameObject.Instantiate(properties.spellVFX, targetPosition , Quaternion.identity);
+            GameObject.Destroy(spellInstance,properties.spellDuration);
         }
-           
-        castingManager.ClearCurrentStrategy();
     }
 }

@@ -4,18 +4,13 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(SpellCaster))]
 public class CharacterCastingManager : MonoBehaviour
 {
-    [SerializeField] protected CastingStrategy currentStrategy;
     [SerializeField] protected SpellCaster spellCaster;
+    [HideInInspector] protected float horizontalMoveAmount;
+    [HideInInspector] protected float verticalMoveAmount;
 
     protected virtual void Awake()
     {
         spellCaster = GetComponent<SpellCaster>();
-    }
-
-
-    public virtual void SetCurrentStrategy(CastingStrategy strategy)
-    {
-        currentStrategy = strategy;
     }
 
     protected virtual void HandleCastStarted(InputAction.CallbackContext context)
@@ -34,9 +29,5 @@ public class CharacterCastingManager : MonoBehaviour
     protected virtual void HandleSkillSelect(InputAction.CallbackContext context)
     {
 
-    }
-    public virtual void ClearCurrentStrategy()
-    {
-        currentStrategy = null;
     }
 }
