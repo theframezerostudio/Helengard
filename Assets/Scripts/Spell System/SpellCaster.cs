@@ -3,17 +3,19 @@ using UnityEngine;
 
 public class SpellCaster : MonoBehaviour
 {
-    [SerializeReference, SubclassSelector] public CastingStrategy[] spells;
-    public CastingStrategy currentSpell;
+    [SerializeField] private Spell[] spells;
+    [SerializeField, ReadOnly] private Spell currentSpell;
 
-    private bool isPerforming = false;
-
-    private void Awake()
-    {
-    }
+    private Coroutine performRoutine = null;
+    private bool isPerforming;
 
     private void Start()
     {
+        for (int i = 0; i < spells.Length; i++)
+        {
+            spells[i].Initialize();
+        }
+
         SkillSelector(0);
     }
 
@@ -25,11 +27,6 @@ public class SpellCaster : MonoBehaviour
         }
     }
 
-    public void ExecuteSkill()
-    {
-       
-    }
-
     public void OnCastStart()
     {
         currentSpell.Start();
@@ -38,7 +35,14 @@ public class SpellCaster : MonoBehaviour
     public void OnCastPerform(CastingData data)
     {
         isPerforming = true;
-        StartCoroutine(PerformCast(data));
+
+        if (performRoutine != null)
+        {
+            StopCoroutine(performRoutine);
+            performRoutine = null;
+        }
+
+        performRoutine = StartCoroutine(PerformCast(data));
     }
 
     public void OnCastRelease()
@@ -51,8 +55,10 @@ public class SpellCaster : MonoBehaviour
     {
         while (isPerforming)
         {
-            currentSpell.Performing(data);
+            currentSpell.Tick(data);
             yield return null;
         }
+
+        performRoutine = null;
     }
 }

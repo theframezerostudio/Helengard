@@ -3,7 +3,6 @@ using UnityEngine;
 public class CastingProperties : ScriptableObject
 {   
     [field: Header("Conjuration Properties")]
-    [field: SerializeField] public string spellName { get; private set; } // Name of the casted spell
     [field: SerializeField] public float spellDuration { get; private set; } // Duration of spell 
 
     [field: Header("Blocked Abilities")]

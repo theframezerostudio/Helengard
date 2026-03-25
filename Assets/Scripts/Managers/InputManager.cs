@@ -121,7 +121,6 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
         else if (val == Vector2.left)
             index = 3;
 
-        Debug.Log("Test" + index);
         onSkillSelect?.Invoke(index);
     }
 

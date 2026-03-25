@@ -11,7 +11,7 @@ public class CastingData
 [System.Serializable]
 public class CastingStrategy
 {
-    [SerializeField] protected CastingProperties properties;
+    protected CastingProperties properties;
 
     public void Initialize(CastingProperties properties)
     {

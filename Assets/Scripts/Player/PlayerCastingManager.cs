@@ -10,6 +10,8 @@ public class PlayerCastingManager : CharacterCastingManager
     protected override void Awake()
     {
         base.Awake();
+
+        castingData = new();
     }
 
     private void Start()

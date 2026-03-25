@@ -957,15 +957,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spells:
-  - rid: -2
-  - rid: -2
-  currentSpell:
-    properties: {fileID: 0}
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+  - {fileID: 0}
+  - {fileID: 0}
+  currentSpell: {fileID: 0}
 --- !u!143 &136572691
 CharacterController:
   m_ObjectHideFlags: 0
@@ -6894,21 +6888,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellCaster
   spells:
-  - rid: 2954478479595536497
-  - rid: 2954478479595536522
-  currentSpell:
-    properties: {fileID: 0}
-  references:
-    version: 2
-    RefIds:
-    - rid: 2954478479595536497
-      type: {class: AOECasting, ns: , asm: Assembly-CSharp}
-      data:
-        properties: {fileID: 11400000, guid: 8d739f0718bcce448be39f44670e1d37, type: 2}
-    - rid: 2954478479595536522
-      type: {class: SelfCasting, ns: , asm: Assembly-CSharp}
-      data:
-        properties: {fileID: 11400000, guid: b4a70f635cee9da4da1c855f5f9fcaf9, type: 2}
+  - {fileID: 11400000, guid: f919ea9df15f91841b7ca6cae7c09ffd, type: 2}
+  - {fileID: 11400000, guid: c9673ab798daec24dbb06fdd781c2ef2, type: 2}
+  currentSpell: {fileID: 0}
 --- !u!4 &1076284424
 Transform:
   m_ObjectHideFlags: 0
