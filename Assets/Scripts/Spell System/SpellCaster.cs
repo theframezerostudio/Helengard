@@ -21,6 +21,9 @@ public class SpellCaster : MonoBehaviour
 
     public void SkillSelector(int index)
     {
+        if (isPerforming)
+            return;
+
         if (index < spells.Length)
         {
             currentSpell = spells[index];
@@ -29,6 +32,8 @@ public class SpellCaster : MonoBehaviour
 
     public void OnCastStart()
     {
+        if (currentSpell == null) return;
+
         currentSpell.Start();
     }
 
@@ -48,6 +53,9 @@ public class SpellCaster : MonoBehaviour
     public void OnCastRelease()
     {
         isPerforming = false;
+
+        if (currentSpell == null) return;
+
         currentSpell.Stop();
     }
 
@@ -55,7 +63,7 @@ public class SpellCaster : MonoBehaviour
     {
         while (isPerforming)
         {
-            currentSpell.Tick(data);
+            currentSpell?.Tick(data);
             yield return null;
         }
 

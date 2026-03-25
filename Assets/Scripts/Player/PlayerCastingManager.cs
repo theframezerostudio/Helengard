@@ -25,11 +25,11 @@ public class PlayerCastingManager : CharacterCastingManager
 
     private void HandleOnAim(Vector2 vector)
     {
-        verticalMoveAmount = vector.y;
-        horizontalMoveAmount = vector.x;
+        //verticalMoveAmount = vector.y;
+        //horizontalMoveAmount = vector.x;
 
-        castingData.horizontalMoveAmount = horizontalMoveAmount;
-        castingData.verticalMoveAmount = verticalMoveAmount;
+        castingData.horizontalMoveAmount = vector.x;
+        castingData.verticalMoveAmount = vector.y;
 
         //Debug.Log(horizontalMoveAmount + " " + verticalMoveAmount);
     }
