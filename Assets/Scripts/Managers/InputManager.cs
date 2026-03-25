@@ -7,6 +7,8 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 {
     private PlayerControls controls;
 
+    public PermissionManager permissionManager;
+
     // Character and Camera Movement Interaction Event
     public Action<Vector2> onMove;
     public Action<Vector2> onCameraMove;
@@ -26,19 +28,32 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public Vector2 MoveInput { get; private set; }
 
+    private void Awake()
+    {
+        permissionManager = new PermissionManager();
+        controls = new PlayerControls();
+    }
+
     private void OnEnable()
     {
-        controls  = new PlayerControls();
         controls.Player.SetCallbacks(this);
         controls.Enable();
     }
 
+    private void OnDisable()
+    {
+        controls.Player.RemoveCallbacks(this);
+        controls.Disable();
+    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        MoveInput = context.ReadValue<Vector2>();
+        if (permissionManager.IsAllowed(AbilityTag.Move))
+            MoveInput = context.ReadValue<Vector2>();
+        else
+            MoveInput = Vector2.zero;
+
         onMove?.Invoke(MoveInput);
-        //Debug.Log(context.ReadValue<Vector2>());
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -48,6 +63,12 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnSprint(InputAction.CallbackContext context)
     {
+        if (!permissionManager.IsAllowed(AbilityTag.Move))
+        {
+            onSprint?.Invoke(false);
+            return;
+        }
+
         if (context.performed)
             onSprint?.Invoke(true);
         else if (context.canceled)
@@ -56,12 +77,18 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnDash(InputAction.CallbackContext context)
     {
+        if (!permissionManager.IsAllowed(AbilityTag.Move))
+            return;
+
         if (context.performed)
             onDash?.Invoke();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (!permissionManager.IsAllowed(AbilityTag.Jump))
+            return;
+
         onJump?.Invoke();  
     }
 
@@ -70,14 +97,11 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
         onLock?.Invoke();
     }
 
-    private void OnDisable()
-    {   
-        controls.Player.RemoveCallbacks(this);
-        controls.Disable();
-    }
-
     public void OnCast(InputAction.CallbackContext context)
     {
+        if (permissionManager.IsAllowed(AbilityTag.Cast))
+            return;
+
         onCast?.Invoke(context);
     }
 
@@ -103,6 +127,12 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnGuard(InputAction.CallbackContext context)
     {
+        if (!permissionManager.IsAllowed(AbilityTag.Guard))
+        {
+            onGuard?.Invoke(false);
+            return;
+        }
+
         if (context.performed)
             onGuard?.Invoke(true);
         else if (context.canceled)
@@ -111,24 +141,36 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnLightAttack(InputAction.CallbackContext context)
     {
+        if (!permissionManager.IsAllowed(AbilityTag.Attack))
+            return;
+
         if (context.performed)
             onAttack?.Invoke(AttackInput.Light);
     }
 
     public void OnHeavyAttack(InputAction.CallbackContext context)
     {
+        if (!permissionManager.IsAllowed(AbilityTag.Attack))
+            return;
+
         if (context.performed)
             onAttack?.Invoke(AttackInput.Heavy);
     }
 
     public void OnLightHoldAttack(InputAction.CallbackContext context)
     {
+        if (!permissionManager.IsAllowed(AbilityTag.Attack))
+            return;
+
         if (context.performed)
             onAttack?.Invoke(AttackInput.LightHold);
     }
 
     public void OnHeavyHoldAttack(InputAction.CallbackContext context)
     {
+        if (!permissionManager.IsAllowed(AbilityTag.Attack))
+            return;
+
         if (context.performed)
             onAttack?.Invoke(AttackInput.HeavyHold);
     }

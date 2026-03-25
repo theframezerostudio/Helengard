@@ -9,6 +9,9 @@ public class CastingProperties : ScriptableObject
     [field: Header("Conjuration Strategy")]
     [field: SerializeReference, SubclassSelector] public CastingStrategy castingStrategy {  get; private set; }
 
+    [field: Header("Blocked Abilities")]
+    [field: SerializeField] public AbilityTag[] blockAbilities;
+
     [field: Header("Base Properties")]
     [field: SerializeField] public GameObject castVFX { get; private set; }    // Casting VFX
     [field: SerializeField] public GameObject spellVFX { get; private set; }   // Spell VFX

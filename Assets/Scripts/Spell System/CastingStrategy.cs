@@ -2,13 +2,24 @@ using UnityEngine;
 using System;
 
 [System.Serializable]
-public abstract class CastingStrategy
+public  class CastingStrategy
 {
     protected Spell spell;
     protected CharacterCastingManager castingManager;
 
-    public abstract void Started(Spell spell , CharacterCastingManager castingManager);
-    public abstract void Performing();
-    public abstract void Stopped();
+    public virtual void Started(Spell spell , CharacterCastingManager castingManager)
+    {
+
+    }
+
+    public virtual void Performing()
+    {
+
+    }
+
+    public virtual void Stopped()
+    {
+
+    }
     
 }
