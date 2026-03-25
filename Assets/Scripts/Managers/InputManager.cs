@@ -11,6 +11,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     // Character and Camera Movement Interaction Event
     public Action<Vector2> onMove;
+    public Action<Vector2> onAim;
     public Action<Vector2> onCameraMove;
 
     // Hold Interaction Events
@@ -27,6 +28,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     public event Action<int> onSkillSelect;
 
     public Vector2 MoveInput { get; private set; }
+    public Vector2 AimInput { get; private set; }
 
     private void Awake()
     {
@@ -54,6 +56,16 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
             MoveInput = Vector2.zero;
 
         onMove?.Invoke(MoveInput);
+    }
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        if (permissionManager.IsAllowed(AbilityTag.Aim))
+            AimInput = context.ReadValue<Vector2>();
+        else
+            AimInput = Vector2.zero;
+
+        onAim?.Invoke(AimInput);
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -151,7 +163,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     {
         if (!permissionManager.IsAllowed(AbilityTag.Attack))
             return;
-
+        
         if (context.performed)
             onAttack?.Invoke(AttackInput.Heavy);
     }

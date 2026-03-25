@@ -20,10 +20,10 @@ public class PlayerCastingManager : CharacterCastingManager
         InputManager.Instance.onCast += HandleCastPerforming;
         InputManager.Instance.onCast += HandleCastStopped;
         InputManager.Instance.onSkillSelect += HandleSkillSelect;
-        InputManager.Instance.onMove += HandleOnMovement;
+        InputManager.Instance.onAim += HandleOnAim;
     }
 
-    private void HandleOnMovement(Vector2 vector)
+    private void HandleOnAim(Vector2 vector)
     {
         verticalMoveAmount = vector.y;
         horizontalMoveAmount = vector.x;
@@ -70,7 +70,7 @@ public class PlayerCastingManager : CharacterCastingManager
             InputManager.Instance.onCast -= HandleCastPerforming;
             InputManager.Instance.onCast -= HandleCastStopped;
             InputManager.Instance.onSkillSelect -= HandleSkillSelect;
-            InputManager.Instance.onMove -= HandleOnMovement;
+            InputManager.Instance.onAim -= HandleOnAim;
         }
     }
 

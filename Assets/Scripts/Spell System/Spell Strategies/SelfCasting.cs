@@ -10,6 +10,8 @@ public class SelfCasting : CastingStrategy
 
     public override void Start()
     {
+        base.Start();
+
         if (properties.spellVFX != null)
         {
             spellInstance = GameObject.Instantiate(properties.spellVFX);
@@ -19,9 +21,11 @@ public class SelfCasting : CastingStrategy
 
     public override void Performing(CastingData data)
     {
+        base.Performing(data);
     }
 
     public override void Stop()
     {
+        base.Stop();
     }
 }

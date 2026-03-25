@@ -22,6 +22,8 @@ public class AOECasting : CastingStrategy
 
     public override void Start()
     {
+        base.Start();
+
         cameraTransform = Camera.main.transform; 
 
         // Start with a point in front of the camera
@@ -35,6 +37,8 @@ public class AOECasting : CastingStrategy
 
     public override void Performing(CastingData data)
     {
+        base.Performing(data);
+
         // Check if the spell properties are AOECastProperties
         if (properties is AOECastProperties aoeProperties)
         {
@@ -79,6 +83,8 @@ public class AOECasting : CastingStrategy
 
     public override void Stop()
     {   
+        base.Stop();
+
         if(castInstance)
             GameObject.Destroy(castInstance);
 
