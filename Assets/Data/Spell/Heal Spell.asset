@@ -21,4 +21,7 @@ MonoBehaviour:
     RefIds:
     - rid: 2954478484639449179
       type: {class: SelfCasting, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        <StartAnimState>k__BackingField: Magic Idle
+        <ExecuteAnimState>k__BackingField: Magic Execute
+        <RecoverAnimState>k__BackingField: Magic Recovery

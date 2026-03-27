@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.Rendering;
 
 [Serializable]
 public class AOECasting : CastingStrategy
@@ -24,7 +25,10 @@ public class AOECasting : CastingStrategy
     {
         base.Start();
 
-        cameraTransform = Camera.main.transform; 
+        cameraTransform = Camera.main.transform;
+
+        spellAnimator.SetIntent(1f);
+        spellAnimator.PlayAnim(StartAnimState);
 
         // Start with a point in front of the camera
         targetPosition = cameraTransform.position + cameraTransform.forward * 5f;
@@ -88,7 +92,10 @@ public class AOECasting : CastingStrategy
         if(castInstance)
             GameObject.Destroy(castInstance);
 
-        if(properties.spellVFX != null)
+        float duration = spellAnimator.PlayAnim(ExecuteAnimState);
+        StartRecovery(duration, 0.4f);
+
+        if (properties.spellVFX != null)
         {
             spellInstance = GameObject.Instantiate(properties.spellVFX, targetPosition , Quaternion.identity);
             GameObject.Destroy(spellInstance,properties.spellDuration);

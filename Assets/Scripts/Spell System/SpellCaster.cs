@@ -4,8 +4,10 @@ using UnityEngine;
 public class SpellCaster : MonoBehaviour
 {
     [SerializeField] private Spell[] spells;
-    [SerializeField, ReadOnly] private Spell currentSpell;
+    [SerializeReference] private SpellAnimationController spellAnimator;
 
+    [SerializeField, ReadOnly] private Spell currentSpell;
+    
     private Coroutine performRoutine = null;
     private bool isPerforming;
 
@@ -13,7 +15,7 @@ public class SpellCaster : MonoBehaviour
     {
         for (int i = 0; i < spells.Length; i++)
         {
-            spells[i].Initialize();
+            spells[i].Initialize(spellAnimator);
         }
 
         SkillSelector(0);

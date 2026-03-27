@@ -3,14 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Spell", menuName = "Spell/Create Spell")]
 public class Spell : ScriptableObject
 {
-    [field: SerializeField] public string Label { get; protected set; } 
+    [field: SerializeField] public string Label { get; protected set; }
 
     [SerializeReference, SubclassSelector] public CastingStrategy castingStrategy;
     public CastingProperties castingProperties;
 
-    public void Initialize()
+    public void Initialize(SpellAnimationController animator)
     {
-        castingStrategy.Initialize(castingProperties);
+        castingStrategy.Initialize(castingProperties, animator);
     }
 
     public void Start()

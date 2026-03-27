@@ -4,7 +4,7 @@ using UnityEngine;
 public class Stagger_ReactionModule : ReactionModule
 {
     [Tooltip("Animator Follower of the Character")]
-    [SerializeField] private AnimatorFollower animatorFollower;
+    [SerializeField] private HitAnimationController animatorFollower;
     [Tooltip("Fallback if Reaction Duration could not be found")]
     [SerializeField] private float defaultHitstun = 0.2f;
     [Tooltip("Amplify incoming Hit Force")]

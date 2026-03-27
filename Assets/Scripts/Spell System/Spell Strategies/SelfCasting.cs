@@ -14,6 +14,9 @@ public class SelfCasting : CastingStrategy
 
         if (properties.spellVFX != null)
         {
+            float duration = spellAnimator.PlayAnim(ExecuteAnimState, 0.2f);
+            StartRecovery(duration, 0.4f);
+
             spellInstance = GameObject.Instantiate(properties.spellVFX);
             GameObject.Destroy(spellInstance, properties.spellDuration);
         }
@@ -27,5 +30,6 @@ public class SelfCasting : CastingStrategy
     public override void Stop()
     {
         base.Stop();
+
     }
 }
