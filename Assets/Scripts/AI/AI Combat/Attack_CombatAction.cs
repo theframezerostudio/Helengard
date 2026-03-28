@@ -63,7 +63,7 @@ public class Attack_CombatAction : CombatSubAction
         // TODO: For debuuging only, remove later
         attackInput = node.input;
 
-        animator = owner.Animator;
+        animator = owner.Animator.GetAnimator();
 
         owner.Context.GravityScale = 0f;
         owner.verticalVelocity = 0f;

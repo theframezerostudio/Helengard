@@ -27,7 +27,7 @@ public class EnemyLocomotionState : EnemyState
         //agent.SetDestination(enemy.temporaryTargetForNow.position);
 
         Vector2 intent = motionHandler.GetMoveIntent();
-        character.Animator.SetFloat("Speed", intent.magnitude, 0.1f, Time.deltaTime);
+        character.SetAnim("Speed", intent.magnitude, 0.1f);
 
         Quaternion deltaRotation = motionHandler.GetRotationDelta();
         character.motionAccumulator.AddRotation(deltaRotation);

@@ -29,7 +29,7 @@ public class ReactionController : MonoBehaviour
 
     private void Start()
     {
-        Animator animator = character.Animator;
+        Animator animator = character.Animator.GetAnimator();
         ReactionMotionAdapter motion = new (character);
 
         ctx = new ReactionContext(

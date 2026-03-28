@@ -4395,7 +4395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8093d66632bfc1b4cb973be840126cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  <Animator>k__BackingField: {fileID: 4295547326284288989}
+  <Animator>k__BackingField: {fileID: 8325735401962903205}
   <Context>k__BackingField: {fileID: 2720431801829060335}
   <FeetIKResolver>k__BackingField: {fileID: 8325735401962903204}
   <CurrentWeapon>k__BackingField: {fileID: 6129830908828602422}
@@ -11107,7 +11107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a62b5f28b1efb47888e0e45f1a13c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimatorFollower
-  animatorController: {fileID: 0}
+  animatorController: {fileID: 8555646789658657257}
   animatorLayer: Hit Layer
 --- !u!4 &4897133263154493632
 Transform:
@@ -11398,6 +11398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaintainRange_CombatAction
   <Label>k__BackingField: 
   lockCount: 0
+  animStateName: Combat Movement
   minRange: 0
   maxRange: 0
   errorMargin: 0.2
@@ -13031,7 +13032,7 @@ MonoBehaviour:
     FalseState: 
   states:
   - <Label>k__BackingField: Idle
-    animName: Movement
+    animName: 
     <Actions>k__BackingField:
     - {fileID: 8469871910157508965}
     <Decisions>k__BackingField:
@@ -13040,7 +13041,7 @@ MonoBehaviour:
       FalseState: 
     lockCount: 0
   - <Label>k__BackingField: Chase
-    animName: 
+    animName: Combat Movement
     <Actions>k__BackingField:
     - {fileID: 4247943476212198623}
     <Decisions>k__BackingField:
@@ -13067,7 +13068,7 @@ MonoBehaviour:
     <Decisions>k__BackingField:
     - condition: {fileID: 2439688399152509990}
       TrueState: Combat
-      FalseState: Idle
+      FalseState: Chase
     lockCount: 0
   currentState:
     <Label>k__BackingField: 
@@ -14989,7 +14990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4c134431781434892504a3017590ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  <Animator>k__BackingField: {fileID: 4969017935416468246}
+  <Animator>k__BackingField: {fileID: 8555646789658657257}
   <Context>k__BackingField: {fileID: 1454087010036921730}
   <FeetIKResolver>k__BackingField: {fileID: 6337178860079281979}
   <CurrentWeapon>k__BackingField: {fileID: 5557762558944926957}
@@ -16029,19 +16030,21 @@ MonoBehaviour:
   - layerName: Base Layer
     weight: 0
     intent: 0
-    priority: 0
+    priority: 10
     influence: 1
     fadeInSpeed: 5
     fadeOutSpeed: 5
     layerIndex: 0
+    targetWeight: 0
   - layerName: Magic Layer
     weight: 0
     intent: 0
-    priority: 10
+    priority: 0
     influence: 1
-    fadeInSpeed: 5
-    fadeOutSpeed: 1
+    fadeInSpeed: 1
+    fadeOutSpeed: 5
     layerIndex: 0
+    targetWeight: 0
   - layerName: Hit Layer
     weight: 0
     intent: 0
@@ -16050,6 +16053,7 @@ MonoBehaviour:
     fadeInSpeed: 10
     fadeOutSpeed: 10
     layerIndex: 0
+    targetWeight: 0
 --- !u!114 &8325735401962903206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16429,30 +16433,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimatorLayerController
   animator: {fileID: 4969017935416468246}
   layers:
-  - layerName: 
+  - layerName: Base Layer
     weight: 0
     intent: 0
     priority: 0
-    influence: 0
-    fadeInSpeed: 0
-    fadeOutSpeed: 0
+    influence: 1
+    fadeInSpeed: 5
+    fadeOutSpeed: 5
     layerIndex: 0
-  - layerName: 
+    targetWeight: 0
+  - layerName: Hit Layer
     weight: 0
     intent: 0
-    priority: 0
-    influence: 0
-    fadeInSpeed: 0
-    fadeOutSpeed: 0
+    priority: 20
+    influence: 1
+    fadeInSpeed: 10
+    fadeOutSpeed: 10
     layerIndex: 0
-  - layerName: 
-    weight: 0
-    intent: 0
-    priority: 0
-    influence: 0
-    fadeInSpeed: 0
-    fadeOutSpeed: 0
-    layerIndex: 0
+    targetWeight: 0
 --- !u!1 &8574445573175293885
 GameObject:
   m_ObjectHideFlags: 0

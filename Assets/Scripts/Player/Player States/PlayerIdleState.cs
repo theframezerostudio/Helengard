@@ -19,7 +19,7 @@ public class PlayerIdleState : PlayerGroundedState
     {
         base.Update();
 
-        player.SetAnim("Speed", 0f, 0.3f);
+        player.SetAnim("Speed", 0f, 0.3f, 0);
     }
 
     public override void Exit()

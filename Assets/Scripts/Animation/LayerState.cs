@@ -20,6 +20,7 @@ public class LayerState
     public float fadeOutSpeed = 10f;
 
     [HideInInspector] public int layerIndex;
+    [HideInInspector] public float targetWeight;
 
     public void Initialize(Animator animator)
     {

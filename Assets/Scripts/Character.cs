@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    [field: SerializeField] public Animator Animator { get; protected set; }
+    [field: SerializeField] public AnimatorController Animator { get; protected set; }
     public CharacterController Controller { get; private set; }
     [field: SerializeField] public CharacterContext Context { get; private set; }
     [field: SerializeField] public FeetIKResolver FeetIKResolver { get; protected set; }
@@ -27,6 +27,9 @@ public abstract class Character : MonoBehaviour
     [SerializeField] private float rayLength = 0.2f;
     [SerializeField] private int groundRays;
     [SerializeField] private float minSlope = 0.7f;
+
+    // TODO: Do something about this
+    private int baseLayer = 0;
 
     protected virtual void Awake()
     {
@@ -98,9 +101,20 @@ public abstract class Character : MonoBehaviour
     public abstract void Recover(ActionData actionData);
     public abstract void Unsuspend();
 
-    public void SetAnim(string anim, float value, float dampTime = 0f) => Animator.SetFloat(anim, value, dampTime, Time.deltaTime);
-    public void SetAnim(string anim, bool value) => Animator.SetBool(anim, value);
-    public void PlayAnim(string anim, float transitionTime = 0.1f) => Animator.CrossFadeInFixedTime(anim, transitionTime, 0);
+    public void SetAnim(string anim, float value, float dampTime = 0f, float intent = 1)
+    {
+        Animator.SetAnim(anim, value, dampTime, baseLayer, intent);
+    }
+
+    public void SetAnim(string anim, bool value, float intent = 1)
+    {
+        Animator.SetAnim(anim, value, baseLayer, intent);
+    }
+
+    public void PlayAnim(string anim, float transitionTime = 0.1f, float intent = 1)
+    {
+        Animator.PlayAnim(anim, transitionTime, baseLayer, intent);
+    }
 
     private void OnDrawGizmos()
     {

@@ -62,7 +62,7 @@ public class PlayerAttackState : PlayerState
             }
         }
 
-        animator = player.Animator;
+        animator = player.Animator.GetAnimator();
 
         // Handling air attack setup and Hover Float initialization
         hoverBaseHeight = player.transform.position.y;

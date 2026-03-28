@@ -38,7 +38,7 @@ public class MaintainRange_AIAction : AIAction
         }
 
         Vector2 intent = motionHandler.GetMoveIntent();
-        owner.Animator.SetFloat("Speed", intent.magnitude, 0.1f, Time.deltaTime);
+        owner.Animator.SetAnim("Speed", intent.magnitude, 0.1f);
 
         Quaternion deltaRotation = motionHandler.GetRotationDelta();
         owner.motionAccumulator.AddRotation(deltaRotation);

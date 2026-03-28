@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public class MaintainRange_CombatAction : CombatSubAction
 {
+    [SerializeField] private string animStateName;
     [SerializeField] private float minRange;
     [SerializeField] private float maxRange;
     [SerializeField] private float errorMargin = 0.2f;
@@ -20,7 +21,7 @@ public class MaintainRange_CombatAction : CombatSubAction
     {
         base.Enter();
 
-        owner.PlayAnim("Movement", 0.1f);
+        owner.PlayAnim(animStateName, 0.1f);
 
         target = combatData.Target.transform;
         motionHandler = stateContext.MotionHandler;

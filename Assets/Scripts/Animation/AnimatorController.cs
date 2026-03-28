@@ -35,7 +35,25 @@ public class AnimatorController : MonoBehaviour
         ApplyToAnimator();
     }
 
-    public float PlayAnim(string anim, float transitionTime = 0.1f, int layer = 1)
+    public void SetAnim(string anim, float value, float dampTime = 0f, int layer = 0, float intent = 1)
+    {
+        SetIntent(animator.GetLayerName(layer), intent);
+        animator.SetFloat(anim, value, dampTime, Time.deltaTime);
+    }
+
+    public void SetAnim(string anim, bool value, int layer = 0, float intent = 1)
+    {
+        SetIntent(animator.GetLayerName(layer), intent);
+        animator.SetBool(anim, value);
+    }
+
+    public void PlayAnim(string anim, float transitionTime = 0.1f, int layer = 0, float intent = 0)
+    {
+        SetIntent(animator.GetLayerName(layer), intent);
+        animator.CrossFadeInFixedTime(anim, transitionTime, layer);
+    }
+
+    public float PlayAnim(string anim, float transitionTime = 0.1f, int layer = 0)
     {
         animator.CrossFade(anim, transitionTime, layer);
         
