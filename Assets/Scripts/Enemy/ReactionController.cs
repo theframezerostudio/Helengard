@@ -82,6 +82,7 @@ public class ReactionController : MonoBehaviour
 
         if (active == null)
         {
+            EndRecoveryRoutine();
             StartModule(chosen, ev);
             return;
         }
@@ -128,17 +129,22 @@ public class ReactionController : MonoBehaviour
 
         if (recoveryData != null)
         {
-            if (recoveryRoutine != null)
-            {
-                StopCoroutine(recoveryRoutine);
-                recoveryRoutine = null;
-            }
+            EndRecoveryRoutine();
             recoveryRoutine = StartCoroutine(RecoveryRoutine(recoveryData));
             //character.Recover(recoveryData);
         }
         else
         {
             isFinished = true;
+        }
+    }
+
+    private void EndRecoveryRoutine()
+    {
+        if (recoveryRoutine != null)
+        {
+            StopCoroutine(recoveryRoutine);
+            recoveryRoutine = null;
         }
     }
 
