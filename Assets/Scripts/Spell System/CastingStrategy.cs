@@ -30,6 +30,8 @@ public class CastingStrategy
 
     public virtual void Start()
     {
+        EndRecovery();
+
         for (int i = 0; i < properties.blockAbilities.Length; i++)
         {
             permissionManager.Block(properties.blockAbilities[i]);
@@ -51,13 +53,18 @@ public class CastingStrategy
 
     protected void StartRecovery(float duration, float transitionTime = 0.1f)
     {
+        EndRecovery();
+
+        recoveryRoutine = CoroutineManager.Run(RecoveryRoutine(duration, transitionTime));
+    }
+
+    protected void EndRecovery()
+    {
         if (recoveryRoutine != null)
         {
             CoroutineManager.Stop(recoveryRoutine);
             recoveryRoutine = null;
         }
-
-        recoveryRoutine = CoroutineManager.Run(RecoveryRoutine(duration, transitionTime));
     }
 
     private IEnumerator RecoveryRoutine(float duration, float transitionTime = 0.1f)

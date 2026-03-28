@@ -20,19 +20,28 @@ public class SpellAnimationController : MonoBehaviour
 
     public void SetIntent(float value, float duration = 0f)
     {
-        if (duration == 0f)
-        {
-            animatorController.SetIntent(layer, value);
-            return;
-        }
-
         if (intentRoutine != null)
         {
             StopCoroutine(intentRoutine);
             intentRoutine = null;
         }
 
-        StartCoroutine(SetIntentRoutine(value, duration));
+        if (duration == 0f)
+        {
+            animatorController.SetIntent(layer, value);
+            return;
+        }
+
+        intentRoutine = StartCoroutine(SetIntentRoutine(value, duration));
+    }
+
+    public void StopIntentRoutine()
+    {
+        if (intentRoutine != null)
+        {
+            StopCoroutine(intentRoutine);
+            intentRoutine = null;
+        }
     }
 
     private IEnumerator SetIntentRoutine(float value, float duration)

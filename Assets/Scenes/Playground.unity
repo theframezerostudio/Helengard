@@ -16041,7 +16041,7 @@ MonoBehaviour:
     intent: 0
     priority: 0
     influence: 1
-    fadeInSpeed: 1
+    fadeInSpeed: 2
     fadeOutSpeed: 5
     layerIndex: 0
     targetWeight: 0
