@@ -51,7 +51,7 @@ public class Flight_ReactionModule : ReactionModule
         gravityCurveTime = 0f;
         state = AirStateType.Rising;
 
-        ctx.Animator.CrossFade(launchAnim, 0.1f);
+        ctx.Animator.PlayAnim(launchAnim, 0.1f);
 
         ctx.Motion.GetMotionPolicy(out previousMovementPolicy, out previousRotationPolicy);
         ctx.Motion.OverrideMotionPolicy(MovementMotionPolicy.NoRootMotion, RotationMotionPolicy.YawOnly);

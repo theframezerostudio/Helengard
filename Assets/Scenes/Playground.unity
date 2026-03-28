@@ -3389,6 +3389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyReactionController
   character: {fileID: 2075069652}
+  <HitAnimator>k__BackingField: {fileID: 0}
   modules:
   - {fileID: 2075069659}
   - {fileID: 2075069660}
@@ -3414,7 +3415,7 @@ MonoBehaviour:
   forceExit: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
-  animatorFollower: {fileID: 315489030}
+  staggerAnim: Hit_Blend
   defaultHitstun: 0.2
   forceMultiplier: 1
   impulseDuration: 0.05
@@ -4959,6 +4960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReactionController
   character: {fileID: 486351507002619920}
+  <HitAnimator>k__BackingField: {fileID: 0}
   modules:
   - {fileID: 4070624955590548964}
   active: {fileID: 0}
@@ -7622,7 +7624,7 @@ MonoBehaviour:
   forceExit: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
-  animatorFollower: {fileID: 4891730363448382031}
+  staggerAnim: Hit_Blend
   defaultHitstun: 0.2
   forceMultiplier: 1
   impulseDuration: 0.05
@@ -7813,7 +7815,7 @@ MonoBehaviour:
   forceExit: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
-  animatorFollower: {fileID: 1813650217012616146}
+  staggerAnim: Hit_Blend
   defaultHitstun: 0.2
   forceMultiplier: 1
   impulseDuration: 0.05
@@ -9781,7 +9783,7 @@ MonoBehaviour:
   forceExit: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
-  animatorFollower: {fileID: 1813650217012616146}
+  staggerAnim: Hit_Blend
   defaultHitstun: 0.2
   forceMultiplier: 1
   impulseDuration: 0.05
@@ -11328,6 +11330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReactionController
   character: {fileID: 7571382972195383170}
+  <HitAnimator>k__BackingField: {fileID: 4891730363448382031}
   modules:
   - {fileID: 2585300778792362379}
   - {fileID: 5347356050106111250}
@@ -12820,7 +12823,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &6085942469844062015
 GameObject:
   m_ObjectHideFlags: 0
@@ -13791,6 +13794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReactionController
   character: {fileID: 486351507002619920}
+  <HitAnimator>k__BackingField: {fileID: 1813650217012616146}
   modules:
   - {fileID: 2645322674096249247}
   - {fileID: 3271233330428503740}

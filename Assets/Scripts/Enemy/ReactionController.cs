@@ -6,6 +6,9 @@ using System.Collections;
 public class ReactionController : MonoBehaviour
 {
     [SerializeField] private Character character;
+    [Tooltip("Hit Animator of the Character")]
+    [field: SerializeField] protected HitAnimationController HitAnimator { get; private set; }
+
     [SerializeField] private List<ReactionModule> modules = new();
 
     [SerializeField, ReadOnly] private ReactionModule active;
@@ -29,12 +32,11 @@ public class ReactionController : MonoBehaviour
 
     private void Start()
     {
-        Animator animator = character.Animator.GetAnimator();
         ReactionMotionAdapter motion = new (character);
 
         ctx = new ReactionContext(
             character,
-            animator,
+            HitAnimator,
             motion,
             //stateMachine,
             EnqueueHit
@@ -142,8 +144,10 @@ public class ReactionController : MonoBehaviour
 
     private IEnumerator RecoveryRoutine(ActionData recoveryData)
     {
-        character.PlayAnim(recoveryData.animState, recoveryData.transitionTime);
+        HitAnimator.PlayAnim(recoveryData.animState, recoveryData.transitionTime);
         yield return new WaitForSeconds(recoveryData.duration);
+
+        HitAnimator.SetIntent(0);
 
         isFinished = true;
         recoveryRoutine = null;

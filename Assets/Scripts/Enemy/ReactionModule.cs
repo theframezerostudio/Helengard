@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class ReactionModule : MonoBehaviour, IReactionModule
 {
     [Tooltip("Optional Recover Data For Followup Of Current Reaction")]
-    [SerializeField] protected ActionData recoveryData;
+    [SerializeField] protected ActionData recoveryData = null;
     [Tooltip("Normailed Time For Cancelling Reaction")]
     [Range(0f, 1f), SerializeField] protected float cancelTime = 1f;
     [Tooltip("Immediate Override Reaction Module On Cancel")]
@@ -58,6 +58,9 @@ public abstract class ReactionModule : MonoBehaviour, IReactionModule
     {
         IsFinished = true;
         CanBreak = true;
+
+        ctx.Animator.SetIntent(0);
+
         onExit?.Invoke(recoveryData);
     }
 

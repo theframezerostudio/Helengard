@@ -52,7 +52,8 @@ public class GroundSmash_ReactionModule : ReactionModule
         gravityCurveTime = 0f;
         hitGround = false;
 
-        ctx.Animator.CrossFade(groundSmashAnim, 0.05f);
+        ctx.Animator.PlayAnim(groundSmashAnim, 0.05f);
+        //ctx.Animator.CrossFade(groundSmashAnim, 0.05f);
 
         ctx.Motion.GetMotionPolicy(out prevMovePolicy, out prevRotPolicy);
         ctx.Motion.OverrideMotionPolicy(
@@ -65,18 +66,6 @@ public class GroundSmash_ReactionModule : ReactionModule
     private void SetupForces(DamageEvent ev, ReactionContext ctx)
     {
         Vector3 force = ev.HitForce;
-
-        //Vector3 toAttacker = ev.Attacker.position - ctx.Transform.position;
-        //toAttacker.y = 0;
-
-        //if (toAttacker.sqrMagnitude < 0.01f)
-        //    toAttacker = Vector3.zero;
-        //else
-        //    toAttacker.Normalize();
-
-        //float horizontalMagnitude = Mathf.Max(force.magnitude * horizontalForceMultiplier, horizontalForce);
-
-        //horizontalVelocity = toAttacker * horizontalMagnitude;
 
         horizontalVelocity = force * horizontalForceMultiplier;
         horizontalVelocity.y = 0;

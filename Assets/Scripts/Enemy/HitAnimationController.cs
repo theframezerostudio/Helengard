@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Animator))]
 public class HitAnimationController : MonoBehaviour
@@ -29,7 +30,12 @@ public class HitAnimationController : MonoBehaviour
         animator.SetLayerWeight(hitLayerIndex, 0f);
     }
 
-    public async Task<float> ApplyHit(DamageEvent hit)
+    public void SetIntent(float intent)
+    {
+        animatorController.SetIntent(animatorLayer, intent);
+    }
+
+    public async Task<float> ApplyHit(DamageEvent hit, string animState)
     {
         active = true;
         timer = 0f;
@@ -41,7 +47,6 @@ public class HitAnimationController : MonoBehaviour
             endRoutine = null;
         }
 
-        //animator.SetLayerWeight(hitLayerIndex, 1f);
         animatorController.SetIntent(animatorLayer, 1f);
 
         animator.SetFloat(HitFrontBackHash, hit.Direction == HitDirection.Back ? 1f : 0f);
@@ -49,59 +54,28 @@ public class HitAnimationController : MonoBehaviour
         animator.SetFloat(HitSwingHash, SwingToParam(hit.SwingType));
         await Task.Delay(10);
 
-
-        animator.Play(animator.GetCurrentAnimatorStateInfo(hitLayerIndex).fullPathHash, hitLayerIndex, 0f);
+        animatorController.PlayAnim(animState, 0f, hitLayerIndex, 1f);
 
         var clips = animator.GetCurrentAnimatorClipInfo(hitLayerIndex);
         duration = clips.Length > 0 ? clips[0].clip.length : hit.StunDuration;
         return duration;
     }
 
+    public float PlayAnim(string anim, float transitionTime = 0.1f)
+    {
+        animatorController.SetIntent(animatorLayer, 1f);
+        return animatorController.PlayAnim(anim, transitionTime, hitLayerIndex);
+    }
+
     public void EndHitAnim(bool forceEnd)
     {
-        //if (endRoutine != null)
-        //{
-        //    StopCoroutine(endRoutine);
-        //    endRoutine = null;
-        //}
-
         animatorController.SetIntent(animatorLayer, 0f);
 
         if (forceEnd)
         {
             ClearHit();
         }
-        //else
-        //{
-        //    endRoutine = StartCoroutine(EndHitAnimRoutine());
-        //}
     }
-
-    //private IEnumerator EndHitAnimRoutine()
-    //{
-    //    while (active)
-    //    {
-    //        ResetHitLayer();
-    //        yield return null;
-    //    }
-
-    //    endRoutine = null;
-    //}
-
-    //private void ResetHitLayer()
-    //{
-    //    timer += Time.deltaTime;
-
-    //    float t = duration > 0f ? Mathf.Clamp01(timer / duration) : 1f;
-
-    //    float weight = 1f - EaseOutCubic(t);
-    //    animator.SetLayerWeight(hitLayerIndex, weight);
-
-    //    if (timer >= duration)
-    //    {
-    //        ClearHit();
-    //    }
-    //}
 
     public void ClearHit()
     {
@@ -134,9 +108,4 @@ public class HitAnimationController : MonoBehaviour
             _ => 0f
         };
     }
-
-    //private float EaseOutCubic(float t)
-    //{
-    //    return 1f - Mathf.Pow(1f - t, 3f);
-    //}
 }

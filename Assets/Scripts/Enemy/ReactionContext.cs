@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ReactionContext
 {
-    public readonly Animator Animator;
+    public readonly HitAnimationController Animator;
     public readonly ReactionMotionAdapter Motion;
     public readonly Character Self;
     public readonly Transform Transform;
@@ -10,7 +10,7 @@ public class ReactionContext
     //TODO: Feedback Feedback;
 
     public ReactionContext(Character self,
-                           Animator animator,
+                           HitAnimationController animator,
                            ReactionMotionAdapter motion,
                            //TODO: Feedback,
                            System.Action<DamageEvent> enqueueReaction = null)

@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class Stagger_ReactionModule : ReactionModule
 {
-    [Tooltip("Animator Follower of the Character")]
-    [SerializeField] private HitAnimationController animatorFollower;
+    [SerializeField] private string staggerAnim = "Hit_Blend";
     [Tooltip("Fallback if Reaction Duration could not be found")]
     [SerializeField] private float defaultHitstun = 0.2f;
     [Tooltip("Amplify incoming Hit Force")]
@@ -48,12 +47,14 @@ public class Stagger_ReactionModule : ReactionModule
         hitVersion++;
         int version = hitVersion;
 
+        //ctx.Animator.PlayAnim(staggerAnim, 0.1f);
+
         _ = SuspendCharacterAsync(ev, ctx, version);
     }
 
     private async Task SuspendCharacterAsync(DamageEvent ev, ReactionContext ctx, int version)
     {
-        float duration = await animatorFollower.ApplyHit(ev);
+        float duration = await ctx.Animator.ApplyHit(ev, staggerAnim);
 
         // Ignore old async calls
         if (version != hitVersion) return;
@@ -100,7 +101,7 @@ public class Stagger_ReactionModule : ReactionModule
     {
         base.Exit(ctx);
 
-        animatorFollower.EndHitAnim(forceExit);
+        ctx.Animator.EndHitAnim(forceExit);
         //ctx.StateMachine.SetHitReactionEnd();
     }
 }

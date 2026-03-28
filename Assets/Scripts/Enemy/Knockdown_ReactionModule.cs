@@ -45,7 +45,8 @@ public class Knockdown_ReactionModule : ReactionModule
         timer = 0f;
         isDone = false;
 
-        ctx.Animator.CrossFade(knockdownAnim, 0.1f);
+        ctx.Animator.PlayAnim(knockdownAnim, 0.1f);
+        //ctx.Animator.CrossFade(knockdownAnim, 0.1f);
 
         ctx.Motion.GetMotionPolicy(out prevMovePolicy, out prevRotPolicy);
 

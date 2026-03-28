@@ -48,7 +48,7 @@ public class AirJuggle_ReactionModule : ReactionModule
         gravityCurveTime = 0f;
         startHeight = ctx.Self.transform.position.y;
 
-        ctx.Animator.CrossFade(airHitAnim, 0.05f);
+        ctx.Animator.PlayAnim(airHitAnim, 0.05f);
 
         ctx.Motion.GetMotionPolicy(out prevMovePolicy, out prevRotPolicy);
         ctx.Motion.OverrideMotionPolicy(MovementMotionPolicy.NoRootMotion, RotationMotionPolicy.YawOnly);

@@ -53,6 +53,12 @@ public class AnimatorController : MonoBehaviour
         animator.CrossFadeInFixedTime(anim, transitionTime, layer);
     }
 
+    public void PlayAnim(int animHash, float transitionTime = 0.1f, int layer = 0, float intent = 0)
+    {
+        SetIntent(animator.GetLayerName(layer), intent);
+        animator.CrossFadeInFixedTime(animHash, transitionTime, layer);
+    }
+
     public float PlayAnim(string anim, float transitionTime = 0.1f, int layer = 0)
     {
         animator.CrossFade(anim, transitionTime, layer);
