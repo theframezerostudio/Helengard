@@ -119,6 +119,7 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnSpellSelect(InputAction.CallbackContext context)
     {
+
         if (!context.performed) { return; }
 
         Vector2 val = context.ReadValue<Vector2>();

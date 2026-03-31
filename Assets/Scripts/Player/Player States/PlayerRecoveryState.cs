@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerRecoveryState : PlayerState
+public class PlayerRecoveryState: PlayerState
 {
     private float stateTimer;
     private readonly ActionData actionData;
@@ -18,7 +18,8 @@ public class PlayerRecoveryState : PlayerState
 
         stateTimer = 0;
 
-        character.PlayAnim(actionData.animState, 0.1f);
+        if (actionData.animState != null)
+            character.PlayAnim(actionData.animState, 0.1f);
 
         character.Context.dataAggregator.SetInRecovery(true);
 

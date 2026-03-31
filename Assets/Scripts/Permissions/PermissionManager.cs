@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 public enum AbilityTag
 {
     Move,
@@ -6,12 +7,15 @@ public enum AbilityTag
     Attack,
     Cast,
     Guard,
-    Aim
+    Aim,
+    StateMachine
 }
 
 public class PermissionManager
 {
     private readonly Dictionary<AbilityTag, int> blockers = new();
+
+    public event System.Action<AbilityTag, bool> OnPermissionChanged;
 
     public bool IsAllowed(AbilityTag tag)
     {
@@ -20,20 +24,49 @@ public class PermissionManager
 
     public BlockHandle Block(AbilityTag tag)
     {
+        bool wasAllowed = IsAllowed(tag);
+
         if (!blockers.ContainsKey(tag))
             blockers[tag] = 0;
 
         blockers[tag]++;
+
+        if (wasAllowed)
+            OnPermissionChanged?.Invoke(tag, false);
+
         return new BlockHandle(this, tag);
     }
 
-    internal void Release(AbilityTag tag)
+    public void BlockAll()
+    {
+        foreach (AbilityTag tag in System.Enum.GetValues(typeof(AbilityTag)))
+        {
+            Block(tag);
+        }
+    }
+
+    public void Release(AbilityTag tag)
     {
         if (!blockers.ContainsKey(tag)) return;
 
         blockers[tag]--;
 
         if (blockers[tag] <= 0)
+        {
             blockers.Remove(tag);
+            OnPermissionChanged?.Invoke(tag, true); 
+        }
     }
+
+    public void ReleaseAll()
+    {
+        foreach (AbilityTag tag in System.Enum.GetValues(typeof(AbilityTag)))
+        {
+            while (!IsAllowed(tag))
+            {
+                Release(tag);
+            }
+        }
+    }
+
 }

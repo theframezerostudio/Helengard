@@ -69,9 +69,13 @@ public class CastingStrategy
 
     private IEnumerator RecoveryRoutine(float duration, float transitionTime = 0.1f)
     {
+        permissionManager.BlockAll();
+
         yield return new WaitForSeconds(duration);
         float recDuration = spellAnimator.PlayAnim(RecoverAnimState, transitionTime);
         spellAnimator.SetIntent(0, recDuration);
         recoveryRoutine = null;
+
+        permissionManager.ReleaseAll();
     }
 }
