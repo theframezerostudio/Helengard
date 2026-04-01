@@ -6,6 +6,8 @@ public class PlayerMoveState : PlayerGroundedState
     private Vector2 smoothedMovement;
     private Vector2 movementVelocity;
 
+    public override AbilityTag? RequiredAbility => AbilityTag.Move;
+
     public PlayerMoveState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
     }

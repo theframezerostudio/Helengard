@@ -23,6 +23,7 @@ public class PlayerState : BaseState
     public override void Enter()
     {
         player.Target.onHit += HandleHit;
+        inputManager.permissionManager.OnPermissionChanged += PermissionCheck;
     }
 
     public override void Update()
@@ -51,6 +52,7 @@ public class PlayerState : BaseState
     public override void Exit()
     {
         player.Target.onHit -= HandleHit;
+        inputManager.permissionManager.OnPermissionChanged -= PermissionCheck;
     }
     #endregion
 
@@ -68,6 +70,15 @@ public class PlayerState : BaseState
     }
     #endregion
     
+    private void PermissionCheck(AbilityTag tag, bool isAllowed)
+    {
+        Debug.Log($"Permission changed for {tag}: {(isAllowed ? "Allowed" : "Denied")}");
+        if (!isAllowed && tag == RequiredAbility)
+        {
+            stateMachine.ForceState(player.IdleState);
+        }
+    }
+
     private void HandleHit(DamageEvent ev)
     {
         stateMachine.TransitionToState(new PlayerHitState(stateMachine, character, ev), true);

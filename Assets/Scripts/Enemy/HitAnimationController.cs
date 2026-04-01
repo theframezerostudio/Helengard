@@ -17,9 +17,7 @@ public class HitAnimationController : MonoBehaviour
     private static readonly int HitSwingHash = Animator.StringToHash("HitSwing");
 
     private Coroutine endRoutine;
-    private float timer;
     private float duration;
-    private bool active;
 
     private void Awake()
     {
@@ -37,8 +35,6 @@ public class HitAnimationController : MonoBehaviour
 
     public async Task<float> ApplyHit(DamageEvent hit, string animState)
     {
-        active = true;
-        timer = 0f;
         duration = hit.StunDuration;
 
         if (endRoutine != null)
@@ -79,8 +75,6 @@ public class HitAnimationController : MonoBehaviour
 
     public void ClearHit()
     {
-        active = false;
-        timer = 0f;
         duration = 0f;
 
         animator.SetLayerWeight(hitLayerIndex, 0f);

@@ -5,6 +5,7 @@ public abstract class BaseState
     protected StateMachine stateMachine;
     protected Character character;
 
+    public virtual AbilityTag? RequiredAbility => null;
     public virtual bool IsCancellable => true;
     public virtual int Priority => 0;
     public virtual bool IsCompleted { get; protected set; } = false;

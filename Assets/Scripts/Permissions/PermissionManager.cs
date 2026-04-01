@@ -1,16 +1,5 @@
 using System.Collections.Generic;
 
-public enum AbilityTag
-{
-    Move,
-    Jump,
-    Attack,
-    Cast,
-    Guard,
-    Aim,
-    StateMachine
-}
-
 public class PermissionManager
 {
     private readonly Dictionary<AbilityTag, int> blockers = new();
