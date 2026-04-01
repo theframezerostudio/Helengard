@@ -5,6 +5,8 @@ public class PlayerGuardState : PlayerGroundedState
     private float stateTimer;
     private bool isPerfectGuarding;
 
+    public override AbilityTag? RequiredAbility => AbilityTag.Guard;
+
     public PlayerGuardState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
     }

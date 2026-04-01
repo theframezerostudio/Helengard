@@ -72,7 +72,7 @@ public class PlayerState : BaseState
     
     private void PermissionCheck(AbilityTag tag, bool isAllowed)
     {
-        Debug.Log($"Permission changed for {tag}: {(isAllowed ? "Allowed" : "Denied")}");
+        //Debug.Log($"Permission changed for {tag}: {(isAllowed ? "Allowed" : "Denied")}");
         if (!isAllowed && tag == RequiredAbility)
         {
             stateMachine.ForceState(player.IdleState);

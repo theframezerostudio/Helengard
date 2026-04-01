@@ -28,6 +28,8 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.Update();
 
+        movement = inputManager.MoveInput;
+
         float moveSpeed = player.Context.isSprinting ? player.sprintSpeed : player.movementSpeed;
         float rate = movement.sqrMagnitude > smoothedMovement.sqrMagnitude ? player.acceleration : player.deceleration;
 

@@ -22,6 +22,8 @@ public class PlayerAttackState : PlayerState
 
     private Transform motionWarpTarget;
 
+    public override AbilityTag? RequiredAbility => AbilityTag.Attack;
+
     public PlayerAttackState(StateMachine stateMachine, Character character, AttackInput attackInput) : base(stateMachine, character)
     {
         this.attackInput = attackInput;

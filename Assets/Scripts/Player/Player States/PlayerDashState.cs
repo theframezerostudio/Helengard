@@ -7,6 +7,8 @@ public class PlayerDashState : PlayerState
     private Vector2 moveInput;
     private float stateTimer;
 
+    public override AbilityTag? RequiredAbility => AbilityTag.Move;
+
     public PlayerDashState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {
     }

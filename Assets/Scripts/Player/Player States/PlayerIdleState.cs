@@ -11,22 +11,26 @@ public class PlayerIdleState : PlayerGroundedState
     {
         base.Enter();
 
-        InputManager.Instance.onMove += HandleMove;
+        inputManager.onMove += HandleMove;
         player.PlayAnim("Movement", 0.3f);
     }
 
     public override void Update()
     {
         base.Update();
-
         player.SetAnim("Speed", 0f, 0.3f, 0);
+
+        if (inputManager.MoveInput.sqrMagnitude > 0.1f)
+        {
+            stateMachine.TransitionToState(player.MoveState);
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        InputManager.Instance.onMove -= HandleMove;
+        inputManager.onMove -= HandleMove;
     }
 
     private void HandleMove(Vector2 movementInput)

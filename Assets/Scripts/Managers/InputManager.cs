@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// TODO: Make Buffered Input
 public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActions
 {
     private PlayerControls controls;
@@ -46,6 +47,29 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     {
         controls.Player.RemoveCallbacks(this);
         controls.Disable();
+    }
+
+    private void Start()
+    {
+        permissionManager.OnPermissionChanged += HandlePermissionChange;
+    }
+    private void OnDestroy()
+    {
+        permissionManager.OnPermissionChanged -= HandlePermissionChange;
+    }
+
+    // Hotfix TODO: Replace with Input Buffer 
+    private void HandlePermissionChange(AbilityTag tag, bool allowed)
+    {
+        if (allowed && tag == AbilityTag.Move)
+        {
+            MoveInput = controls.Player.Move.ReadValue<Vector2>();
+        }
+        if (!allowed && tag == AbilityTag.Move)
+        {
+            MoveInput = Vector2.zero;
+            onMove?.Invoke(MoveInput);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
