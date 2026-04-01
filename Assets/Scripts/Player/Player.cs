@@ -41,7 +41,6 @@ public class Player : Character
 
     [Header("InAir Settings")]
     public float jumpForce = 8f;
-    public float airControlPercent = 0.5f;
 
     [Header("Guard Settings")]
     public float perfectGuardWindow = 0.2f;

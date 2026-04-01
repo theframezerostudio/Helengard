@@ -125,7 +125,8 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
         if (!permissionManager.IsAllowed(AbilityTag.Jump))
             return;
 
-        onJump?.Invoke();  
+        if (context.performed)
+            onJump?.Invoke();  
     }
 
     public void OnLockOn(InputAction.CallbackContext context)

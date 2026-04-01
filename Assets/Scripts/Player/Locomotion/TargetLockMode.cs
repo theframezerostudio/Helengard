@@ -13,7 +13,7 @@ public class TargetLockMode : LocomotionMode
     {
     }
 
-    public override void Move(Vector2 input, float movementSpeed)
+    public override void Move(Vector2 input, float movementSpeed, float acceleration = 0f)
     {
     }
 

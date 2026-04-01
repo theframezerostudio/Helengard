@@ -2236,6 +2236,7 @@ MonoBehaviour:
   isGuarding: 0
   isPerfectGuarding: 0
   airComboDone: 0
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!4 &1326828033
 Transform:
   m_ObjectHideFlags: 0
@@ -3266,7 +3267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4c134431781434892504a3017590ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  <Animator>k__BackingField: {fileID: 315489028}
+  <Animator>k__BackingField: {fileID: 0}
   <Context>k__BackingField: {fileID: 1326828032}
   <FeetIKResolver>k__BackingField: {fileID: 315489026}
   <CurrentWeapon>k__BackingField: {fileID: 0}
@@ -4421,7 +4422,7 @@ MonoBehaviour:
   startingAbilities:
   - {fileID: 11400000, guid: 68a64c751ff56034b97e02a2f16786ab, type: 2}
   - {fileID: 11400000, guid: 0ba80390ad355064ebde852d8e0e3e65, type: 2}
-  acceleration: 8
+  acceleration: 128
   deceleration: 16
   OppositeDotThreshold: -0.3
   customLength: 3
@@ -4431,7 +4432,6 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldown: 0
   jumpForce: 8
-  airControlPercent: 0.5
   perfectGuardWindow: 0.2
 --- !u!1 &492300607373351357
 GameObject:
@@ -6185,6 +6185,7 @@ MonoBehaviour:
   isGuarding: 0
   isPerfectGuarding: 0
   airComboDone: 0
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &1455122920587418641
 GameObject:
   m_ObjectHideFlags: 0
@@ -7962,6 +7963,7 @@ MonoBehaviour:
   isGuarding: 0
   isPerfectGuarding: 0
   airComboDone: 0
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &2762991638548549271
 GameObject:
   m_ObjectHideFlags: 0
@@ -14994,7 +14996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4c134431781434892504a3017590ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  <Animator>k__BackingField: {fileID: 8555646789658657257}
+  <Animator>k__BackingField: {fileID: 0}
   <Context>k__BackingField: {fileID: 1454087010036921730}
   <FeetIKResolver>k__BackingField: {fileID: 6337178860079281979}
   <CurrentWeapon>k__BackingField: {fileID: 5557762558944926957}

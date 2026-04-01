@@ -35,14 +35,12 @@ public class FreeMoveMode : LocomotionMode
 
         Vector3 smoothTarget = Vector3.Lerp(currentVelocity, targetVelocity, alpha);
         currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, player.acceleration * dt);
-        //currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref velocityHelper, 0.2f);
         motion.AddExtraDelta(currentVelocity * dt);
         
-        //Debug.Log($"Current Velocity: {currentVelocity}");
         player.Context.Velocity = currentVelocity;
     }
 
-    public override void Move(Vector2 input, float speed)
+    public override void Move(Vector2 input, float speed, float acceleration = -1f)
     {
         float dt = Time.deltaTime;
         if (dt <= 0)
@@ -50,7 +48,7 @@ public class FreeMoveMode : LocomotionMode
 
         if (input.sqrMagnitude < 0.001f || speed == 0f)
         {
-            ResetVelocity();
+            //ResetVelocity();
             return;
         }
 
@@ -60,8 +58,9 @@ public class FreeMoveMode : LocomotionMode
         float alpha = GetSmoothingDelta(dt, smoothingTime);
         Vector3 smoothTarget = Vector3.Lerp(currentVelocity, targetVelocity, alpha);
 
-        currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, player.acceleration * dt);
-        //player.Context.Velocity = currentVelocity;
+        acceleration = acceleration > 0f ? acceleration : player.acceleration;
+
+        currentVelocity = Vector3.MoveTowards(currentVelocity, smoothTarget, acceleration * dt);
 
         motion.AddExtraDelta(currentVelocity * dt);
     }
@@ -74,7 +73,6 @@ public class FreeMoveMode : LocomotionMode
         Vector3 dir = GetDirection(input).normalized;
         Vector3 delta = distance * dir;
 
-        //currentVelocity = Vector3.SmoothDamp(currentVelocity, delta, ref velocityHelper, 0.2f);
         motion.AddExtraDelta(delta);
     }
 
@@ -85,7 +83,6 @@ public class FreeMoveMode : LocomotionMode
 
         Vector3 delta = distance * direction;
 
-        //currentVelocity = Vector3.SmoothDamp(currentVelocity, velocity, ref velocityHelper, 0.2f);
         motion.AddExtraDelta(delta);
     }
 

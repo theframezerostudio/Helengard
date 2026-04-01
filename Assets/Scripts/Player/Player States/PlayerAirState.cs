@@ -14,7 +14,10 @@ public class PlayerAirState : PlayerState
 
     private AirStateType AirState;
     private readonly JumpProfile jumpProfile;
+    private readonly float minSpeed = 3f;
+
     private Vector2 airMoveDirection;
+    private float speed;
     private float startTime;
 
     public PlayerAirState(StateMachine stateMachine, Character character, JumpProfile jumpProfile = null) : base(stateMachine, character)
@@ -43,6 +46,12 @@ public class PlayerAirState : PlayerState
         }
 
         airMoveDirection = inputManager.MoveInput;
+
+        Vector3 velocity = player.Context.Velocity;
+        velocity.y = 0f;
+        speed = Mathf.Max(minSpeed, velocity.magnitude);
+
+        player.LocomotionMode.ResetVelocity();
 
         inputManager.onAttack += HandleAttack;
     }
@@ -85,14 +94,15 @@ public class PlayerAirState : PlayerState
 
         if (jumpProfile)
         {
-            player.LocomotionMode.Move(movement, player.movementSpeed * jumpProfile.airControlMultiplier);
-            player.LocomotionMode.Move(airMoveDirection, jumpProfile.forwardForce);
+            player.LocomotionMode.Move(movement, speed * jumpProfile.airSpeedMultiplier, float.MaxValue);
+            player.LocomotionMode.Move(airMoveDirection, jumpProfile.forwardForce, float.MaxValue);
         }
         else
         {
-            player.LocomotionMode.Move(movement, player.movementSpeed * player.airControlPercent);
+            Debug.LogWarning("No jump profile assigned, using NO air control.");
         }
 
+        player.LocomotionMode.Rotate(airMoveDirection);
         HandleLand();
     }
 
@@ -112,8 +122,6 @@ public class PlayerAirState : PlayerState
             if (Time.time - startTime > 0.1f)
             {
                 stateMachine.TransitionToState(new PlayerRecoveryState(stateMachine, player, player.ActionProvider.landing));
-
-                Debug.Log("Landed, switching to Recovery State.");
             }
             else
                 SwitchToLocomotion();

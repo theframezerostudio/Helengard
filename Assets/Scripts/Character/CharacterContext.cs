@@ -21,7 +21,7 @@ public class CharacterContext : MonoBehaviour
     [HideInInspector] public bool isPerfectGuarding;
     [HideInInspector] public bool airComboDone = false;
 
-    private Vector3 velocity;
+    [SerializeField, ReadOnly] private Vector3 velocity;
     public Vector3 Velocity
     {
         get => velocity;

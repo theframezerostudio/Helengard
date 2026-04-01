@@ -8,8 +8,8 @@ public class JumpProfile : ScriptableObject
     public float maxFallSpeed = -25f;
     public AnimationCurve gravityCurve;
 
-    [Range(0f, 1f)]
-    public float airControlMultiplier = 0.5f;
+    [Tooltip("Multiplier for horizontal movement while in the air. 1 means full control, 0 means no control.")]
+    public float airSpeedMultiplier = 0.5f;
 
     public AnimationClip jumpAnim;
     public AnimationClip fallAnim;

@@ -25,7 +25,7 @@ public abstract class LocomotionMode
     }
 
     public abstract void Move(Vector3 dir, float movementSpeed);
-    public abstract void Move(Vector2 input, float movementSpeed);
+    public abstract void Move(Vector2 input, float movementSpeed, float acceleration = 0f);
     public abstract void AddImpulse(Vector2 input, float distance);
     public abstract void AddImpulse(Vector3 dir, float distance);
     public abstract void Rotate(Vector2 dir);

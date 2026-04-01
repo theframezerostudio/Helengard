@@ -48,7 +48,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  airControlMultiplier: 0.081
+  airSpeedMultiplier: 2
   jumpAnim: {fileID: 7400000, guid: 79fef3be1ee187041b6a4f078eb60d60, type: 2}
   fallAnim: {fileID: 7400000, guid: e7d905f44cda1f64bbd95e329ca5cc7d, type: 2}
   landAnim: {fileID: 7400000, guid: ec6529fc6ab3fc2469cbcbaf218b016f, type: 2}
