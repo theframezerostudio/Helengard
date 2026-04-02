@@ -7,6 +7,7 @@ public class ShotGraphManager : MonoBehaviour
     public string startShotId = "Idle";
     public string testShotId = "Test";
 
+    private string previousShotId = "";
     private ShotData currentShot = null;
     private CinemachineBrain brain;
 
@@ -33,10 +34,18 @@ public class ShotGraphManager : MonoBehaviour
 
         ApplyBlend(newShot);
 
+        previousShotId = currentShot != null ? currentShot.id : "";
         currentShot?.Deactivate();
         newShot.Activate();
 
         currentShot = newShot;
+    }
+
+    public void RevertShot()
+    {
+        if (string.IsNullOrEmpty(previousShotId)) return;
+
+        SetShot(previousShotId);
     }
 
     private void ApplyBlend(ShotData shot)
@@ -49,6 +58,8 @@ public class ShotGraphManager : MonoBehaviour
 
     private ShotData FindShot(string id)
     {
+        if (string.IsNullOrEmpty(id)) return null;
+
         foreach (var shot in shots)
             if (shot.id == id) return shot;
         return null;

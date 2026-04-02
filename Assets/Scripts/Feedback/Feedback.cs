@@ -6,11 +6,11 @@ public abstract class Feedback
 {
     [SerializeField] protected string Label;
 
-    public virtual IEnumerator Pause => null;
+    public virtual IEnumerator PauseWait => null;
 
     public abstract void Initialize();
     public abstract void Play();
-    public abstract void PauseFeedback();
+    public abstract void Pause();
     public abstract void Resume();
     public abstract void Stop();
 }

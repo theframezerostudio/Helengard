@@ -52,9 +52,9 @@ public class FeedbackPlayer : MonoBehaviour
 
             feedback.Play();
 
-            if (feedback.Pause != null)
+            if (feedback.PauseWait != null)
             {
-                yield return feedback.Pause;
+                yield return feedback.PauseWait;
             }
         }
     }
@@ -63,7 +63,7 @@ public class FeedbackPlayer : MonoBehaviour
     {
         foreach (var feedback in feedbacks)
         {
-            feedback.PauseFeedback();
+            feedback.Pause();
         }
     }
     

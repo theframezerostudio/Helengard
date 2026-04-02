@@ -17,7 +17,7 @@ public class Audio_Feedback : Feedback
         
     }
 
-    public override void PauseFeedback()
+    public override void Pause()
     {
 
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class Pause_Feedback : Feedback
 {
-    public override IEnumerator Pause { get { return PauseCoroutine(); } }
+    public override IEnumerator PauseWait { get { return PauseCoroutine(); } }
 
     [SerializeField] private float duration = 1f;
 
@@ -15,7 +15,7 @@ public class Pause_Feedback : Feedback
 
     }
 
-    public override void PauseFeedback()
+    public override void Pause()
     {
 
     }

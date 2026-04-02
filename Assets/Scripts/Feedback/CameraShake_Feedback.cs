@@ -43,7 +43,7 @@ public class CameraShake_Feedback : Feedback
         shakeCoroutine = CoroutineManager.Run(CameraShakeRoutine());
     }
 
-    public override void PauseFeedback()
+    public override void Pause()
     {
         isPlaying = false;
     }

@@ -12,7 +12,7 @@ public class HitStop_Feedback : Feedback
     {
     }
 
-    public override void PauseFeedback()
+    public override void Pause()
     {
 
     }
