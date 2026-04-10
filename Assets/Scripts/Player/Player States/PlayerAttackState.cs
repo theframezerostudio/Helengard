@@ -37,7 +37,6 @@ public class PlayerAttackState : PlayerState
     public override void Enter()
     {
         base.Enter();
-
         // First try to use the provided node, if any. If not, resolve based on attack input.
         if (node == null)
         {

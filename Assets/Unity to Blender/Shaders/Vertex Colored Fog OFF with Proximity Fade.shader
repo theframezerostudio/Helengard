@@ -48,17 +48,17 @@ Shader "Vertex Colored Fog OFF with Proximity Fade" {
             float _FadeStart;
             
             v2f vert (appdata v) {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
-                o.color = v.color;
+                v2f over;
+                over.vertex = UnityObjectToClipPos(v.vertex);
+                over.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+                over.color = v.color;
                 
                 // Calculate distance from camera to vertex
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 float3 cameraPos = _WorldSpaceCameraPos;
-                o.distance = distance(worldPos, cameraPos);
+                over.distance = distance(worldPos, cameraPos);
                 
-                return o;
+                return over;
             }
             
             fixed4 frag (v2f i) : SV_Target {

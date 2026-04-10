@@ -40,11 +40,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  animationStateName: LightAttack_1
-  animClip: {fileID: -203655887218126122, guid: 9ba147f39f069c74b8855b264f1d60aa, type: 3}
+  animationStateName: Air_LightAttack_1
+  animClip: {fileID: -1273252208593327089, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
   transitionTime: 0.1
   comboWindow:
-    startTime: 0.8
+    startTime: 0.35
     endTime: 1
   attackWindow:
     startTime: 0.5
@@ -57,7 +57,7 @@ MonoBehaviour:
     endTime: 0
   moveWindow:
     startTime: 0
-    endTime: 0.5
+    endTime: 0.3
   attackTurnSpeed: 7
   turnInfluence:
     serializedVersion: 2
@@ -83,15 +83,15 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forwardAttackForce: 0
+  forwardAttackForce: 5
   upwardAttackForce: 0
   attackRange: 3
   requiresGround: 0
   requiresAir: 1
   requiresSprint: 0
   requiresDash: 0
-  amplitude: 0.1
-  frequency: 2
+  amplitude: 0.15
+  frequency: 1.5
   transitions:
   - attackInput: 1
     targetNode: {fileID: 11400000, guid: 302f3cdf3220e9541b688a1e4dbfce60, type: 2}

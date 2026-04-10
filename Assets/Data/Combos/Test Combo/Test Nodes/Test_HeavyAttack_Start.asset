@@ -41,10 +41,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   animationStateName: HeavyAttack_Start
-  animClip: {fileID: -203655887218126122, guid: 9ba147f39f069c74b8855b264f1d60aa, type: 3}
+  animClip: {fileID: 8083324605802843639, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
   transitionTime: 0.2
   comboWindow:
-    startTime: 0.75
+    startTime: 0.45
     endTime: 1
   attackWindow:
     startTime: 0.57
@@ -86,7 +86,7 @@ MonoBehaviour:
   forwardAttackForce: 0
   upwardAttackForce: 0
   attackRange: 2.5
-  requiresGround: 0
+  requiresGround: 1
   requiresAir: 0
   requiresSprint: 0
   requiresDash: 0

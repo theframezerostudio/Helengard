@@ -15,5 +15,6 @@ MonoBehaviour:
   entryNodes:
   - {fileID: 11400000, guid: eb180e00c008ca041852d161cf1196c4, type: 2}
   - {fileID: 11400000, guid: 54d1e970a6f294345aab592654e57654, type: 2}
+  - {fileID: 11400000, guid: b4fb0d490bb37544eb460759273a5730, type: 2}
   - {fileID: 11400000, guid: acf39045216171843886c49796ecda8e, type: 2}
   - {fileID: 11400000, guid: 8e8c56330e87bb54b9729af63c0395c1, type: 2}

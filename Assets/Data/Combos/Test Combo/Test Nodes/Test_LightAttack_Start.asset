@@ -41,16 +41,16 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   animationStateName: LightAttack_Start
-  animClip: {fileID: -441296982555202684, guid: 8880d032184913f449ee115b00dacfd3, type: 3}
+  animClip: {fileID: -8975599911089915337, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
   transitionTime: 0.2
   comboWindow:
-    startTime: 0.17
-    endTime: 0.3
+    startTime: 0.22
+    endTime: 0.4
   attackWindow:
-    startTime: 0.14
-    endTime: 0.17
+    startTime: 0.05
+    endTime: 0.08
   cancelWindow:
-    startTime: 0.19
+    startTime: 0.26
     endTime: 1
   invincibleWindow:
     startTime: 0
@@ -86,7 +86,7 @@ MonoBehaviour:
   forwardAttackForce: 0
   upwardAttackForce: 0
   attackRange: 2.5
-  requiresGround: 0
+  requiresGround: 1
   requiresAir: 0
   requiresSprint: 0
   requiresDash: 0

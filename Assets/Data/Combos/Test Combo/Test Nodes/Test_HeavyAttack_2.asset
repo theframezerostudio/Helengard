@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c7d56ca324e44249a1da548ef331a2b, type: 3}
+  m_Name: Test_HeavyAttack_2
+  m_EditorClassIdentifier: Assembly-CSharp::ComboNode
+  input: 2
+  motionPolicy: 1
+  rotationPolicy: 0
+  attackProfile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
+  animMotionSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationStateName: HeavyAttack_2
+  animClip: {fileID: -762235854982859438, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
+  transitionTime: 0.4
+  comboWindow:
+    startTime: 0.55
+    endTime: 0.65
+  attackWindow:
+    startTime: 0.25
+    endTime: 0.33
+  cancelWindow:
+    startTime: 0
+    endTime: 0
+  invincibleWindow:
+    startTime: 0
+    endTime: 0
+  moveWindow:
+    startTime: 0.15
+    endTime: 0.22
+  attackTurnSpeed: 6
+  turnInfluence:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  forwardAttackForce: 30
+  upwardAttackForce: 0
+  attackRange: 2.5
+  requiresGround: 1
+  requiresAir: 0
+  requiresSprint: 0
+  requiresDash: 0
+  amplitude: 0.05
+  frequency: 2.5
+  transitions:
+  - attackInput: 2
+    targetNode: {fileID: 11400000, guid: 54d1e970a6f294345aab592654e57654, type: 2}

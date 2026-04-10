@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Land_Recover_Action
   m_EditorClassIdentifier: Assembly-CSharp::ActionData
   animState: Land
-  duration: 1
+  duration: 0.283
+  transitionTime: 0.1
   cancelWindow:
     startTime: 0.1
     endTime: 1
