@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53dac00d9a19ece428de16cdb22b203e, type: 3}
+  m_Name: Test-GameplayEffect
+  m_EditorClassIdentifier: Assembly-CSharp::GameplayEffectDefinition
+  id: Test_GameplayEffect
+  displayName: GameplayEffect
+  infiniteDuration: 0
+  duration: 5
+  stackingMode: 1
+  maxStacks: 1
+  category:
+  - {fileID: 11400000, guid: 65522b06226e00d4f9e857105169eefa, type: 2}
+  blockedByTags: []
+  modifiers: []
+  modules:
+  - {fileID: 11400000, guid: 804b8d583f199f644914940df39cbd3f, type: 2}

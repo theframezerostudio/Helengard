@@ -6,54 +6,54 @@ public class PermissionManager
 
     public event System.Action<AbilityTag, bool> OnPermissionChanged;
 
-    public bool IsAllowed(AbilityTag tag)
+    public bool IsAllowed(AbilityTag category)
     {
-        return !blockers.TryGetValue(tag, out int count) || count <= 0;
+        return !blockers.TryGetValue(category, out int count) || count <= 0;
     }
 
-    public BlockHandle Block(AbilityTag tag)
+    public BlockHandle Block(AbilityTag category)
     {
-        bool wasAllowed = IsAllowed(tag);
+        bool wasAllowed = IsAllowed(category);
 
-        if (!blockers.ContainsKey(tag))
-            blockers[tag] = 0;
+        if (!blockers.ContainsKey(category))
+            blockers[category] = 0;
 
-        blockers[tag]++;
+        blockers[category]++;
 
         if (wasAllowed)
-            OnPermissionChanged?.Invoke(tag, false);
+            OnPermissionChanged?.Invoke(category, false);
 
-        return new BlockHandle(this, tag);
+        return new BlockHandle(this, category);
     }
 
     public void BlockAll()
     {
-        foreach (AbilityTag tag in System.Enum.GetValues(typeof(AbilityTag)))
+        foreach (AbilityTag category in System.Enum.GetValues(typeof(AbilityTag)))
         {
-            Block(tag);
+            Block(category);
         }
     }
 
-    public void Release(AbilityTag tag)
+    public void Release(AbilityTag category)
     {
-        if (!blockers.ContainsKey(tag)) return;
+        if (!blockers.ContainsKey(category)) return;
 
-        blockers[tag]--;
+        blockers[category]--;
 
-        if (blockers[tag] <= 0)
+        if (blockers[category] <= 0)
         {
-            blockers.Remove(tag);
-            OnPermissionChanged?.Invoke(tag, true); 
+            blockers.Remove(category);
+            OnPermissionChanged?.Invoke(category, true); 
         }
     }
 
     public void ReleaseAll()
     {
-        foreach (AbilityTag tag in System.Enum.GetValues(typeof(AbilityTag)))
+        foreach (AbilityTag category in System.Enum.GetValues(typeof(AbilityTag)))
         {
-            while (!IsAllowed(tag))
+            while (!IsAllowed(category))
             {
-                Release(tag);
+                Release(category);
             }
         }
     } 

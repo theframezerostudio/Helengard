@@ -1,13 +1,13 @@
 public struct BlockHandle
 {
     private readonly PermissionManager system;
-    private readonly AbilityTag tag;
+    private readonly AbilityTag category;
     private bool released;
 
-    public BlockHandle(PermissionManager system, AbilityTag tag)
+    public BlockHandle(PermissionManager system, AbilityTag category)
     {
         this.system = system;
-        this.tag = tag;
+        this.category = category;
         this.released = false;
     }
 
@@ -15,7 +15,7 @@ public struct BlockHandle
     {
         if (released) return;
 
-        system.Release(tag);
+        system.Release(category);
         released = true;
     }
 }

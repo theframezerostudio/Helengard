@@ -59,13 +59,13 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     }
 
     // Hotfix TODO: Replace with Input Buffer 
-    private void HandlePermissionChange(AbilityTag tag, bool allowed)
+    private void HandlePermissionChange(AbilityTag category, bool allowed)
     {
-        if (allowed && tag == AbilityTag.Move)
+        if (allowed && category == AbilityTag.Move)
         {
             MoveInput = controls.Player.Move.ReadValue<Vector2>();
         }
-        if (!allowed && tag == AbilityTag.Move)
+        if (!allowed && category == AbilityTag.Move)
         {
             MoveInput = Vector2.zero;
             onMove?.Invoke(MoveInput);

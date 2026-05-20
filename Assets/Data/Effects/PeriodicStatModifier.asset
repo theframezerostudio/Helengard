@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945c3201593e6f84fb2fc9f971c7661e, type: 3}
+  m_Name: PeriodicStatModifier
+  m_EditorClassIdentifier: Assembly-CSharp::PeriodicStatModifierModuleDefinition
+  interval: 1
+  targetStat: {fileID: 11400000, guid: 5be7e6af820091d439d4c17fd7890f31, type: 2}
+  value: 25
+  operation: 0

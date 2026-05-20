@@ -70,10 +70,10 @@ public class PlayerState : BaseState
     }
     #endregion
     
-    private void PermissionCheck(AbilityTag tag, bool isAllowed)
+    private void PermissionCheck(AbilityTag category, bool isAllowed)
     {
-        //Debug.Log($"Permission changed for {tag}: {(isAllowed ? "Allowed" : "Denied")}");
-        if (!isAllowed && tag == RequiredAbility)
+        //Debug.Log($"Permission changed for {category}: {(isAllowed ? "Allowed" : "Denied")}");
+        if (!isAllowed && category == RequiredAbility)
         {
             stateMachine.ForceState(player.IdleState);
         }
