@@ -7,11 +7,18 @@ using UnityEngine;
 )]
 public sealed class CharacterStatProfile : ScriptableObject
 {
+    [Header("Stats")]
     [SerializeField] private List<CharacterStatDefinition> baseStats = new();
-
     [SerializeField] private List<CharacterDerivedStatDefinition> derivedStats = new();
 
-    public IReadOnlyList<CharacterStatDefinition> BaseStats => baseStats;
+    [Header("Resources")]
+    [SerializeField] private List<ResourceDefinition> resources = new();
 
+    [Header("Ailments")]
+    [SerializeField] private List<AilmentResistance> ailmentResistances = new();
+
+    public IReadOnlyList<CharacterStatDefinition> BaseStats => baseStats;
     public IReadOnlyList<CharacterDerivedStatDefinition> DerivedStats => derivedStats;
+    public IReadOnlyList<ResourceDefinition> Resources => resources;
+    public IReadOnlyList<AilmentResistance> AilmentResistances => ailmentResistances;
 }

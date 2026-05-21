@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 945c3201593e6f84fb2fc9f971c7661e, type: 3}
-  m_Name: PeriodicStatModifier
-  m_EditorClassIdentifier: Assembly-CSharp::PeriodicStatModifierModuleDefinition
+  m_Script: {fileID: 11500000, guid: bd893e518078144409177d1db386997d, type: 3}
+  m_Name: PeriodicResourceModifier - Healing
+  m_EditorClassIdentifier: Assembly-CSharp::PeriodicResourceModifierModuleDefinition
   interval: 1
-  targetStat: {fileID: 11400000, guid: 5be7e6af820091d439d4c17fd7890f31, type: 2}
+  targetResource: {fileID: 11400000, guid: 491160cfae76fbc4a8dcf70f97fdaf29, type: 2}
   value: 25
   operation: 0

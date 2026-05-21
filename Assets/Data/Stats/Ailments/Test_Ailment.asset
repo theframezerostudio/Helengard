@@ -17,5 +17,5 @@ MonoBehaviour:
   threshold: 100
   decayPerSecond: 5
   recoveryDelay: 3
-  triggerEffect: {fileID: 0}
+  triggerEffect: {fileID: 11400000, guid: 77102fc3ed474274eb59dd73b094112d, type: 2}
   category: {fileID: 11400000, guid: 65522b06226e00d4f9e857105169eefa, type: 2}

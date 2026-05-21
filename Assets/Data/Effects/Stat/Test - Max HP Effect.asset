@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53dac00d9a19ece428de16cdb22b203e, type: 3}
-  m_Name: Test-GameplayEffect
-  m_EditorClassIdentifier: Assembly-CSharp::GameplayEffectDefinition
-  id: Test_GameplayEffect
-  displayName: GameplayEffect
+  m_Script: {fileID: 11500000, guid: 9403832c8111da54b8a1f7bd5aa7e687, type: 3}
+  m_Name: Test - Max HP Effect
+  m_EditorClassIdentifier: Assembly-CSharp::EffectDefinition
+  id: Test - Effect
+  displayName: Effect Definition
   infiniteDuration: 0
   duration: 5
   stackingMode: 1
@@ -21,6 +21,9 @@ MonoBehaviour:
   category:
   - {fileID: 11400000, guid: 65522b06226e00d4f9e857105169eefa, type: 2}
   blockedByTags: []
-  modifiers: []
+  modifiers:
+  - stat: {fileID: 11400000, guid: 5be7e6af820091d439d4c17fd7890f31, type: 2}
+    type: 100
+    value: 25
   modules:
   - {fileID: 11400000, guid: 804b8d583f199f644914940df39cbd3f, type: 2}

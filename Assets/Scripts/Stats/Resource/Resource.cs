@@ -1,38 +1,26 @@
-
 using System;
-
-public enum ResourceSyncMode
-{
-    HardClamp,
-    PreservePercentage,
-    PreserveDelta
-}
+using static ResourceDefinition;
 
 public sealed class Resource
 {
     private float currentValue;
 
     private readonly RuntimeStat maxStat;
-
     private readonly ResourceSyncMode syncMode;
 
-    // Current resource value, old value, new value
+    public ResourceDefinition Definition { get; }
+
     public event Action<Resource, float, float> ValueChanged;
-
-    // Max resource value, old value, new value
     public event Action<Resource, float, float> MaxValueChanged;
-
     public event Action<Resource> Depleted;
 
-    public Resource(RuntimeStat maxStat,
-                    ResourceSyncMode syncMode = ResourceSyncMode.PreservePercentage,
-                    float? startingValue = null)
+    public Resource(ResourceDefinition definition, RuntimeStat maxStat)
     {
-        this.maxStat = maxStat ?? throw new ArgumentNullException(nameof(maxStat));
+        Definition = definition;
+        this.maxStat = maxStat;
+        syncMode = definition.SyncMode;
 
-        this.syncMode = syncMode;
-
-        currentValue = startingValue ?? maxStat.Value;
+        currentValue = GetInitialValue(definition);
 
         ClampToMax();
 
@@ -40,19 +28,10 @@ public sealed class Resource
     }
 
     public float CurrentValue => currentValue;
-
     public float MaxValue => maxStat.Value;
 
-    public float NormalizedValue
-    {
-        get
-        {
-            if (MaxValue <= 0f)
-                return 0f;
-
-            return currentValue / MaxValue;
-        }
-    }
+    public float NormalizedValue =>
+        MaxValue <= 0f ? 0f : currentValue / MaxValue;
 
     public bool IsDepleted => currentValue <= 0f;
 
@@ -97,9 +76,25 @@ public sealed class Resource
         SetCurrent(0f);
     }
 
-    private void OnMaxStatChanged(RuntimeStat stat,
-                                  float oldMax,
-                                  float newMax)
+    private float GetInitialValue(ResourceDefinition definition)
+    {
+        switch (definition.StartMode)
+        {
+            case ResourceStartMode.Empty:
+                return 0f;
+
+            case ResourceStartMode.Full:
+                return MaxValue;
+
+            case ResourceStartMode.Custom:
+                return definition.CustomStartValue;
+
+            default:
+                return MaxValue;
+        }
+    }
+
+    private void OnMaxStatChanged(RuntimeStat stat, float oldMax, float newMax)
     {
         float oldCurrent = currentValue;
 
@@ -122,13 +117,13 @@ public sealed class Resource
 
         MaxValueChanged?.Invoke(this, oldMax, newMax);
 
-        if (!NearlyEqual(oldCurrent, currentValue))
-        {
-            ValueChanged?.Invoke(this, oldCurrent, currentValue);
+        if (NearlyEqual(oldCurrent, currentValue))
+            return;
 
-            if (currentValue <= 0f)
-                Depleted?.Invoke(this);
-        }
+        ValueChanged?.Invoke(this, oldCurrent, currentValue);
+
+        if (currentValue <= 0f)
+            Depleted?.Invoke(this);
     }
 
     private void PreservePercentage(float oldMax, float newMax)

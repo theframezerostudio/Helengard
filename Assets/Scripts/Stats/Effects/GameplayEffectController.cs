@@ -1,29 +1,35 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public sealed class GameplayEffectController
 {
-    private readonly List<GameplayEffect> activeEffects = new();
+    private readonly List<ActiveEffect> activeEffects = new();
     private readonly StatContainer statContainer;
+    private readonly ResourceContainer resourceContainer;
 
-    public event Action<GameplayEffect> EffectApplied;
-    public event Action<GameplayEffect> EffectRemoved;
-    public event Action<GameplayEffect> EffectExpired;
-    public event Action<GameplayEffect> EffectRefreshed;
-    public event Action<GameplayEffect> EffectStacked;
+    public event Action<ActiveEffect> EffectApplied;
+    public event Action<ActiveEffect> EffectRemoved;
+    public event Action<ActiveEffect> EffectExpired;
+    public event Action<ActiveEffect> EffectRefreshed;
+    public event Action<ActiveEffect> EffectStacked;
 
-    public GameplayEffectController(StatContainer statContainer)
+    public GameplayEffectController(StatContainer statContainer, ResourceContainer resourceContainer)
     {
         this.statContainer = statContainer;
+        this.resourceContainer = resourceContainer;
     }
 
-    public IReadOnlyList<GameplayEffect> ActiveEffects => activeEffects;
+    public IReadOnlyList<ActiveEffect> ActiveEffects => activeEffects;
 
     public void Tick(float deltaTime)
     {
+        if (activeEffects.Count == 0)
+            return;
+
         for (int i = activeEffects.Count - 1; i >= 0; i--)
         {
-            GameplayEffect effect = activeEffects[i];
+            ActiveEffect effect = activeEffects[i];
 
             effect.Tick(deltaTime);
 
@@ -34,7 +40,7 @@ public sealed class GameplayEffectController
         }
     }
 
-    public GameplayEffect ApplyEffect(EffectDefinition definition)
+    public ActiveEffect ApplyEffect(EffectDefinition definition)
     {
         if (definition == null)
             return null;
@@ -42,7 +48,7 @@ public sealed class GameplayEffectController
         if (IsBlocked(definition))
             return null;
 
-        GameplayEffect existing = FindEffect(definition);
+        ActiveEffect existing = FindEffect(definition);
 
         if (existing != null)
         {
@@ -50,9 +56,9 @@ public sealed class GameplayEffectController
             return existing;
         }
 
-        GameplayEffect effect = new GameplayEffect(definition);
+        ActiveEffect effect = new ActiveEffect(definition);
 
-        effect.InitializeModules(this, statContainer);
+        effect.InitializeModules(this, statContainer, resourceContainer);
 
         ApplyModifiers(effect);
 
@@ -74,7 +80,7 @@ public sealed class GameplayEffectController
     {
         for (int i = 0; i < activeEffects.Count; i++)
         {
-            GameplayEffect effect = activeEffects[i];
+            ActiveEffect effect = activeEffects[i];
 
             IReadOnlyList<EffectCategory> categories =
                 effect.Definition.Categories;
@@ -89,7 +95,7 @@ public sealed class GameplayEffectController
         return false;
     }
 
-    public void RemoveEffect(GameplayEffect effect)
+    public void RemoveEffect(ActiveEffect effect)
     {
         if (effect == null)
             return;
@@ -103,7 +109,7 @@ public sealed class GameplayEffectController
         EffectRemoved?.Invoke(effect);
     }
 
-    private void ExpireEffect(GameplayEffect effect)
+    private void ExpireEffect(ActiveEffect effect)
     {
         RemoveEffect(effect);
 
@@ -124,11 +130,11 @@ public sealed class GameplayEffectController
         return false;
     }
 
-    private GameplayEffect FindEffect(EffectDefinition definition)
+    private ActiveEffect FindEffect(EffectDefinition definition)
     {
         for (int i = 0; i < activeEffects.Count; i++)
         {
-            GameplayEffect effect = activeEffects[i];
+            ActiveEffect effect = activeEffects[i];
 
             if (effect.Definition == definition)
             {
@@ -139,7 +145,7 @@ public sealed class GameplayEffectController
         return null;
     }
 
-    private void HandleStacking(GameplayEffect effect)
+    private void HandleStacking(ActiveEffect effect)
     {
         EffectDefinition definition = effect.Definition;
 
@@ -187,7 +193,7 @@ public sealed class GameplayEffectController
         }
     }
 
-    private void ApplyModifiers(GameplayEffect effect)
+    private void ApplyModifiers(ActiveEffect effect)
     {
         for (int i = 0; i < effect.Definition.Modifiers.Count; i++)
         {
@@ -198,7 +204,10 @@ public sealed class GameplayEffectController
                 statContainer.GetStat(definition.Stat);
 
             if (stat == null)
+            {
+                Debug.WriteLine($"Stat '{definition.Stat.name}' not found for modifier in effect '{effect.Definition.name}'.");
                 continue;
+            }
 
             StatModifier modifier = new StatModifier(
                 definition.Value,
@@ -214,7 +223,7 @@ public sealed class GameplayEffectController
         }
     }
 
-    private void RemoveModifiers(GameplayEffect effect)
+    private void RemoveModifiers(ActiveEffect effect)
     {
         for (int i = 0; i < effect.AppliedModifiers.Count; i++)
         {

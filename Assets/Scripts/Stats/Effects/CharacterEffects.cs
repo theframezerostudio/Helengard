@@ -1,22 +1,28 @@
 using UnityEngine;
 
-namespace Stats
+public sealed class CharacterEffects : MonoBehaviour
 {
-    public sealed class CharacterEffects : MonoBehaviour
+    [SerializeField] private CharacterAttributes characterStats;
+
+    private GameplayEffectController effectController;
+
+    public GameplayEffectController EffectController => effectController;
+
+    public EffectDefinition TestEffect;
+
+    private void Start()
     {
-        // TODO: Requires Character Stats
-        private GameplayEffectController gameplayEffects;
+        effectController = new GameplayEffectController(characterStats.Stats, characterStats.Resources);
+    }
 
-        public GameplayEffectController GameplayEffects => gameplayEffects;
+    private void Update()
+    {
+        effectController.Tick(Time.deltaTime);
+    }
 
-        private void Awake()
-        {
-            // TODO: Replace placeholder for dependency injection or other initialization logic
-        }
-
-        private void Update()
-        {
-            gameplayEffects.Tick(Time.deltaTime);
-        }
+    [ContextMenu("Test")]
+    private void Test()
+    {
+        effectController.ApplyEffect(TestEffect);
     }
 }

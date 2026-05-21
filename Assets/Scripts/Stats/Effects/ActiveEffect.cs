@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public sealed class GameplayEffect
+public sealed class ActiveEffect
 {
     private readonly List<AppliedStatModifier> appliedModifiers = new();
 
@@ -15,20 +15,22 @@ public sealed class GameplayEffect
 
     public IReadOnlyList<AppliedStatModifier> AppliedModifiers => appliedModifiers;
 
-    public GameplayEffect(EffectDefinition definition)
+    public ActiveEffect(EffectDefinition definition)
     {
         Definition = definition;
 
         RemainingDuration = definition.Duration;
     }
 
-    public void InitializeModules(GameplayEffectController controller, StatContainer stats)
+    public void InitializeModules(GameplayEffectController controller,
+                                  StatContainer stats,
+                                  ResourceContainer resources)
     {
         for (int i = 0; i < Definition.Modules.Count; i++)
         {
             EffectModule module = Definition.Modules[i].CreateModule();
 
-            module.Initialize(this, controller, stats);
+            module.Initialize(this, controller, stats, resources);
 
             modules.Add(module);
         }

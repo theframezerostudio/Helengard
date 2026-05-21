@@ -28,6 +28,9 @@ namespace Stats
 
         public void Tick(float deltaTime)
         {
+            if (ailments.Count == 0)
+                return;
+            
             foreach (RuntimeAilment ailment in ailments.Values)
             {
                 AilmentState previous = ailment.State;

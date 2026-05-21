@@ -16,3 +16,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 337614bacac748b4ab7017f247155592, type: 2}
   derivedStats:
   - {fileID: 11400000, guid: 2a4cee0e33255e54eb102676ab0e8caa, type: 2}
+  resources:
+  - {fileID: 11400000, guid: 491160cfae76fbc4a8dcf70f97fdaf29, type: 2}
+  ailmentResistances: []
