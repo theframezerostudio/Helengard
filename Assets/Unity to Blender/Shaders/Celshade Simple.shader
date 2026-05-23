@@ -146,7 +146,8 @@ Shader "Custom/CelshadeSimple"
             Tags { 
                 "RenderType" = "Opaque" 
                 "Queue" = "Geometry"
-                "LightMode" = "UniversalForward" }
+                "LightMode" = "UniversalForward" 
+                }
 
 
             HLSLPROGRAM
@@ -158,16 +159,24 @@ Shader "Custom/CelshadeSimple"
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
-            #pragma multi_compile _ _SHADOWS_SOFT
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
          
             #pragma multi_compile _ _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX
             #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile _ _LIGHTS_PER_OBJECT
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
             
             // forward +
             #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile_fog
+
+
+            // Baking compilations 
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
             // #pragma multi_compile_instancing
     
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -178,6 +187,7 @@ Shader "Custom/CelshadeSimple"
             {
                 float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
+                float2 lightmapUV: TEXCOORD1;
                 float3 normal : NORMAL;
                 float4 tangent : TANGENT;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -192,6 +202,7 @@ Shader "Custom/CelshadeSimple"
                 float3 wPos : TEXCOORD3;
                 float3 normalOS : TEXCOORD4;
                 float3 positionOS : TEXCOORD5;
+                float2 lightmapUV: TEXCOORD6;
                 float  fogCoord	: TEXCOORD7;
                 float3 tangentWS : TEXCOORD8;
                 float3 bitangentWS : TEXCOORD9;
@@ -223,6 +234,8 @@ Shader "Custom/CelshadeSimple"
                 float3 tangentWS = TransformObjectToWorldDir(IN.tangent.xyz);
                 float3 bitangentWS = cross(normalWS, tangentWS) * IN.tangent.w;
 
+                OUT.lightmapUV = IN.lightmapUV * unity_LightmapST.xy + unity_LightmapST.zw;
+
                 OUT.normalWS = normalWS;
                 OUT.tangentWS = tangentWS;
                 OUT.bitangentWS = bitangentWS;
@@ -242,7 +255,9 @@ Shader "Custom/CelshadeSimple"
                 float mldistanceAtt = mainLight.distanceAttenuation;
                 float mlshadowAtt = mainLight.shadowAttenuation;
                 float shadow = mlshadowAtt * mldistanceAtt;
-               
+                //shadow = 1; // shadow acne quick fix
+
+
                 half3 N = normalize(IN.normalWS); //NORMAL
                 half3 L = mlDirection; // Light direction
                 half3 V = normalize(_WorldSpaceCameraPos - IN.wPos); // View Angle
@@ -333,7 +348,7 @@ Shader "Custom/CelshadeSimple"
                         specularExponent = exp2(_Gloss * 64);
                         specularLight = pow(specularLight , specularExponent);
                         specularSmooth = smoothstep(_SpecularThreshold , (_SpecularThreshold + _SpecularSmoothness) , specularLight);
-                        finalSpecular = specularSmooth * mlColor * _SpecularColor.rgb;    
+                        finalSpecular = specularSmooth * mlColor * shadow * _SpecularColor.rgb;    
                     }
                 }
                 
@@ -343,7 +358,7 @@ Shader "Custom/CelshadeSimple"
                 {
                     half ambientLight = saturate(dot(N,L));
                     half3 maxAmbient = max(ambientLight , _AmbientStrength);
-                    finalAmbient = maxAmbient * SampleSH(N) * texColor.rgb * _DiffuseColor.rgb;
+                    finalAmbient = maxAmbient * SampleSH(N);
                 }
                 
                 //Emission 
@@ -411,9 +426,11 @@ Shader "Custom/CelshadeSimple"
                         LIGHT_LOOP_END
                     #endif
                 }
+                // Baked lighting
+                half3 bakedGI = SAMPLE_GI(IN.lightmapUV, SampleSH(N), N);
 
                 // Final Output (CelShading)         
-                half3 mixedColor = (finalDiffuse + additionalDiffuse) + (finalSpecular + additionalSpecular) + finalAmbient + finalEmission;
+                half3 mixedColor = (bakedGI * shadedAlbedo) + (finalDiffuse + additionalDiffuse) + (finalSpecular + additionalSpecular) + finalAmbient + finalEmission;
                 half4 finalOutput = half4(mixedColor,1);
                 finalOutput.rgb = MixFog(finalOutput.rgb, IN.fogCoord);
                 return finalOutput;   
@@ -421,59 +438,64 @@ Shader "Custom/CelshadeSimple"
             ENDHLSL
         }
 
+
+        Pass 
+        {
+            Name "ShadowCaster"
+            
+            Tags{ "LightMode" = "ShadowCaster"}
+
+            ColorMask 0
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
+
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+           
+            struct MeshData
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+            };
+
+            struct Interpolators
+            {
+                float4 positionHCS : SV_POSITION;
+            };
+            
+            float4 GetShadowPositionHClip(MeshData IN)
+            {   
+                float3 lightDirectionWS = _MainLightPosition.xyz;
+                float3 posWS = TransformObjectToWorld(IN.positionOS.xyz);
+                float3 normalWS = TransformObjectToWorldNormal(IN.normalOS);
+                float4 positionCS = TransformWorldToHClip(ApplyShadowBias(posWS,normalWS,lightDirectionWS));
+                positionCS = ApplyShadowClamping(positionCS);
+
+                return positionCS;
+            };
+
+            Interpolators vert (MeshData IN)
+            {
+                Interpolators OUT;
+
+                OUT.positionHCS = GetShadowPositionHClip(IN);
+
+                return OUT;
+            }
+
+            half4 frag (Interpolators IN) : SV_Target
+            {   
+                return 0;
+            }
+
+            ENDHLSL
+        }
       
-        // Pass 
-        // {
-        //     Name "ShadowCaster"
-            
-        //     Tags{ "LightMode" = "ShadowCaster"}
-
-        //     ColorMask 0
-
-        //     HLSLPROGRAM
-        //     #pragma vertex vert
-        //     #pragma fragment frag
-               
-        //     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-
-        //     struct MeshData
-        //     {
-        //         float4 positionOS : POSITION;
-        //         float3 normalOS : NORMAL;
-        //     };
-
-        //     struct Interpolators
-        //     {
-        //         float4 positionHCS : SV_POSITION;
-        //     };
-            
-        //     float4 GetShadowPositionHClip(MeshData IN)
-        //     {   
-        //         float3 lightDirectionWS = _MainLightPosition.xyz;
-        //         float3 posWS = TransformObjectToWorld(IN.positionOS.xyz);
-        //         float3 normalWS = TransformObjectToWorldNormal(IN.normalOS);
-        //         float4 positionCS = TransformWorldToHClip(ApplyShadowBias(posWS,normalWS,lightDirectionWS));
-        //         positionCS = ApplyShadowClamping(positionCS);
-
-        //         return positionCS;
-        //     };
-
-        //     Interpolators vert (MeshData IN)
-        //     {
-        //         Interpolators OUT;
-
-        //         OUT.positionHCS = GetShadowPositionHClip(IN);
-
-        //         return OUT;
-        //     }
-
-        //     half4 frag (Interpolators IN) : SV_Target
-        //     {   
-        //         return 0;
-        //     }
-
-        //     ENDHLSL
-        // }
         //UsePass "Universal Render Pipeline/Lit/ShadowCaster"
     }
 }
