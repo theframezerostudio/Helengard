@@ -91,14 +91,14 @@ public class HitAnimationController : MonoBehaviour
         };
     }
 
-    private float SwingToParam(HitSwing swing)
+    private float SwingToParam(SwingType swing)
     {
         return swing switch
         {
-            HitSwing.LeftToRight => 0f,
-            HitSwing.RightToLeft => 1f,
-            HitSwing.DownToUp => 2f,
-            HitSwing.UpToDown => 3f,
+            SwingType.LeftToRight => 0f,
+            SwingType.RightToLeft => 1f,
+            SwingType.DownToUp => 2f,
+            SwingType.UpToDown => 3f,
             _ => 0f
         };
     }

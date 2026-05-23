@@ -17,7 +17,7 @@ public sealed class ResourceContainer
         return resources.ContainsKey(definition);
     }
 
-    public Resource Get(ResourceDefinition definition)
+    public Resource GetResource(ResourceDefinition definition)
     {
         resources.TryGetValue(definition, out Resource resource);
 
@@ -26,14 +26,14 @@ public sealed class ResourceContainer
 
     public float GetValue(ResourceDefinition definition, float fallback = 0f)
     {
-        Resource resource = Get(definition);
+        Resource resource = GetResource(definition);
 
         return resource?.CurrentValue ?? fallback;
     }
 
     public bool TryConsume(ResourceDefinition definition, float amount)
     {
-        Resource resource = Get(definition);
+        Resource resource = GetResource(definition);
 
         if (resource == null)
             return false;
@@ -48,7 +48,7 @@ public sealed class ResourceContainer
 
     public void Restore(ResourceDefinition definition, float amount)
     {
-        Resource resource = Get(definition);
+        Resource resource = GetResource(definition);
 
         if (resource == null)
             return;

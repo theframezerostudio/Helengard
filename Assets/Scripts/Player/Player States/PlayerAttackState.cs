@@ -88,7 +88,7 @@ public class PlayerAttackState : PlayerState
         character.Context.dataAggregator.SetAttacking(true, isLightAttack);
 
         motionWarpTarget = TargetResolver.ResolveTarget(player, inputManager.MoveInput, node.attackRange,
-            character.CurrentWeapon.attackLayer);
+            node.attackProfile.hurtboxMask);
 
         ApplyMotionWarpDash();
 

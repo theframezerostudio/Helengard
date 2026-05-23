@@ -28,10 +28,10 @@ public class Knockdown_ReactionModule : ReactionModule
         if (ctx.Self.Context.isGrounded == false)
             return false;
 
-        if (ev.Effect != HitEffectType.Heavy)
+        if (ev.Effect != HitImpactType.Heavy)
             return false;
 
-        if (ev.SwingType != HitSwing.LeftToRight && ev.SwingType != HitSwing.RightToLeft)
+        if (ev.SwingType != SwingType.LeftToRight && ev.SwingType != SwingType.RightToLeft)
             return false;
 
         return true;

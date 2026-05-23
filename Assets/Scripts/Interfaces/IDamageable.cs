@@ -1,5 +1,7 @@
 public interface IDamageable
 {
-    void TakeDamage(DamageEvent damageEvent);
+    CharacterAttributes Attributes { get; }
     bool IsAlive { get; }
+
+    void TakeDamage(DamageEvent damageEvent);
 }

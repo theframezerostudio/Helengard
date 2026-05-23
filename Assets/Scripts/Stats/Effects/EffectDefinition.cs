@@ -3,7 +3,7 @@ using UnityEngine;
 
 [CreateAssetMenu(
     fileName = "GameplayEffect",
-    menuName = "Gameplay/Stats/Gameplay Effect"
+    menuName = "Gameplay/Stats/Effect Definition"
 )]
 public sealed class EffectDefinition : ScriptableObject
 {

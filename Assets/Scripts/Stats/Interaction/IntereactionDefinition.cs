@@ -6,7 +6,10 @@ public sealed class InteractionDefinition : ScriptableObject
     public string id;
     public string displayName;
 
-    [Header("Costs / Resource Changes")]
+    [Header("Conditions")]
+    public InteractionConditionDefinition[] conditions;
+
+    [Header("Resource Changes")]
     public ResourceChangeDefinition[] resourceChanges;
 
     [Header("Effects")]

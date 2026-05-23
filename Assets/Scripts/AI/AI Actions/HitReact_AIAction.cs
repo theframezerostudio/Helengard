@@ -22,12 +22,12 @@ public class HitReact_AIAction : AIAction
         //context.State.Lock();
         //isLocked = true;
 
-        target.onHit += OnHit;
+        target.OnHit += OnHit;
     }
 
     public override void Exit()
     {
-        target.onHit -= OnHit;
+        target.OnHit -= OnHit;
 
         motionHandler.rotationMode = RotationMode.FaceMovement;
     }
@@ -36,7 +36,6 @@ public class HitReact_AIAction : AIAction
     {
         if (isLocked && !reactionController.IsReacting)
         {
-            Debug.Log("Unlock");
             isLocked = false;
             context.State.Unlock();
         }

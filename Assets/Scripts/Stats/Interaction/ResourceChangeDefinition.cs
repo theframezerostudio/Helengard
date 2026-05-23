@@ -82,25 +82,34 @@ public sealed class ResourceChangeDefinition
 
     private bool ApplyResourceChange(CharacterAttributes attributes, float value)
     {
+        Resource runtimeResource = attributes.Resources.GetResource(resource);
+
+        if (runtimeResource == null)
+            return false;
+
         switch (operation)
         {
             case ResourceChangeOperation.Consume:
-                return attributes.Resources.TryConsume(resource, value);
+                if (required)
+                    return attributes.Resources.TryConsume(resource, value);
+
+                runtimeResource.Consume(value);
+                return true;
 
             case ResourceChangeOperation.Restore:
-                attributes.Resources.Restore(resource, value);
+                runtimeResource.Restore(value);
                 return true;
 
             case ResourceChangeOperation.Set:
-                attributes.Resources.Get(resource)?.SetCurrent(value);
+                runtimeResource.SetCurrent(value);
                 return true;
 
             case ResourceChangeOperation.Fill:
-                attributes.Resources.Get(resource)?.Fill();
+                runtimeResource.Fill();
                 return true;
 
             case ResourceChangeOperation.Empty:
-                attributes.Resources.Get(resource)?.Empty();
+                runtimeResource.Empty();
                 return true;
 
             default:

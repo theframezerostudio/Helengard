@@ -1,55 +1,60 @@
 using UnityEngine;
 
-public enum HitEffectType { Light, Heavy, Grab }
+public enum HitImpactType { Light, Heavy, Grab }
 public enum HitDirection { Front, Back, Left, Right }
 public enum HitHeight { High, Mid, Low }
-public enum HitSwing { LeftToRight, RightToLeft, UpToDown, DownToUp, Stab }
+public enum SwingType { LeftToRight, RightToLeft, UpToDown, DownToUp, Stab }
 
 public sealed class DamageEvent
 {
-    //TODO: Proper Damage Implementation
-    public readonly float Damage;
-    public readonly HitEffectType Effect;
+    public InteractionResult Result { get; }
 
-    [Header("Hit Details")]
-    public readonly Vector3 HitPoint;      
-    public readonly Vector3 HitNormal;
-    public readonly Vector3 HitForce;
+    public HitImpactType Effect { get; }
+    public SwingType SwingType { get; }
 
-    [Header("Event Details")]
-    public readonly Transform Attacker;
-    public readonly Transform Defender;
+    public Vector3 HitPoint { get; }
+    public Vector3 HitNormal { get; }
+    public Vector3 HitForce { get; }
 
-    [Header("Hit Classification")]
-    public readonly HitDirection Direction;
-    public readonly HitHeight Height;       
-    public readonly HitSwing SwingType;
+    public Transform Attacker { get; }
+    public Transform Target { get; }
 
-    [Header("Additional Properties")]
-    public readonly bool CanChain;
-    public readonly float StunDuration;
-    public readonly float HitStop;
+    public HitDirection Direction { get; }
+    public HitHeight Height { get; }
 
-    public DamageEvent(float damage, HitEffectType effect, Vector3 hitPoint, Vector3 hitNormal, Vector3 hitForce,
-        Transform attacker, Transform defender, HitDirection direction, HitHeight height, HitSwing swing, bool canChain = false,
-        float stunDuration = 0f, float hitStop = 0f)
+    public bool CanChain { get; }
+    public float StunDuration { get; }
+    public float HitStop { get; }
+    public float StaggerValue { get; }
+
+    public DamageEvent(InteractionResult result,
+                       HitImpactType hitImpact,
+                       SwingType swingType,
+                       Vector3 hitPoint,
+                       Vector3 hitNormal,
+                       Vector3 hitForce,
+                       Transform attacker,
+                       Transform target,
+                       HitDirection direction,
+                       HitHeight height,
+                       bool canChain,
+                       float stunDuration,
+                       float hitStop,
+                       float staggerValue)
     {
-        Damage = damage;
-        Effect = effect;
-
+        Result = result;
+        Effect = hitImpact;
+        SwingType = swingType;
         HitPoint = hitPoint;
         HitNormal = hitNormal;
         HitForce = hitForce;
-
         Attacker = attacker;
-        Defender = defender;
-
+        Target = target;
         Direction = direction;
         Height = height;
-        SwingType = swing;
-
         CanChain = canChain;
         StunDuration = stunDuration;
         HitStop = hitStop;
+        StaggerValue = staggerValue;
     }
 }

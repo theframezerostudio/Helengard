@@ -505,13 +505,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e67ce7535fa1a45a9eb859a22a48af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  owner: {fileID: 7406680771381853492}
   comboGraph: {fileID: 11400000, guid: 6e0edada3d63e4440baa1c753604ba56, type: 2}
   hitboxes:
   - {fileID: 290215667}
   feedbackPlayer: {fileID: 1142486163}
-  attackLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!1 &179006841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,10 +1181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3897e3b3e3b87540b62cb380b9c53a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
-  profile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
-  hurtboxMask:
-    serializedVersion: 2
-    m_Bits: 128
   boxHalfExtents: {x: 0.15, y: 1, z: 0.1}
   boxOffset: {x: 0, y: 0.4, z: 0}
   debugDraw: 1
@@ -8565,6 +8559,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Target
   <Context>k__BackingField: {fileID: 1454087010036921730}
+  <Attributes>k__BackingField: {fileID: 7683320529676717417}
+  healthResource: {fileID: 11400000, guid: 491160cfae76fbc4a8dcf70f97fdaf29, type: 2}
+  hitMemoryDuration: 0.2
 --- !u!33 &378947359019322869
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9878,6 +9875,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Target
   <Context>k__BackingField: {fileID: 2720431801829060335}
+  <Attributes>k__BackingField: {fileID: 7406680771381853492}
+  healthResource: {fileID: 11400000, guid: 491160cfae76fbc4a8dcf70f97fdaf29, type: 2}
+  hitMemoryDuration: 0.5
 --- !u!1 &1133442024614189850
 GameObject:
   m_ObjectHideFlags: 0
@@ -10771,10 +10771,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3897e3b3e3b87540b62cb380b9c53a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
-  profile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
-  hurtboxMask:
-    serializedVersion: 2
-    m_Bits: 256
   boxHalfExtents: {x: 0.1, y: 0.1, z: 0.7}
   boxOffset: {x: 0, y: 0, z: 0.8}
   debugDraw: 1
@@ -11605,6 +11601,7 @@ GameObject:
   - component: {fileID: 1976564972808210772}
   - component: {fileID: 1131670226733121431}
   - component: {fileID: 7406680771381853492}
+  - component: {fileID: 7406680771381853493}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -12328,10 +12325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3897e3b3e3b87540b62cb380b9c53a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
-  profile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
-  hurtboxMask:
-    serializedVersion: 2
-    m_Bits: 128
   boxHalfExtents: {x: 0.15, y: 1, z: 0.1}
   boxOffset: {x: 0, y: 0.4, z: 0}
   debugDraw: 1
@@ -16489,13 +16482,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e67ce7535fa1a45a9eb859a22a48af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  owner: {fileID: 7683320529676717417}
   comboGraph: {fileID: 11400000, guid: 6e0edada3d63e4440baa1c753604ba56, type: 2}
   hitboxes:
   - {fileID: 2781453171197904026}
   feedbackPlayer: {fileID: 0}
-  attackLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &5566632713164685335
 GameObject:
   m_ObjectHideFlags: 0
@@ -17106,13 +17097,15 @@ GameObject:
   - component: {fileID: 7571382972195383170}
   - component: {fileID: 3127538585798985620}
   - component: {fileID: 377900558007037892}
+  - component: {fileID: 7683320529676717417}
+  - component: {fileID: 7683320529676717418}
   m_Layer: 8
   m_Name: Modular AI Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &6085942469844062015
 GameObject:
   m_ObjectHideFlags: 0
@@ -17252,13 +17245,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e67ce7535fa1a45a9eb859a22a48af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  owner: {fileID: 0}
   comboGraph: {fileID: 11400000, guid: 6e0edada3d63e4440baa1c753604ba56, type: 2}
   hitboxes:
   - {fileID: 1766096162912586146}
   feedbackPlayer: {fileID: 1142486163}
-  attackLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &6130634006850023462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19034,6 +19025,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
   profile: {fileID: 11400000, guid: 7f0e8430b65204a409a42aa1f963bf4d, type: 2}
+--- !u!114 &7406680771381853493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324462831474733815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ecd9bb459fd68f49b1db6b34631f9e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeDebugger
+  attributes: {fileID: 7406680771381853492}
+  statDefinitions:
+  - {fileID: 11400000, guid: 5be7e6af820091d439d4c17fd7890f31, type: 2}
+  resourceDefinitions:
+  - {fileID: 11400000, guid: 491160cfae76fbc4a8dcf70f97fdaf29, type: 2}
+  ailmentDefinitions: []
 --- !u!4 &7429973228417913973
 Transform:
   m_ObjectHideFlags: 0
@@ -19394,6 +19403,38 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &7683320529676717417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6072786317991108314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3203eb2ec260cd4cb08b145bdd07c5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterAttributes
+  profile: {fileID: 11400000, guid: 7f0e8430b65204a409a42aa1f963bf4d, type: 2}
+--- !u!114 &7683320529676717418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6072786317991108314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ecd9bb459fd68f49b1db6b34631f9e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeDebugger
+  attributes: {fileID: 7683320529676717417}
+  statDefinitions:
+  - {fileID: 11400000, guid: 5be7e6af820091d439d4c17fd7890f31, type: 2}
+  resourceDefinitions:
+  - {fileID: 11400000, guid: 491160cfae76fbc4a8dcf70f97fdaf29, type: 2}
+  ailmentDefinitions:
+  - {fileID: 11400000, guid: 8ff0ddc9ecd56d34f8fb728a4805d4f7, type: 2}
 --- !u!4 &7684411778480600512
 Transform:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerHitState : PlayerState
 {
-    private DamageEvent damageEvent;
+    private readonly DamageEvent damageEvent;
 
     public PlayerHitState(StateMachine stateMachine, Character character, DamageEvent ev) : base(stateMachine, character)
     {

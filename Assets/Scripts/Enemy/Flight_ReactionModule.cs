@@ -30,10 +30,10 @@ public class Flight_ReactionModule : ReactionModule
 
     public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
     {
-        if (ev.Effect != HitEffectType.Heavy)
+        if (ev.Effect != HitImpactType.Heavy)
             return false;
 
-        if (ev.SwingType != HitSwing.DownToUp)
+        if (ev.SwingType != SwingType.DownToUp)
             return false;
 
         if (!ctx.Self.Context.isGrounded)

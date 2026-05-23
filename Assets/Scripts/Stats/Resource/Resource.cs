@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using static ResourceDefinition;
 
 public sealed class Resource

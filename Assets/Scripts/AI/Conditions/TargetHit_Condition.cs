@@ -25,7 +25,7 @@ public class TargetHit_Condition : Condition
         currHits = 0;
         lastHitTime = -hitResetTime; // Initialize to allow immediate hit registration
 
-        target.onHit += RegisterHit;
+        target.OnHit += RegisterHit;
     }
 
     public override bool Evaluate()
@@ -59,7 +59,7 @@ public class TargetHit_Condition : Condition
     {
         if (target != null)
         {
-            target.onHit -= RegisterHit;
+            target.OnHit -= RegisterHit;
         }
     }
 }

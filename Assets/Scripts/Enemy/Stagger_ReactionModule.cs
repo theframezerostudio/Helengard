@@ -27,7 +27,7 @@ public class Stagger_ReactionModule : ReactionModule
 
     public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
     {
-        if (ev.Effect == HitEffectType.Light) return true;
+        if (ev.Effect == HitImpactType.Light) return true;
         return false;
     }
 

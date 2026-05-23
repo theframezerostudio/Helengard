@@ -22,7 +22,7 @@ public class PlayerState : BaseState
     #region State Cycle
     public override void Enter()
     {
-        player.Target.onHit += HandleHit;
+        player.Target.OnHit += HandleHit;
         inputManager.permissionManager.OnPermissionChanged += PermissionCheck;
     }
 
@@ -51,7 +51,7 @@ public class PlayerState : BaseState
 
     public override void Exit()
     {
-        player.Target.onHit -= HandleHit;
+        player.Target.OnHit -= HandleHit;
         inputManager.permissionManager.OnPermissionChanged -= PermissionCheck;
     }
     #endregion

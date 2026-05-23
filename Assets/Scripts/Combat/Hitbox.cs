@@ -3,198 +3,165 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct HitData
+public sealed class Hitbox : MonoBehaviour
 {
-    public IDamageable target;
-    public DamageEvent damageEvent;
+    [SerializeField] private Vector3 boxHalfExtents = Vector3.one;
+    [SerializeField] private Vector3 boxOffset = Vector3.forward;
+    [SerializeField] private bool debugDraw;
 
-    public HitData(IDamageable target, DamageEvent damageEvent)
-    {
-        this.target = target;
-        this.damageEvent = damageEvent;
-    }
-}
+    private readonly HashSet<IDamageable> targetsHit = new();
 
-public class Hitbox : MonoBehaviour
-{
-    public AttackProfile profile;
+    private CharacterAttributes owner;
     private Transform attackerRoot;
-
-    public LayerMask hurtboxMask;
-    public Vector3 boxHalfExtents = Vector3.one;
-    public Vector3 boxOffset = Vector3.forward;
-
-    public bool debugDraw = false;
-    private HashSet<IDamageable> damageables = new();
+    private AttackProfile profile;
+    private float powerMultiplier = 1f;
     private Coroutine attackRoutine;
 
-    public Action<HitData> OnHit;
+    public event Action<HitData> OnHit;
 
-    private void Awake()
+    public void Initialize(CharacterAttributes owner)
     {
-        attackerRoot = transform.root;
+        this.owner = owner;
+        attackerRoot = owner != null ? owner.transform.root : transform.root;
     }
 
-    public void Initialize(LayerMask hitLayer)
+    public void InitiateHit(AttackProfile attackProfile, float powerMultiplier = 1f)
     {
-        hurtboxMask = hitLayer;
-    }
-
-    public void InitiateHit(AttackProfile attackProfile)
-    {
-        profile = attackProfile;
+        if (attackProfile == null)
+            return;
 
         TerminateHit();
+
+        profile = attackProfile;
+        this.powerMultiplier = powerMultiplier;
 
         attackRoutine = StartCoroutine(AttackSequence());
     }
 
     public void TerminateHit()
     {
-        damageables.Clear();
-        if (attackRoutine != null)
-        {
-            StopCoroutine(attackRoutine);
-            attackRoutine = null;
-        }
+        targetsHit.Clear();
+        profile = null;
+        powerMultiplier = 1f;
+
+        if (attackRoutine == null)
+            return;
+
+        StopCoroutine(attackRoutine);
+        attackRoutine = null;
     }
 
-    IEnumerator AttackSequence()
+    private IEnumerator AttackSequence()
     {
         float safetyTime = 5f;
 
-        while (safetyTime > 0)
+        while (safetyTime > 0f)
         {
             FireHit();
             safetyTime -= Time.deltaTime;
             yield return null;
         }
 
-        damageables.Clear();
+        TerminateHit();
     }
 
     public void FireHit()
     {
-        if (profile == null)
-        {
-            Debug.LogWarning("Hitbox profile is NULL");
+        if (profile == null || attackerRoot == null)
             return;
-        }
-
-        if (attackerRoot == null)
-        {
-            Debug.LogWarning("AttackerRoot is NULL");
-            return;
-        }
 
         Vector3 center = transform.position + transform.TransformDirection(boxOffset);
-        Collider[] hits = Physics.OverlapBox(center, boxHalfExtents, transform.rotation, hurtboxMask);
 
-        foreach (var col in hits)
+        Collider[] hits = Physics.OverlapBox(
+            center,
+            boxHalfExtents,
+            transform.rotation,
+            profile.hurtboxMask);
+
+        for (int i = 0; i < hits.Length; i++)
         {
-            var damageable = col.GetComponentInParent<IDamageable>();
+            Collider hitCollider = hits[i];
+            IDamageable target = hitCollider.GetComponentInParent<IDamageable>();
 
-            if (damageable == null) continue;
-            if (damageables.Contains(damageable)) continue;
+            if (target == null || target.Attributes == null)
+                continue;
 
-            damageables.Add(damageable);
+            if (!target.IsAlive)
+                continue;
 
-            Vector3 hitPoint = col.ClosestPoint(center);
+            if (owner != null && target.Attributes == owner)
+                continue;
+
+            if (!targetsHit.Add(target))
+                continue;
+
+            Vector3 hitPoint = hitCollider.ClosestPoint(center);
             Vector3 hitNormal = (hitPoint - center).normalized;
+            Vector3 hitForce = attackerRoot.TransformDirection(profile.hitForce);
 
-            Transform targetRoot = col.transform.root;
-            HitDirection dir = HitUtilities.ComputeHitDirection(targetRoot, attackerRoot, hitPoint);
+            Transform targetRoot = hitCollider.transform.root;
+
+            HitDirection direction = HitUtilities.ComputeHitDirection(targetRoot, attackerRoot, hitPoint);
             HitHeight height = HitUtilities.ComputeHitHeight(targetRoot, hitPoint);
 
-            try
-            {
-                Vector3 force = attackerRoot.TransformDirection(profile.hitForce);
-
-                DamageEvent damageEvent = new DamageEvent(
-                    profile.damage,
-                    profile.effect,
-                    hitPoint,
-                    hitNormal,
-                    force,
-                    attackerRoot,
-                    col.transform,
-                    dir,
-                    height,
-                    profile.swingType,
-                    profile.canChain,
-                    profile.stunDuration,
-                    profile.hitStop
-                );
-
-                OnHit?.Invoke(new HitData(damageable, damageEvent));
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Hitbox Error: " + e);
-            }
+            OnHit?.Invoke(new HitData(
+                target,
+                profile,
+                hitCollider.transform,
+                hitPoint,
+                hitNormal,
+                hitForce,
+                direction,
+                height,
+                powerMultiplier));
         }
 
         if (debugDraw)
-        {
-            DebugDrawBox(center, boxHalfExtents, transform.rotation, Color.red, 1.0f);
-        }
+            DebugDrawBox(center, boxHalfExtents, transform.rotation, Color.red, 1f);
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-        if (debugDraw) return;
+        if (!debugDraw)
+            return;
 
         Gizmos.color = Color.blue;
 
         Vector3 center = transform.position + transform.TransformDirection(boxOffset);
-        Quaternion rotation = transform.rotation;
+        Matrix4x4 previousMatrix = Gizmos.matrix;
 
-        // Save matrix
-        Matrix4x4 oldMatrix = Gizmos.matrix;
-
-        // Draw rotated box
-        Gizmos.matrix = Matrix4x4.TRS(center, rotation, Vector3.one);
+        Gizmos.matrix = Matrix4x4.TRS(center, transform.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, boxHalfExtents * 2f);
 
-        // Restore matrix
-        Gizmos.matrix = oldMatrix;
+        Gizmos.matrix = previousMatrix;
     }
 
-    void DebugDrawBox(Vector3 center, Vector3 halfExtents, Quaternion rotation, Color color, float duration)
+    private void DebugDrawBox(Vector3 center, Vector3 halfExtents, Quaternion rotation, Color color, float duration)
     {
         Vector3[] corners = new Vector3[8];
 
-        // Local corner positions
-        Vector3 ext = halfExtents;
-        corners[0] = new Vector3(-ext.x, -ext.y, -ext.z);
-        corners[1] = new Vector3(ext.x, -ext.y, -ext.z);
-        corners[2] = new Vector3(ext.x, -ext.y, ext.z);
-        corners[3] = new Vector3(-ext.x, -ext.y, ext.z);
+        corners[0] = new Vector3(-halfExtents.x, -halfExtents.y, -halfExtents.z);
+        corners[1] = new Vector3(halfExtents.x, -halfExtents.y, -halfExtents.z);
+        corners[2] = new Vector3(halfExtents.x, -halfExtents.y, halfExtents.z);
+        corners[3] = new Vector3(-halfExtents.x, -halfExtents.y, halfExtents.z);
+        corners[4] = new Vector3(-halfExtents.x, halfExtents.y, -halfExtents.z);
+        corners[5] = new Vector3(halfExtents.x, halfExtents.y, -halfExtents.z);
+        corners[6] = new Vector3(halfExtents.x, halfExtents.y, halfExtents.z);
+        corners[7] = new Vector3(-halfExtents.x, halfExtents.y, halfExtents.z);
 
-        corners[4] = new Vector3(-ext.x, ext.y, -ext.z);
-        corners[5] = new Vector3(ext.x, ext.y, -ext.z);
-        corners[6] = new Vector3(ext.x, ext.y, ext.z);
-        corners[7] = new Vector3(-ext.x, ext.y, ext.z);
-
-        // Transform corners to world space
-        for (int i = 0; i < 8; i++)
-        {
+        for (int i = 0; i < corners.Length; i++)
             corners[i] = center + rotation * corners[i];
-        }
 
-        // Bottom
         Debug.DrawLine(corners[0], corners[1], color, duration);
         Debug.DrawLine(corners[1], corners[2], color, duration);
         Debug.DrawLine(corners[2], corners[3], color, duration);
         Debug.DrawLine(corners[3], corners[0], color, duration);
 
-        // Top
         Debug.DrawLine(corners[4], corners[5], color, duration);
         Debug.DrawLine(corners[5], corners[6], color, duration);
         Debug.DrawLine(corners[6], corners[7], color, duration);
         Debug.DrawLine(corners[7], corners[4], color, duration);
 
-        // Sides
         Debug.DrawLine(corners[0], corners[4], color, duration);
         Debug.DrawLine(corners[1], corners[5], color, duration);
         Debug.DrawLine(corners[2], corners[6], color, duration);

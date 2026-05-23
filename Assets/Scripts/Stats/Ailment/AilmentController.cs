@@ -1,93 +1,101 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace Stats
+public sealed class AilmentController
 {
-    public sealed class AilmentController
+    private readonly Dictionary<AilmentDefinition, RuntimeAilment> ailments = new();
+    private readonly Dictionary<AilmentDefinition, float> resistances = new();
+    private readonly List<RuntimeAilment> activeAilments = new();
+
+    private readonly GameplayEffectController effectController;
+
+    public bool RequiresTick => activeAilments.Count > 0;
+
+    public event Action<RuntimeAilment> AilmentTriggered;
+    public event Action<RuntimeAilment> BuildupCleared;
+
+    public AilmentController(GameplayEffectController effectController, IReadOnlyList<AilmentResistance> resistances)
     {
-        private readonly Dictionary<AilmentDefinition, RuntimeAilment> ailments = new();
-        private readonly Dictionary<AilmentDefinition, float> resistances = new();
-        private readonly GameplayEffectController effectController;
+        this.effectController = effectController;
 
-        public event Action<RuntimeAilment> AilmentTriggered;
-        public event Action<RuntimeAilment> AilmentRecovered;
+        if (resistances == null)
+            return;
 
-        public AilmentController(
-            GameplayEffectController effectController,
-            IReadOnlyList<AilmentResistance> resistances)
+        for (int i = 0; i < resistances.Count; i++)
         {
-            this.effectController = effectController;
+            AilmentResistance resistance = resistances[i];
 
-            for (int i = 0; i < resistances.Count; i++)
-            {
-                AilmentResistance resistance = resistances[i];
-                this.resistances[resistance.Ailment] = resistance.Resistance;
-            }
+            if (resistance == null || resistance.Ailment == null)
+                continue;
+
+            this.resistances[resistance.Ailment] = resistance.Resistance;
         }
+    }
 
-        public void Tick(float deltaTime)
-        {
-            if (ailments.Count == 0)
-                return;
-            
-            foreach (RuntimeAilment ailment in ailments.Values)
-            {
-                AilmentState previous = ailment.State;
+    public void Tick(float deltaTime)
+    {
+        for (int i = activeAilments.Count - 1; i >= 0; i--)
+            activeAilments[i].Tick(deltaTime);
+    }
 
-                ailment.Tick(deltaTime);
+    public RuntimeAilment GetAilment(AilmentDefinition definition)
+    {
+        if (definition == null)
+            return null;
 
-                if (previous != AilmentState.Triggered &&
-                    ailment.State == AilmentState.Triggered)
-                {
-                    TriggerAilment(ailment);
-                }
-
-                if (previous != AilmentState.Inactive &&
-                    ailment.State == AilmentState.Inactive)
-                {
-                    AilmentRecovered?.Invoke(ailment);
-                }
-            }
-        }
-
-        public RuntimeAilment GetAilment(AilmentDefinition definition)
-        {
-            if (ailments.TryGetValue(definition, out RuntimeAilment ailment))
-            {
-                return ailment;
-            }
-
-            ailment = new RuntimeAilment(definition);
-            ailments.Add(definition, ailment);
-
+        if (ailments.TryGetValue(definition, out RuntimeAilment ailment))
             return ailment;
-        }
 
-        public void ApplyAilment(AilmentApplication application)
-        {
-            RuntimeAilment ailment = GetAilment(application.Ailment);
-            float buildup = application.Buildup;
+        ailment = new RuntimeAilment(definition);
+        ailment.Triggered += HandleAilmentTriggered;
+        ailment.BuildupCleared += HandleBuildupCleared;
 
-            if (resistances.TryGetValue(application.Ailment, out float resistance))
-            {
-                buildup *= 1f - resistance;
-            }
+        ailments.Add(definition, ailment);
 
-            ailment.AddBuildup(buildup);
-        }
+        return ailment;
+    }
 
-        private void TriggerAilment(RuntimeAilment ailment)
-        {
-            EffectDefinition effect = ailment.Definition.TriggerEffect;
+    public void ApplyAilment(AilmentApplication application)
+    {
+        if (application.Ailment == null || application.Buildup <= 0f)
+            return;
 
-            if (effect != null)
-            {
-                effectController.ApplyEffect(effect);
-            }
+        RuntimeAilment ailment = GetAilment(application.Ailment);
 
-            AilmentTriggered?.Invoke(ailment);
-            ailment.Reset();
-        }
+        if (ailment == null)
+            return;
+
+        float buildup = application.Buildup;
+
+        if (resistances.TryGetValue(application.Ailment, out float resistance))
+            buildup *= 1f - resistance;
+
+        if (buildup <= 0f)
+            return;
+
+        if (!activeAilments.Contains(ailment))
+            activeAilments.Add(ailment);
+
+        ailment.AddBuildup(buildup);
+    }
+
+    private void HandleAilmentTriggered(RuntimeAilment ailment)
+    {
+        activeAilments.Remove(ailment);
+
+        EffectDefinition effect = ailment.Definition.TriggerEffect;
+
+        if (effect != null)
+            effectController.ApplyEffect(effect);
+
+        AilmentTriggered?.Invoke(ailment);
+
+        ailment.Reset();
+    }
+
+    private void HandleBuildupCleared(RuntimeAilment ailment)
+    {
+        activeAilments.Remove(ailment);
+        BuildupCleared?.Invoke(ailment);
     }
 }

@@ -39,7 +39,7 @@ public class Attack_CombatAction : CombatSubAction
         motionHandler.rotationMode = RotationMode.FaceTarget;
         combatDecision.Initialize(owner.Context);
 
-        AttackInput entryInput = combatDecision.DecideEntry(combatData, combatMemory, weapon.comboGraph);
+        AttackInput entryInput = combatDecision.DecideEntry(combatData, combatMemory, weapon.ComboGraph);
         node = entryInput != AttackInput.None
             ? weapon.InitiateAttack(owner.Context, entryInput)
             : null;
@@ -117,8 +117,11 @@ public class Attack_CombatAction : CombatSubAction
         {
             if (!isAttacking)
             {
-                weapon.StartAttack(node);
-                isAttacking = true;
+                if (weapon.TryCommitAttack(node))
+                {
+                    weapon.StartAttack(node);
+                    isAttacking = true;
+                }
             }
         }
         else if (isAttacking)
@@ -143,7 +146,7 @@ public class Attack_CombatAction : CombatSubAction
         {
             Unlock();
 
-            AttackInput entryInput = combatDecision.DecideEntry(combatData, combatMemory, weapon.comboGraph);
+            AttackInput entryInput = combatDecision.DecideEntry(combatData, combatMemory, weapon.ComboGraph);
             if (entryInput != AttackInput.None)
             {
                 node = weapon.InitiateAttack(owner.Context, entryInput);

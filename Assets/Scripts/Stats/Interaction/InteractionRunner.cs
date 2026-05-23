@@ -1,8 +1,11 @@
+using System;
+using System.Diagnostics;
+
 public static class InteractionRunner
 {
     public static InteractionResult Run(InteractionDefinition definition, InteractionContext context)
     {
-        InteractionResult result = new InteractionResult();
+        InteractionResult result = new();
 
         if (definition == null || context == null)
         {
@@ -10,6 +13,9 @@ public static class InteractionRunner
             return result;
         }
 
+        if (!MeetsConditions(definition, context, result))
+            return result;
+        
         ApplyResourceChanges(definition, context, result);
 
         if (result.Blocked)
@@ -19,6 +25,29 @@ public static class InteractionRunner
         ApplyAilments(definition, context, result);
 
         return result;
+    }
+
+    private static bool MeetsConditions(InteractionDefinition definition, InteractionContext context, InteractionResult result)
+    {
+        if (definition.conditions == null)
+            return true;
+
+        for (int i = 0; i < definition.conditions.Length; i++)
+        {
+            InteractionConditionDefinition condition = definition.conditions[i];
+
+            if (condition == null)
+                continue;
+
+            if (condition.IsMet(context))
+                continue;
+
+            result.Blocked = true;
+            result.FailedCondition = condition;
+            return false;
+        }
+
+        return true;
     }
 
     private static void ApplyResourceChanges(InteractionDefinition definition, InteractionContext context, InteractionResult result)

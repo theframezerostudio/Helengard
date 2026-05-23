@@ -1,37 +1,57 @@
 using System;
 using UnityEngine;
 
-public class Target : MonoBehaviour, IDamageable
+public sealed class Target : MonoBehaviour, IDamageable
 {
     [Tooltip("Character Context of Character, if applicable")]
     [field: SerializeField] public CharacterContext Context { get; private set; }
 
-    // TODO: Update isAlive logic to be based on health or other conditions as needed
-    public bool IsAlive => true;
+    [field: SerializeField] public CharacterAttributes Attributes { get; private set; }
 
-    public event Action<DamageEvent> onHit;
+    [SerializeField] private ResourceDefinition healthResource;
 
-    private DamageEvent damageEvent = null;
+    public bool IsAlive
+    {
+        get
+        {
+            if (Attributes == null || healthResource == null)
+                return true;
+
+            Resource health = Attributes.Resources.GetResource(healthResource);
+
+            return health != null && !health.IsDepleted;
+        }
+    }
+
+    public event Action<DamageEvent> OnHit;
+
+    private DamageEvent recentHit;
     private float lastHitTime;
-    private readonly float hitMemoryDuration = 0.5f;
+
+    [SerializeField] private float hitMemoryDuration = 0.5f;
 
     public void TakeDamage(DamageEvent damageEvent)
     {
-        onHit?.Invoke(damageEvent);
+        if (damageEvent == null)
+            return;
+
         RegisterHit(damageEvent);
-        Context.dataAggregator.MarkAsTargetted();
+        OnHit?.Invoke(damageEvent);
+
+        if (Context != null)
+            Context.dataAggregator.MarkAsTargetted();
     }
 
-    public void RegisterHit(DamageEvent ev)
+    public void RegisterHit(DamageEvent damageEvent)
     {
-        damageEvent = ev;
+        recentHit = damageEvent;
         lastHitTime = Time.time;
     }
 
     public DamageEvent GetRecentHit()
     {
         if (Time.time - lastHitTime <= hitMemoryDuration)
-            return damageEvent;
+            return recentHit;
 
         return null;
     }

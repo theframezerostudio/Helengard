@@ -1,13 +1,18 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Combat/AttackProfile")]
-public class AttackProfile : ScriptableObject
+[CreateAssetMenu(menuName = "Combat/Attack Profile")]
+public sealed class AttackProfile : ScriptableObject
 {
-    public float damage = 10f;
+    [Header("Interactions")]
+    public InteractionDefinition activationInteraction;
+    public InteractionDefinition impactInteraction;
+
+    [Header("Hit Detection")]
     public LayerMask hurtboxMask;
 
-    public HitEffectType effect = HitEffectType.Light;
-    public HitSwing swingType = HitSwing.Stab;
+    [Header("Hit Response")]
+    public HitImpactType hitImpact = HitImpactType.Light;
+    public SwingType swingType = SwingType.Stab;
 
     public Vector3 hitForce;
     public float stunDuration = 0.25f;

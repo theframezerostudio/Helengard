@@ -1,4 +1,3 @@
-using Stats;
 using UnityEngine;
 
 public sealed class CharacterAttributes : MonoBehaviour

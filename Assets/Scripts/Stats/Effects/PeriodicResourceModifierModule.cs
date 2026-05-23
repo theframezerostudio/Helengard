@@ -17,7 +17,7 @@ public sealed class PeriodicResourceModifierModule : TimedEffectModule
 
     protected override void Execute()
     {
-        Resource resource = Resources.Get(targetResource);
+        Resource resource = Resources.GetResource(targetResource);
 
         if (resource == null)
             return;

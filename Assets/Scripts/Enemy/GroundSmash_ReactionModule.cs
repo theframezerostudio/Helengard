@@ -35,10 +35,10 @@ public class GroundSmash_ReactionModule : ReactionModule
         if (!ev.CanChain)
             return false;
 
-        if (ev.SwingType != HitSwing.UpToDown)
+        if (ev.SwingType != SwingType.UpToDown)
             return false;
 
-        if (ev.Effect != HitEffectType.Heavy)
+        if (ev.Effect != HitImpactType.Heavy)
             return false;
 
         return true;

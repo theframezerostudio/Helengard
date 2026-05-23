@@ -3,12 +3,27 @@ using System.Collections.Generic;
 public sealed class InteractionResult
 {
     public bool Blocked;
+    public InteractionConditionDefinition FailedCondition;
 
     public readonly List<ResourceChangeResult> ResourceChanges = new();
     public readonly List<EffectApplyResult> AppliedEffects = new();
     public readonly List<AilmentApplyResult> AilmentsApplied = new();
 
     public bool Succeeded => !Blocked;
+
+    public bool HasCriticalChange
+    {
+        get
+        {
+            for (int i = 0; i < ResourceChanges.Count; i++)
+            {
+                if (ResourceChanges[i].Critical)
+                    return true;
+            }
+
+            return false;
+        }
+    }
 }
 
 public readonly struct ResourceChangeResult
@@ -26,17 +41,16 @@ public readonly struct ResourceChangeResult
 
     public readonly bool Success;
 
-    public ResourceChangeResult(
-        CharacterAttributes receiver,
-        ResourceDefinition resource,
-        ResourceChangeOperation operation,
-        InteractionChannelDefinition channel,
-        float baseValue,
-        float resistanceMultiplier,
-        bool critical,
-        float criticalMultiplier,
-        float finalValue,
-        bool success)
+    public ResourceChangeResult(CharacterAttributes receiver,
+                                ResourceDefinition resource,
+                                ResourceChangeOperation operation,
+                                InteractionChannelDefinition channel,
+                                float baseValue,
+                                float resistanceMultiplier,
+                                bool critical,
+                                float criticalMultiplier,
+                                float finalValue,
+                                bool success)
     {
         Receiver = receiver;
         Resource = resource;

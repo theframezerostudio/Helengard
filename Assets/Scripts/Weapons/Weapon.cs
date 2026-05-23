@@ -1,16 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public sealed class Weapon : MonoBehaviour
 {
-    public ComboGraph comboGraph;
-    public Hitbox[] hitboxes;
+    [SerializeField] private CharacterAttributes owner;
+
+    [Header("Combo")]
+    [SerializeField] private ComboGraph comboGraph;
+
+    [Header("Hitboxes")]
+    [SerializeField] private Hitbox[] hitboxes;
+
+    [Header("Feedback")]
+    [SerializeField] private FeedbackPlayer feedbackPlayer;
+
+    private readonly HashSet<IDamageable> targetsHitThisWindow = new();
+    private AttackExecutor attackExecutor;
+
+    public ComboGraph ComboGraph => comboGraph;
 
     public Action<DamageEvent> OnHit;
-    public FeedbackPlayer feedbackPlayer;
-    public LayerMask attackLayer;
 
-    public AttackResolver AttackResolver {  get; private set; }
+    public AttackResolver AttackResolver { get; private set; }
 
     private void Awake()
     {
@@ -19,9 +31,29 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        foreach (var hitbox in hitboxes)
+        Initialize(owner);
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeFromHitboxes();
+    }
+
+    public void Initialize(CharacterAttributes owner)
+    {
+        this.owner = owner;
+
+        attackExecutor = new AttackExecutor(owner, gameObject, this);
+
+        for (int i = 0; i < hitboxes.Length; i++)
         {
-            hitbox.Initialize(attackLayer);
+            Hitbox hitbox = hitboxes[i];
+
+            if (hitbox == null)
+                continue;
+
+            hitbox.Initialize(owner);
+            hitbox.OnHit -= HandleHit;
             hitbox.OnHit += HandleHit;
         }
     }
@@ -36,36 +68,80 @@ public class Weapon : MonoBehaviour
         return AttackResolver.Resolve(context, attackInput, node);
     }
 
-    public void StartAttack(ComboNode node)
+    public bool TryCommitAttack(ComboNode node, float powerMultiplier = 1f)
     {
-        foreach (var hitbox in hitboxes)
+        if (node == null || node.attackProfile == null || attackExecutor == null)
+            return false;
+
+        return attackExecutor.TryCommitAttack(node.attackProfile, powerMultiplier);
+    }
+
+    public void StartAttack(ComboNode node, float powerMultiplier = 1f)
+    {
+        if (node == null || node.attackProfile == null)
+            return;
+
+        targetsHitThisWindow.Clear();
+
+        for (int i = 0; i < hitboxes.Length; i++)
         {
-            hitbox.InitiateHit(node.attackProfile);
+            Hitbox hitbox = hitboxes[i];
+
+            if (hitbox != null)
+                hitbox.InitiateHit(node.attackProfile, powerMultiplier);
         }
     }
 
     public void EndAttack()
     {
-        foreach (var hitbox in hitboxes)
+        for (int i = 0; i < hitboxes.Length; i++)
         {
-            hitbox.TerminateHit();
+            Hitbox hitbox = hitboxes[i];
+
+            if (hitbox != null)
+                hitbox.TerminateHit();
         }
+
+        targetsHitThisWindow.Clear();
     }
 
-    private void HandleHit(HitData data)
+    private void HandleHit(HitData hit)
     {
-        data.target.TakeDamage(data.damageEvent);
-        OnHit?.Invoke(data.damageEvent);
-
-        if (feedbackPlayer != null)
-            feedbackPlayer.Play();
-    }
-
-    private void OnDestroy()
-    {
-        foreach (var hitbox in hitboxes)
+        if (hit.target == null || attackExecutor == null)
         {
-            hitbox.OnHit -= HandleHit;
+            Debug.LogWarning(hit.target == null ? "Hit target is null." : "Attack executor is null.");
+            return;
+        }
+
+        if (!targetsHitThisWindow.Add(hit.target))
+            return;
+
+        if (!attackExecutor.TryResolveHit(hit, out DamageEvent damageEvent))
+            return;
+
+        hit.target.TakeDamage(damageEvent);
+
+        OnHit?.Invoke(damageEvent);
+
+        HandleFeedback(damageEvent);
+    }
+
+    private void HandleFeedback(DamageEvent damageEvent)
+    {
+        // Use damageEvent.Result when FeedbackPlayer integration is added.
+    }
+
+    private void UnsubscribeFromHitboxes()
+    {
+        if (hitboxes == null)
+            return;
+
+        for (int i = 0; i < hitboxes.Length; i++)
+        {
+            Hitbox hitbox = hitboxes[i];
+
+            if (hitbox != null)
+                hitbox.OnHit -= HandleHit;
         }
     }
 }

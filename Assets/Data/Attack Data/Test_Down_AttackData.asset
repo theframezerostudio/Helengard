@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a63ff014a4ea4674cae692c3aec13071, type: 3}
   m_Name: Test_Down_AttackData
   m_EditorClassIdentifier: Assembly-CSharp::AttackProfile
-  damage: 10
+  activationInteraction: {fileID: 0}
+  impactInteraction: {fileID: 11400000, guid: d49195ad3bd0579429449b640895e9c7, type: 2}
   hurtboxMask:
     serializedVersion: 2
     m_Bits: 256
-  effect: 1
+  hitImpact: 0
   swingType: 2
   hitForce: {x: 0, y: -15, z: 0}
   stunDuration: 5
