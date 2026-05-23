@@ -22,14 +22,11 @@ public sealed class CriticalDefinition
     public StatDefinition sourceMultiplierStat;
     public float sourceMultiplierStatMultiplier = 1f;
 
-    public bool Roll(InteractionContext context, InteractionChannelDefinition channel, out float multiplier)
+    public bool Roll(InteractionContext context, out float multiplier)
     {
         multiplier = 1f;
 
         if (!enabled)
-            return false;
-
-        if (channel != null && !channel.canCrit)
             return false;
 
         float chance = baseChance;
@@ -42,9 +39,7 @@ public sealed class CriticalDefinition
 
         chance = Mathf.Clamp01(chance);
 
-        bool crit = UnityEngine.Random.value <= chance;
-
-        if (!crit)
+        if (UnityEngine.Random.value > chance)
             return false;
 
         multiplier = baseMultiplier;

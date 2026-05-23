@@ -10,9 +10,6 @@ public sealed class InteractionChannelDefinition : ScriptableObject
     public StatDefinition resistanceStat;
     public float resistanceMultiplier = 1f;
 
-    [Header("Critical")]
-    public bool canCrit = true;
-
     [Header("Clamping")]
     public bool clampFinalMultiplier = true;
     public float minFinalMultiplier = 0f;

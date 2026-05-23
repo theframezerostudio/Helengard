@@ -19,7 +19,7 @@ public sealed class ResourceChangeDefinition
     public ResourceChangeOperation operation;
 
     [Header("Resolution")]
-    public InteractionMagnitude magnitude = new InteractionMagnitude();
+    public InteractionMagnitude magnitude = new();
     public InteractionChannelDefinition channel;
 
     [Header("Resistance")]
@@ -55,7 +55,7 @@ public sealed class ResourceChangeDefinition
             resistanceMultiplier = channel.ResolveResistanceMultiplier(attributes);
 
         float multiplier = 1f;
-        bool isCritical = critical != null && critical.Roll(context, channel, out multiplier);
+        bool isCritical = critical != null && critical.Roll(context, out multiplier);
         float criticalMultiplier = isCritical ? multiplier : 1f;
 
         float finalValue = baseValue * resistanceMultiplier * criticalMultiplier;

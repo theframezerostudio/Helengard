@@ -20,30 +20,30 @@ MonoBehaviour:
     resource: {fileID: 11400000, guid: 491160cfae76fbc4a8dcf70f97fdaf29, type: 2}
     operation: 0
     magnitude:
-      flatValue: 30
-      sourceStat: {fileID: 0}
-      sourceStatMultiplier: 0
-      targetStat: {fileID: 0}
-      targetStatMultiplier: 0
+      flatValue: 0
+      sourceStat: {fileID: 11400000, guid: 5348378380ac8d6489413a9a81b43e56, type: 2}
+      sourceStatMultiplier: 1
+      targetStat: {fileID: 11400000, guid: 7e97cac1966967a4dba13f3896428cd3, type: 2}
+      targetStatMultiplier: -1
       usePowerMultiplier: 0
       clampMin: 0
       minValue: 0
       clampMax: 0
       maxValue: 0
-    channel: {fileID: 0}
-    applyResistance: 0
+    channel: {fileID: 11400000, guid: bc7fd7fa3e96f0d43ba663f3b3d36daa, type: 2}
+    applyResistance: 1
     critical:
-      enabled: 0
+      enabled: 1
       baseChance: 0
-      sourceChanceStat: {fileID: 0}
-      sourceChanceMultiplier: 0
-      targetResistanceStat: {fileID: 0}
-      targetResistanceMultiplier: 0
+      sourceChanceStat: {fileID: 11400000, guid: b9e112273c5624349a9e1cede26ffe56, type: 2}
+      sourceChanceMultiplier: 1
+      targetResistanceStat: {fileID: 11400000, guid: b30263cf59817264c834c6e142911ee9, type: 2}
+      targetResistanceMultiplier: 1
       baseMultiplier: 0
-      sourceMultiplierStat: {fileID: 0}
-      sourceMultiplierStatMultiplier: 0
+      sourceMultiplierStat: {fileID: 11400000, guid: 6ddf1c7511cdf2842b2b660b8b3f1486, type: 2}
+      sourceMultiplierStatMultiplier: 1
     required: 0
-    ignoreNegative: 0
+    ignoreNegative: 1
   effects: []
   ailments:
   - receiver: 1
