@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerHealthStat_Base
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatDefinition
   stat: {fileID: 11400000, guid: 5be7e6af820091d439d4c17fd7890f31, type: 2}
-  baseValue: 100
+  baseValue: 1000
   useMinValue: 0
   minValue: 0
   useMaxValue: 0

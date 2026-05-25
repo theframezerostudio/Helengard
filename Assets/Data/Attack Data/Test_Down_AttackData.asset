@@ -17,7 +17,7 @@ MonoBehaviour:
   hurtboxMask:
     serializedVersion: 2
     m_Bits: 256
-  hitImpact: 0
+  hitImpact: 1
   swingType: 2
   hitForce: {x: 0, y: -15, z: 0}
   stunDuration: 5

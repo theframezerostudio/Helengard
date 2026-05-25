@@ -110,7 +110,7 @@ public class FreeMoveMode : LocomotionMode
 
     public override void PlayAnimation(Vector3 input)
     {
-        player.SetAnim("Speed", input.magnitude);
+        player.SetAnim("Speed", input.magnitude, 0.1f);
 
         player.SetAnim("IsSprinting", player.Context.isSprinting);
     }

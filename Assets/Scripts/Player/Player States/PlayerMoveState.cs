@@ -21,7 +21,7 @@ public class PlayerMoveState : PlayerGroundedState
         InputManager.Instance.onMove += HandleMove;
         movement = InputManager.Instance.MoveInput;
 
-        player.PlayAnim("Movement", 0.1f);
+        player.PlayAnim("Movement", 0.2f);
     }
 
     public override void Update()

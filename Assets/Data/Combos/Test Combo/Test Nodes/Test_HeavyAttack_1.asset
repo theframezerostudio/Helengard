@@ -22,27 +22,45 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      inSlope: -0.41671547
+      outSlope: -0.41671547
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.41309506
+      value: 0.8278569
+      inSlope: -1.5475346
+      outSlope: -1.5475346
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6638484
+      value: 0.15625072
+      inSlope: -1.571588
+      outSlope: -1.571588
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      value: 0
+      inSlope: -0.46482217
+      outSlope: -0.46482217
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   animationStateName: HeavyAttack_1
-  animClip: {fileID: -2253796760483596621, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
-  transitionTime: 0.4
+  animClip: {fileID: -762235854982859438, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
+  transitionTime: 0.2
   comboWindow:
     startTime: 0.45
     endTime: 0.65
@@ -50,22 +68,40 @@ MonoBehaviour:
     startTime: 0.25
     endTime: 0.33
   cancelWindow:
-    startTime: 0
-    endTime: 0
+    startTime: 0.33
+    endTime: 1
   invincibleWindow:
     startTime: 0
     endTime: 0
   moveWindow:
-    startTime: 0
-    endTime: 0
+    startTime: 0.15
+    endTime: 0.27
   attackTurnSpeed: 6
   turnInfluence:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forwardAttackForce: 0
+  forwardAttackForce: 30
   upwardAttackForce: 0
   attackRange: 2.5
   requiresGround: 1
@@ -74,6 +110,4 @@ MonoBehaviour:
   requiresDash: 0
   amplitude: 0.05
   frequency: 2.5
-  transitions:
-  - attackInput: 2
-    targetNode: {fileID: 11400000, guid: b19f7db6f054e754a88d94917da16e54, type: 2}
+  transitions: []

@@ -50,7 +50,7 @@ MonoBehaviour:
     startTime: 0.05
     endTime: 0.08
   cancelWindow:
-    startTime: 0.26
+    startTime: 0.5
     endTime: 1
   invincibleWindow:
     startTime: 0

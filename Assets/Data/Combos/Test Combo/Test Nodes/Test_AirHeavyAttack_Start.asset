@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c7d56ca324e44249a1da548ef331a2b, type: 3}
   m_Name: Test_AirHeavyAttack_Start
   m_EditorClassIdentifier: Assembly-CSharp::ComboNode
-  input: 1
+  input: 2
   motionPolicy: 1
   rotationPolicy: 0
-  attackProfile: {fileID: 11400000, guid: 8883b177fff672747b7959c6bc82df33, type: 2}
+  attackProfile: {fileID: 11400000, guid: 210feda65cb682047a8041cb68641695, type: 2}
   animMotionSpeed:
     serializedVersion: 2
     m_Curve:
@@ -48,7 +48,7 @@ MonoBehaviour:
     endTime: 1
   attackWindow:
     startTime: 0.65
-    endTime: 0.85
+    endTime: 1
   cancelWindow:
     startTime: 0
     endTime: 0

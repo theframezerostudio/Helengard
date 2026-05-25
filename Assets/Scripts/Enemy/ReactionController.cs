@@ -74,7 +74,7 @@ public class ReactionController : MonoBehaviour
     {
         if (ev == null)
             { return; }
-
+        Debug.Log($"Received hit event: {ev.Effect} with impact type {ev.Effect} and swing type {ev.SwingType}");
         List<ReactionModule> candidates = modules.Where(m => m.CanHandle(ev, ctx)).ToList();
         if (candidates.Count == 0) return;
 

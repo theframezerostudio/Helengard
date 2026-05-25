@@ -17,4 +17,4 @@ MonoBehaviour:
   hidden: 0
   contributions:
   - stat: {fileID: 11400000, guid: 5be7e6af820091d439d4c17fd7890f31, type: 2}
-    multiplier: 0.5
+    multiplier: 0.01
