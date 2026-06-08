@@ -8,53 +8,63 @@ public enum SwingType { LeftToRight, RightToLeft, UpToDown, DownToUp, Stab }
 public sealed class DamageEvent
 {
     public InteractionResult Result { get; }
+    public HitData Hit { get; }
 
-    public HitImpactType Effect { get; }
-    public SwingType SwingType { get; }
+    public AttackProfile Profile => Hit.profile;
 
-    public Vector3 HitPoint { get; }
-    public Vector3 HitNormal { get; }
-    public Vector3 HitForce { get; }
+    public ReactionKey ExpectedReaction =>
+        Profile != null ? Profile.expectedReaction : null;
 
-    public Transform Attacker { get; }
-    public Transform Target { get; }
+    public IDamageable TargetDamageable => Hit.target;
 
-    public HitDirection Direction { get; }
-    public HitHeight Height { get; }
+    public Transform Attacker => Hit.attackerTransform;
+    public Transform Target => Hit.targetTransform;
 
-    public bool CanChain { get; }
-    public float StunDuration { get; }
-    public float HitStop { get; }
-    public float StaggerValue { get; }
+    public Vector3 HitPoint => Hit.hitPoint;
+    public Vector3 HitNormal => Hit.hitNormal;
 
-    public DamageEvent(InteractionResult result,
-                       HitImpactType hitImpact,
-                       SwingType swingType,
-                       Vector3 hitPoint,
-                       Vector3 hitNormal,
-                       Vector3 hitForce,
-                       Transform attacker,
-                       Transform target,
-                       HitDirection direction,
-                       HitHeight height,
-                       bool canChain,
-                       float stunDuration,
-                       float hitStop,
-                       float staggerValue)
+    /// <summary>
+    /// Runtime-resolved force supplied by the attacker/hit resolver.
+    /// Reaction modules should use this instead of AttackProfile.hitForce.
+    /// </summary>
+    public Vector3 HitForce => Hit.hitForce;
+
+    public HitDirection Direction => Hit.direction;
+    public HitHeight Height => Hit.height;
+
+    public float PowerMultiplier => Hit.powerMultiplier;
+
+    public HitImpactType Effect =>
+        Profile != null ? Profile.hitImpact : HitImpactType.Light;
+
+    public SwingType SwingType =>
+        Profile != null ? Profile.swingType : SwingType.Stab;
+
+    /// <summary>
+    /// Base gameplay stun authored by the attack.
+    /// The stagger profile resolves the final duration from this value.
+    /// </summary>
+    public float BaseStunDuration =>
+        Profile != null ? Profile.stunDuration : 0f;
+
+    /// <summary>
+    /// Kept for compatibility with existing gameplay code.
+    /// Prefer BaseStunDuration inside new reaction resolution code.
+    /// </summary>
+    public float StunDuration => BaseStunDuration;
+
+    public float HitStop =>
+        Profile != null ? Profile.hitStop : 0f;
+
+    public bool CanChain =>
+        Profile != null && Profile.canChain;
+
+    public float StaggerValue =>
+        Profile != null ? Profile.staggerValue : 0f;
+
+    public DamageEvent(InteractionResult result, HitData hit)
     {
         Result = result;
-        Effect = hitImpact;
-        SwingType = swingType;
-        HitPoint = hitPoint;
-        HitNormal = hitNormal;
-        HitForce = hitForce;
-        Attacker = attacker;
-        Target = target;
-        Direction = direction;
-        Height = height;
-        CanChain = canChain;
-        StunDuration = stunDuration;
-        HitStop = hitStop;
-        StaggerValue = staggerValue;
+        Hit = hit;
     }
 }

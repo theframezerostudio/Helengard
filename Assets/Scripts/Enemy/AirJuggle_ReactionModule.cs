@@ -25,8 +25,6 @@ public class AirJuggle_ReactionModule : ReactionModule
     [SerializeField] private float juggleMultiplier = 1f;
     private Vector3 horizontalVelocity;
 
-    public override ReactionPriority Priority => ReactionPriority.Medium;
-
     public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
     {
         if (ctx.Self.Context.isGrounded)
@@ -34,7 +32,7 @@ public class AirJuggle_ReactionModule : ReactionModule
 
         if (!ev.CanChain)
             return false;
-
+        Debug.Log("Air juggle reaction can handle the event.");
         return true;
     }
 
@@ -65,7 +63,8 @@ public class AirJuggle_ReactionModule : ReactionModule
 
         ctx.Self.Context.GravityScale = gravityCurve.Evaluate(0);
 
-        juggleMultiplier *= juggleDecayRate;
+        if (juggleDecayRate > 0)
+            juggleMultiplier *= juggleDecayRate;
     }
 
     public override void Tick(float dt)

@@ -8,9 +8,9 @@ public class SelfCasting : CastingStrategy
     // Instance objects
     private GameObject spellInstance;
 
-    public override void Start()
+    public override void Activate(SpellCastContext context)
     {
-        base.Start();
+        base.Activate(context);
 
         if (properties.spellVFX != null)
         {
@@ -22,14 +22,14 @@ public class SelfCasting : CastingStrategy
         }
     }
 
-    public override void Performing(CastingData data)
+    public override void Performing(SpellCastContext context)
     {
-        base.Performing(data);
+        base.Performing(context);
     }
 
-    public override void Stop()
+    public override void Deactivate()
     {
-        base.Stop();
+        base.Deactivate();
 
     }
 }

@@ -1,107 +1,149 @@
-using System.Threading.Tasks;
 using UnityEngine;
 
-public class Stagger_ReactionModule : ReactionModule
+public sealed class Stagger_ReactionModule : ReactionModule
 {
-    [SerializeField] private string staggerAnim = "Hit_Blend";
-    [Tooltip("Fallback if Reaction Duration could not be found")]
-    [SerializeField] private float defaultHitstun = 0.2f;
-    [Tooltip("Amplify incoming Hit Force")]
-    [SerializeField] private float forceMultiplier = 1f;
+    [Header("Resolution")]
+    [SerializeField] private StaggerReactionProfile staggerProfile;
 
-    [Header("Impulse Info")]
-    [SerializeField] private float impulseDuration = 0.05f;
-    private float impulseTimer = 0f;
-    private Vector3 impulseVelocity;
-    private Vector3 forcePerSecond;
+    [Header("Fallbacks")]
+    [Tooltip("Used only when no StaggerReactionProfile is assigned.")]
+    [SerializeField, Min(0f)] private float fallbackDuration = 0.2f;
 
-    [Header("Reaction Timings")]
+    [SerializeField] private string fallbackAnimationState = "Hit_Blend";
+
+    [Tooltip("Used only when no StaggerReactionProfile is assigned.")]
+    [SerializeField, Range(0f, 1f)] private float fallbackCancelNormalizedTime = 0.7f;
+
+    [Header("Validity")]
+    [SerializeField] private bool requiresGrounded = true;
+
+    [Header("Impulse")]
+    [Tooltip("Global multiplier owned by this target's stagger module.")]
+    [SerializeField, Min(0f)] private float forceMultiplier = 1f;
+
+    [SerializeField, Min(0f)] private float impulseDuration = 0.05f;
+
+    [SerializeField]
+    private AnimationCurve impulseFalloff =
+        AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+
     private ReactionMotionAdapter motor;
-    private float timer = 0f;
-    private float totalDuration = 0f;
-    private float normalizedTime = 0f;
-    private int hitVersion = 0;
 
-    public override ReactionPriority Priority => ReactionPriority.Low;
-    public override bool AllowChaining => true;
+    private float elapsedTime;
+    private float totalDuration;
+    private float cancelNormalizedTime;
 
-    public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
+    private float impulseElapsedTime;
+    private Vector3 impulseVelocity;
+
+    /// <summary>
+    /// ReactionController already selected this module through ReactionKey.
+    /// This method validates only the target's current runtime state.
+    /// </summary>
+    public override bool CanHandle(DamageEvent hit, ReactionContext context)
     {
-        if (ev.Effect == HitImpactType.Light) return true;
-        return false;
+        if (requiresGrounded && !context.Self.Context.isGrounded)
+            return false;
+
+        return true;
     }
 
-    public override void Enter(DamageEvent ev, ReactionContext ctx)
+    public override void Enter(DamageEvent hit, ReactionContext context)
     {
-        base.Enter(ev, ctx);
+        base.Enter(hit, context);
 
-        motor = ctx.Motion;
+        motor = context.Motion;
 
-        timer = 0f;
-        totalDuration = 0f;
-        normalizedTime = 0f;
+        elapsedTime = 0f;
+        impulseElapsedTime = 0f;
 
-        impulseVelocity = ev.HitForce * forceMultiplier;
-        impulseTimer = impulseDuration;
+        CanBreak = false;
+        IsFinished = false;
 
-        hitVersion++;
-        int version = hitVersion;
+        ResolvedStaggerReaction resolved = ResolveReaction(hit);
 
-        //ctx.Animator.PlayAnim(staggerAnim, 0.1f);
+        totalDuration = resolved.Duration;
+        cancelNormalizedTime = resolved.CancelNormalizedTime;
 
-        _ = SuspendCharacterAsync(ev, ctx, version);
-    }
+        impulseVelocity =
+            hit.HitForce *
+            forceMultiplier *
+            resolved.ImpulseMultiplier;
 
-    private async Task SuspendCharacterAsync(DamageEvent ev, ReactionContext ctx, int version)
-    {
-        float duration = await ctx.Animator.ApplyHit(ev, staggerAnim);
+ 
+        context.Self.Suspend(totalDuration);
 
-        // Ignore old async calls
-        if (version != hitVersion) return;
-
-        if (duration <= 0f)
-            duration = defaultHitstun;
-
-        totalDuration = duration;
-        ctx.Self.Suspend(totalDuration);
+        context.Animator.ApplyHit(
+            hit,
+            resolved.AnimationState,
+            transitionTime: 0.05f);
     }
 
     public override void Tick(float deltaTime)
     {
-        timer += deltaTime;
+        if (IsFinished)
+            return;
 
-        if (impulseTimer > 0f)
-        {
-            float dt = deltaTime;
+        elapsedTime += deltaTime;
 
-            float t = impulseTimer / impulseDuration; 
-            float ease = t * t; // Ease-out curve
+        ApplyImpulse(deltaTime);
 
-            Vector3 currentVelocity = impulseVelocity * ease;
+        float normalizedTime = totalDuration <= 0f
+            ? 1f
+            : Mathf.Clamp01(elapsedTime / totalDuration);
 
-            motor.AddPositionDelta(currentVelocity * dt);
-
-            impulseTimer -= dt;
-        }
-
-        // Stop Execution temporarily until Total Duration is
-        // not identified by SuspendCharacterAsync
-        if (totalDuration == 0) return;
-
-        normalizedTime = timer / totalDuration;
-
-        if (normalizedTime > cancelTime)
+        if (normalizedTime >= cancelNormalizedTime)
             CanBreak = true;
 
-        if (timer >= totalDuration)
+        if (elapsedTime >= totalDuration)
             IsFinished = true;
     }
 
-    public override void Exit(ReactionContext ctx)
+    public override void Exit(ReactionContext context)
     {
-        base.Exit(ctx);
+        context.Animator.EndHitAnim(forceExit);
 
-        ctx.Animator.EndHitAnim(forceExit);
-        //ctx.StateMachine.SetHitReactionEnd();
+        motor = null;
+
+        CanBreak = false;
+        IsFinished = true;
+
+        base.Exit(context);
+    }
+
+    private ResolvedStaggerReaction ResolveReaction(DamageEvent hit)
+    {
+        if (staggerProfile != null)
+            return staggerProfile.Resolve(hit);
+
+        float duration = hit.BaseStunDuration > 0f
+            ? hit.BaseStunDuration
+            : fallbackDuration;
+
+        return new ResolvedStaggerReaction(
+            duration,
+            impulseMultiplier: 1f,
+            fallbackCancelNormalizedTime,
+            fallbackAnimationState);
+    }
+
+    private void ApplyImpulse(float deltaTime)
+    {
+        if (motor == null ||
+            impulseDuration <= 0f ||
+            impulseElapsedTime >= impulseDuration)
+        {
+            return;
+        }
+
+        float normalizedTime =
+            Mathf.Clamp01(impulseElapsedTime / impulseDuration);
+
+        float falloff = impulseFalloff.Evaluate(normalizedTime);
+
+        motor.AddPositionDelta(
+            impulseVelocity * falloff * deltaTime);
+
+        impulseElapsedTime += deltaTime;
     }
 }

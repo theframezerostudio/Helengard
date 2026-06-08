@@ -28,7 +28,7 @@ public class CastingStrategy
         permissionManager = InputManager.Instance.permissionManager;
     }
 
-    public virtual void Start()
+    public virtual void Activate(SpellCastContext context)
     {
         EndRecovery();
 
@@ -38,12 +38,12 @@ public class CastingStrategy
         }
     }
 
-    public virtual void Performing(CastingData data)
+    public virtual void Performing(SpellCastContext context)
     {
 
     }
 
-    public virtual void Stop()
+    public virtual void Deactivate()
     {
         for (int i = 0; i < properties.blockAbilities.Length; i++)
         {

@@ -6,25 +6,28 @@ public class Spell : ScriptableObject
     [field: SerializeField] public string Label { get; protected set; }
 
     [SerializeReference, SubclassSelector] public CastingStrategy castingStrategy;
+    [SerializeField] private SpellAimSettings aimSettings = new();
+
     public CastingProperties castingProperties;
+    public SpellAimSettings AimSettings => aimSettings;
 
     public void Initialize(SpellAnimationController animator)
     {
         castingStrategy.Initialize(castingProperties, animator);
     }
 
-    public void Start()
+    public void Activate(SpellCastContext context)
     {
-        castingStrategy.Start();
+        castingStrategy.Activate(context);
     }
 
-    public void Tick(CastingData data)
+    public void Tick(SpellCastContext context)
     {
-        castingStrategy.Performing(data);
+        castingStrategy.Performing(context);
     }
 
-    public void Stop()
+    public void Deactivate(SpellCastContext context)
     {
-        castingStrategy.Stop();
+        castingStrategy.Deactivate();
     }
 }

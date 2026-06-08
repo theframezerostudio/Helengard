@@ -1,16 +1,5 @@
-public enum ReactionPriority
-{
-    None = 0,
-    Low = 100,      // small staggers, light hit
-    Medium = 200,   // stun
-    High = 300,     // knockdown
-    Critical = 400, // grab, special forced states
-}
-
 public interface IReactionModule
 {
-    ReactionPriority Priority { get; }
-
     // Quick check before trying to start. Light-weight.
     bool CanHandle(DamageEvent ev, ReactionContext ctx);
 

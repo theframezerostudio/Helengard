@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2f3f0fae28d13349866a9febbeb5bb2, type: 3}
+  m_Name: Stagger Reaction Profile
+  m_EditorClassIdentifier: Assembly-CSharp::StaggerReactionProfile
+  fallbackBaseStun: 0.2
+  minimumStun: 0.08
+  maximumStun: 0.45
+  staggerAnimationState: Hit_Blend
+  defaultImpulseMultiplier: 1
+  defaultCancelNormalizedTime: 0.7
+  directionAdjustments: []
+  heightAdjustments: []
+  overrides: []

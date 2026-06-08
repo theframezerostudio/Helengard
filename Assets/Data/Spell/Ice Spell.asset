@@ -15,6 +15,14 @@ MonoBehaviour:
   <Label>k__BackingField: Ice
   castingStrategy:
     rid: 2954478484639449178
+  aimSettings:
+    aimMode: 3
+    updateMode: 1
+    targetRange: 12
+    manualRange: 20
+    requireTarget: 0
+    allowManualFallback: 1
+    castOffset: {x: 0, y: 1.2, z: 2}
   castingProperties: {fileID: 11400000, guid: 8d739f0718bcce448be39f44670e1d37, type: 2}
   references:
     version: 2

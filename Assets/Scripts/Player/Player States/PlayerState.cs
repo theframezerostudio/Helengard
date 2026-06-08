@@ -8,7 +8,7 @@ public class PlayerState : BaseState
     protected readonly InputManager inputManager;
     //protected readonly CombatDataAggregator dataAggregator;
 
-    private CharacterContext context;
+    protected CharacterContext context;
 
     public PlayerState(StateMachine stateMachine, Character character) : base(stateMachine, character)
     {

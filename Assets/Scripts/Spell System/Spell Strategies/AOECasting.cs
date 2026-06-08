@@ -21,9 +21,9 @@ public class AOECasting : CastingStrategy
     private float horizontalValue;
     private float verticalValue;
 
-    public override void Start()
+    public override void Activate(SpellCastContext context)
     {
-        base.Start();
+        base.Activate(context);
 
         cameraTransform = Camera.main.transform;
 
@@ -31,18 +31,26 @@ public class AOECasting : CastingStrategy
         spellAnimator.PlayAnim(StartAnimState);
 
         // Start with a point in front of the camera
-        targetPosition = cameraTransform.position + cameraTransform.forward * 5f;
+        //targetPosition = cameraTransform.position + cameraTransform.forward * 5f;
 
+        targetPosition = context.Aim.Target.transform.position;
+        //targetPosition = context.Aim.Origin;
         if (castInstance == null && properties.castVFX != null)
         {
-            castInstance = GameObject.Instantiate(properties.castVFX, targetPosition, Quaternion.identity);
+            castInstance = GameObject.Instantiate(
+            properties.castVFX,
+            targetPosition,
+            Quaternion.identity
+        );
+            //castInstance = GameObject.Instantiate(properties.castVFX, targetPosition, Quaternion.identity);
         }
     }
 
-    public override void Performing(CastingData data)
+    public override void Performing(SpellCastContext context)
     {
-        base.Performing(data);
+        base.Performing(context);
 
+        CastingData data = context.CastingData;
         // Check if the spell properties are AOECastProperties
         if (properties is AOECastProperties aoeProperties)
         {
@@ -62,7 +70,7 @@ public class AOECasting : CastingStrategy
         // Ground snapping using raycast (maybe remove)
         if (Physics.Raycast(targetPosition + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 6f, groundMask))
         {
-            targetPosition = hit.point;
+            
         }
 
         Vector3 moveDirection = cameraTransform.forward * verticalValue;
@@ -71,7 +79,7 @@ public class AOECasting : CastingStrategy
         moveDirection.y = 0f;
         moveDirection.Normalize();
 
-        targetPosition.y = 0f;
+        //targetPosition.y = 0f;
         Vector3 cameraPos = cameraTransform.position;
         cameraPos.y = 0f;
 
@@ -85,16 +93,15 @@ public class AOECasting : CastingStrategy
             castInstance.transform.position = targetPosition;
     }
 
-    public override void Stop()
+    public override void Deactivate()
     {   
-        base.Stop();
+        base.Deactivate();
 
         if(castInstance)
             GameObject.Destroy(castInstance);
 
         float duration = spellAnimator.PlayAnim(ExecuteAnimState);
         StartRecovery(duration, 0.4f);
-
         if (properties.spellVFX != null)
         {
             spellInstance = GameObject.Instantiate(properties.spellVFX, targetPosition , Quaternion.identity);

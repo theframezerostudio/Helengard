@@ -1,92 +1,77 @@
-using System;
-using TMPro.EditorUtilities;
 using UnityEngine;
 
-public class Flight_ReactionModule : ReactionModule
+public sealed class Flight_ReactionModule : ReactionModule
 {
     [Header("Launch Settings")]
-    [SerializeField] private float verticalForceMultiplier = 1f;
-    [SerializeField] private float horizontalForceMultiplier = 1f;
-    [SerializeField] private float minimumVerticalBoost = 3f;
-    [SerializeField] private AnimationCurve horizontalAirCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
+    [SerializeField, Min(0f)] private float verticalForceMultiplier = 1f;
+    [SerializeField, Min(0f)] private float horizontalForceMultiplier = 1f;
+    [SerializeField, Min(0f)] private float minimumVerticalBoost = 3f;
 
-    //[SerializeField] private float verticalLaunchStrength = 6f;
-    //[SerializeField] private float horizontalLaunchStrength = 2f;
-    [SerializeField] private AnimationCurve gravityCurve;
-    [SerializeField] private float safetyTime = 1.5f;
+    [SerializeField]
+    private AnimationCurve horizontalAirCurve =
+        AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+
+    [SerializeField]
+    private AnimationCurve gravityCurve =
+        AnimationCurve.Linear(0f, 1f, 1f, 1f);
+
+    [SerializeField, Min(0.1f)] private float safetyTime = 1.5f;
+
+    [Header("Animation")]
     [SerializeField] private string launchAnim = "Hit_Launch";
 
-    private ReactionContext ctx;
+    private ReactionContext context;
+
     private MovementMotionPolicy previousMovementPolicy;
     private RotationMotionPolicy previousRotationPolicy;
 
     private float timer;
     private float gravityCurveTime;
-    private Vector3 horizontalVelocity;
 
+    private Vector3 horizontalVelocity;
     private AirStateType state;
 
-    public override ReactionPriority Priority => ReactionPriority.Low;
-
-    public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
-    {
-        if (ev.Effect != HitImpactType.Heavy)
-            return false;
-
-        if (ev.SwingType != SwingType.DownToUp)
-            return false;
-
-        if (!ctx.Self.Context.isGrounded)
-            return false;
-
-        return true;
+    public override bool CanHandle(DamageEvent hit, ReactionContext context)
+    { 
+        return context.Self.Context.isGrounded;
     }
 
-    public override void Enter(DamageEvent ev, ReactionContext ctx)
+    public override void Enter(DamageEvent hit, ReactionContext context)
     {
-        base.Enter(ev, ctx);
-        this.ctx = ctx;
+        base.Enter(hit, context);
+
+        this.context = context;
 
         timer = 0f;
         gravityCurveTime = 0f;
+
+        CanBreak = false;
+        IsFinished = false;
+
         state = AirStateType.Rising;
 
-        ctx.Animator.PlayAnim(launchAnim, 0.1f);
+        context.Animator.PlayAnim(launchAnim, 0.1f);
 
-        ctx.Motion.GetMotionPolicy(out previousMovementPolicy, out previousRotationPolicy);
-        ctx.Motion.OverrideMotionPolicy(MovementMotionPolicy.NoRootMotion, RotationMotionPolicy.YawOnly);
+        context.Motion.GetMotionPolicy(
+            out previousMovementPolicy,
+            out previousRotationPolicy);
 
-        SetupForces(ev, ctx);
+        context.Motion.OverrideMotionPolicy(
+            MovementMotionPolicy.NoRootMotion,
+            RotationMotionPolicy.YawOnly);
 
-        ctx.Self.Context.GravityScale = gravityCurve.Evaluate(0f);
+        SetupForces(hit, context);
+
+        context.Self.Context.GravityScale = gravityCurve.Evaluate(0f);
     }
 
-    private void SetupForces(DamageEvent ev, ReactionContext ctx)
+    public override void Tick(float deltaTime)
     {
-        Vector3 force = ev.HitForce;
-        Vector3 horizontalForce = force;
-        horizontalForce.y = 0f;
-
-        horizontalForce.Normalize();
-
-        //float horizontalMagnitude = Mathf.Max(force.magnitude * horizontalForceMultiplier, horizontalForce.magnitude);
-        horizontalVelocity = horizontalForce * horizontalForceMultiplier;
-
-        float verticalForce = force.y * verticalForceMultiplier;
-        verticalForce = Math.Max(verticalForce, minimumVerticalBoost);
-
-        ctx.Self.verticalVelocity = verticalForce;
-
-        ctx.Self.Context.GravityScale = gravityCurve.Evaluate(0f);
-    }
-
-    public override void Tick(float dt)
-    {
-        timer += dt;
-        gravityCurveTime += dt;
-
         if (IsFinished)
             return;
+
+        timer += deltaTime;
+        gravityCurveTime += deltaTime;
 
         if (timer >= safetyTime)
         {
@@ -94,32 +79,63 @@ public class Flight_ReactionModule : ReactionModule
             return;
         }
 
-        float normalized = timer / safetyTime;
-        normalized = Mathf.Clamp01(normalized);
-        float horizontalFactor = horizontalAirCurve.Evaluate(normalized);
+        float normalizedTime = Mathf.Clamp01(timer / safetyTime);
+        float horizontalFactor = horizontalAirCurve.Evaluate(normalizedTime);
 
-        ctx.Motion.AddPositionDelta(dt * horizontalFactor * horizontalVelocity);
+        context.Motion.AddPositionDelta(
+            horizontalVelocity * horizontalFactor * deltaTime);
 
-        float curveValue = gravityCurve.Evaluate(gravityCurveTime);
-        ctx.Self.Context.GravityScale = curveValue;
+        context.Self.Context.GravityScale =
+            gravityCurve.Evaluate(gravityCurveTime);
 
-        if (state == AirStateType.Rising && ctx.Self.verticalVelocity <= 0f)
+        if (state == AirStateType.Rising &&
+            context.Self.verticalVelocity <= 0f)
         {
             state = AirStateType.Falling;
         }
 
-        if (ctx.Self.Context.isGrounded && state == AirStateType.Falling)
+        if (state == AirStateType.Falling &&
+            context.Self.Context.isGrounded)
         {
             state = AirStateType.Landing;
             IsFinished = true;
         }
     }
 
-    public override void Exit(ReactionContext ctx)
+    public override void Exit(ReactionContext context)
     {
-        base.Exit(ctx);
+        context.Self.Context.GravityScale = 1f;
 
-        ctx.Self.Context.GravityScale = 1f;
-        ctx.Motion.OverrideMotionPolicy(previousMovementPolicy, previousRotationPolicy);
+        context.Motion.OverrideMotionPolicy(
+            previousMovementPolicy,
+            previousRotationPolicy);
+
+        this.context = null;
+
+        base.Exit(context);
+    }
+
+    private void SetupForces(DamageEvent hit, ReactionContext context)
+    {
+        Vector3 incomingForce = hit.HitForce;
+
+        Vector3 horizontalDirection = new Vector3(
+            incomingForce.x,
+            0f,
+            incomingForce.z);
+
+        if (horizontalDirection.sqrMagnitude > 0.0001f)
+            horizontalDirection.Normalize();
+
+        horizontalVelocity =
+            horizontalDirection * horizontalForceMultiplier;
+
+        float verticalForce =
+            incomingForce.y * verticalForceMultiplier;
+
+        verticalForce =
+            Mathf.Max(verticalForce, minimumVerticalBoost);
+
+        context.Self.verticalVelocity = verticalForce;
     }
 }

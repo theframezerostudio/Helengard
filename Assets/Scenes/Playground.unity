@@ -753,7 +753,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 2fa9f7278243061439635d5fe035a355, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4449,7 +4449,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1145253047}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0549d4b977966cc49a920c43c5edd452, type: 3}
   m_Name: 
@@ -5244,6 +5244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterContext
   jumpResolver: {fileID: 0}
+  <Targeting>k__BackingField: {fileID: 0}
   isSprinting: 0
   isGrounded: 1
   isDashing: 0
@@ -7346,7 +7347,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 2fa9f7278243061439635d5fe035a355, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7588,15 +7589,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyReactionController
   character: {fileID: 2075069652}
-  <HitAnimator>k__BackingField: {fileID: 0}
-  modules:
-  - {fileID: 2075069659}
-  - {fileID: 2075069660}
-  - {fileID: 2075069661}
-  - {fileID: 2075069662}
-  - {fileID: 2075069663}
+  hitAnimator: {fileID: 0}
+  bindings: []
+  activeReactionKey: {fileID: 0}
   active: {fileID: 0}
-  isFinished: 0
+  activeInterruptPriority: 0
 --- !u!114 &2075069659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7612,12 +7609,40 @@ MonoBehaviour:
   recoveryData: {fileID: 0}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
-  staggerAnim: Hit_Blend
-  defaultHitstun: 0.2
+  staggerProfile: {fileID: 0}
+  fallbackDuration: 0.2
+  fallbackAnimationState: Hit_Blend
+  fallbackCancelNormalizedTime: 0.7
+  requiresGrounded: 1
   forceMultiplier: 1
   impulseDuration: 0.05
+  impulseFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &2075069660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7633,6 +7658,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   verticalForceMultiplier: 1
@@ -7739,6 +7765,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   baseVerticalPop: 3
@@ -7796,6 +7823,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   horizontalForceMultiplier: 1
@@ -7866,6 +7894,7 @@ MonoBehaviour:
   recoveryData: {fileID: 0}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   knockbackStrength: 12
@@ -8401,21 +8430,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &262948888744377050
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3105581683323414228}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7406680771381853491}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &287537365231321048
 GameObject:
   m_ObjectHideFlags: 0
@@ -8843,7 +8857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &566933196781104191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9211,24 +9225,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &780149073292567541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3105581683323414228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05ef0e498976c204ca1abc8c30e561f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ReactionController
-  character: {fileID: 486351507002619920}
-  <HitAnimator>k__BackingField: {fileID: 0}
-  modules:
-  - {fileID: 4070624955590548964}
-  active: {fileID: 0}
-  isFinished: 0
 --- !u!1 &789561667961853079
 GameObject:
   m_ObjectHideFlags: 0
@@ -9664,6 +9660,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   horizontalForceMultiplier: 1
@@ -9925,6 +9922,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   knockbackStrength: 12
@@ -10462,6 +10460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterContext
   jumpResolver: {fileID: 0}
+  <Targeting>k__BackingField: {fileID: 0}
   isSprinting: 0
   isGrounded: 0
   isDashing: 0
@@ -11905,12 +11904,40 @@ MonoBehaviour:
   recoveryData: {fileID: 0}
   cancelTime: 1
   forceExit: 0
+  allowChaining: 1
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
-  staggerAnim: Hit_Blend
-  defaultHitstun: 0.2
+  staggerProfile: {fileID: 11400000, guid: c7c7c740489b24e478445b679b5b0279, type: 2}
+  fallbackDuration: 0.2
+  fallbackAnimationState: Hit_Blend
+  fallbackCancelNormalizedTime: 0.7
+  requiresGrounded: 1
   forceMultiplier: 1
   impulseDuration: 0.05
+  impulseFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2590747245009247764
 GameObject:
   m_ObjectHideFlags: 0
@@ -12096,12 +12123,40 @@ MonoBehaviour:
   recoveryData: {fileID: 0}
   cancelTime: 1
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
-  staggerAnim: Hit_Blend
-  defaultHitstun: 0.2
+  staggerProfile: {fileID: 0}
+  fallbackDuration: 0.2
+  fallbackAnimationState: Hit_Blend
+  fallbackCancelNormalizedTime: 0.7
+  requiresGrounded: 1
   forceMultiplier: 1
   impulseDuration: 0.05
+  impulseFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &2650196220552598026
 Transform:
   m_ObjectHideFlags: 0
@@ -12241,6 +12296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterContext
   jumpResolver: {fileID: 1497557375466167904}
+  <Targeting>k__BackingField: {fileID: 8179753287169424198}
   isSprinting: 0
   isGrounded: 0
   isDashing: 0
@@ -12589,24 +12645,6 @@ Transform:
   - {fileID: 6196003202992407396}
   m_Father: {fileID: 7089617128965197051}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3105581683323414228
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 262948888744377050}
-  - component: {fileID: 780149073292567541}
-  - component: {fileID: 4070624955590548964}
-  m_Layer: 8
-  m_Name: Reaction Controller _ OUTDATED
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
 --- !u!4 &3124857416565675068
 Transform:
   m_ObjectHideFlags: 0
@@ -12881,32 +12919,33 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 1
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   baseVerticalPop: 1.75
-  baseHorizontalPush: 1
-  juggleDecayRate: 1
+  baseHorizontalPush: 0
+  juggleDecayRate: 0
   maxHeightOffset: 6
   gravityCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
+      time: 0.0017255843
+      value: 1.0062202
       inSlope: 0
       outSlope: 0
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 1
+      time: 1.0017257
+      value: 1.0062202
       inSlope: 0
       outSlope: 0
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -12945,6 +12984,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   verticalForceMultiplier: 1.5
@@ -14049,27 +14089,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4070624955590548964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3105581683323414228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 684b7117256ab6946beeb0bd6e1c430d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Stagger_ReactionModule
-  recoveryData: {fileID: 0}
-  cancelTime: 0.2
-  forceExit: 0
-  <IsFinished>k__BackingField: 0
-  <CanBreak>k__BackingField: 0
-  staggerAnim: Hit_Blend
-  defaultHitstun: 0.2
-  forceMultiplier: 1
-  impulseDuration: 0.05
 --- !u!1 &4075737822216271389
 GameObject:
   m_ObjectHideFlags: 0
@@ -14841,6 +14860,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   baseVerticalPop: 1.75
@@ -15260,6 +15280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8179753287169424197}
   - component: {fileID: 2720431801829060335}
+  - component: {fileID: 8179753287169424198}
   m_Layer: 7
   m_Name: Character Context
   m_TagString: Untagged
@@ -15612,15 +15633,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReactionController
   character: {fileID: 7571382972195383170}
-  <HitAnimator>k__BackingField: {fileID: 4891730363448382031}
-  modules:
-  - {fileID: 2585300778792362379}
-  - {fileID: 5347356050106111250}
-  - {fileID: 3226202277845859562}
-  - {fileID: 1059856479655128579}
-  - {fileID: 1155264063241843918}
+  hitAnimator: {fileID: 4891730363448382031}
+  bindings:
+  - reactionKey: {fileID: 11400000, guid: 2f0958176cfd7cf4c897421381c7c405, type: 2}
+    reactions:
+    - module: {fileID: 2585300778792362379}
+      interruptPriority: 10
+      canInterruptEqualPriority: 0
+    - module: {fileID: 3226202277845859562}
+      interruptPriority: 60
+      canInterruptEqualPriority: 1
+  - reactionKey: {fileID: 11400000, guid: deb88bd27b5b77348bfdd57304cee579, type: 2}
+    reactions:
+    - module: {fileID: 1155264063241843918}
+      interruptPriority: 30
+      canInterruptEqualPriority: 1
+  - reactionKey: {fileID: 11400000, guid: 28aa138d49bf24345a33cea7ff70609c, type: 2}
+    reactions:
+    - module: {fileID: 1059856479655128579}
+      interruptPriority: 60
+      canInterruptEqualPriority: 1
+  - reactionKey: {fileID: 11400000, guid: f5d69ba1b5fa4154fb6dc6cbcff563cd, type: 2}
+    reactions:
+    - module: {fileID: 5347356050106111250}
+      interruptPriority: 50
+      canInterruptEqualPriority: 0
+  activeReactionKey: {fileID: 0}
   active: {fileID: 0}
-  isFinished: 0
+  activeInterruptPriority: 0
 --- !u!4 &4994503780265615993
 Transform:
   m_ObjectHideFlags: 0
@@ -16102,6 +16142,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   verticalForceMultiplier: 1
@@ -17265,6 +17306,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   knockbackStrength: 12
@@ -17308,7 +17350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AIStateMachine
   Owner: {fileID: 7571382972195383170}
   StateContext: {fileID: 1978235333269608998}
-  transitionCheckInterval: 0.1
+  transitionCheckInterval: 0.05
   globalDecisions:
   - condition: {fileID: 4468923520426729273}
     TrueState: Hit
@@ -17375,7 +17417,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f919ea9df15f91841b7ca6cae7c09ffd, type: 2}
   - {fileID: 11400000, guid: c9673ab798daec24dbb06fdd781c2ef2, type: 2}
   spellAnimator: {fileID: 1758227868}
+  characterContext: {fileID: 2720431801829060335}
+  targeting: {fileID: 8179753287169424198}
   currentSpell: {fileID: 0}
+  isPerforming: 0
 --- !u!1 &6173500121345438705
 GameObject:
   m_ObjectHideFlags: 0
@@ -18074,15 +18119,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReactionController
   character: {fileID: 486351507002619920}
-  <HitAnimator>k__BackingField: {fileID: 1758227865}
-  modules:
-  - {fileID: 2645322674096249247}
-  - {fileID: 3271233330428503740}
-  - {fileID: 4650321925395888031}
-  - {fileID: 9109351292530497988}
-  - {fileID: 6130634006850023462}
+  hitAnimator: {fileID: 0}
+  bindings: []
+  activeReactionKey: {fileID: 0}
   active: {fileID: 0}
-  isFinished: 0
+  activeInterruptPriority: 0
 --- !u!1 &6665926424485354911
 GameObject:
   m_ObjectHideFlags: 0
@@ -19007,7 +19048,6 @@ Transform:
   - {fileID: 8179753287169424197}
   - {fileID: 1588937926437506967}
   - {fileID: 4642444778976630016}
-  - {fileID: 262948888744377050}
   - {fileID: 3738403520951429656}
   - {fileID: 8459670479944387607}
   m_Father: {fileID: 0}
@@ -19032,7 +19072,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2324462831474733815}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ecd9bb459fd68f49b1db6b34631f9e0, type: 3}
   m_Name: 
@@ -19423,7 +19463,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6072786317991108314}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ecd9bb459fd68f49b1db6b34631f9e0, type: 3}
   m_Name: 
@@ -20271,13 +20311,37 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4812253160621630818}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.21996, y: 3.82832, z: 29.621431}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7406680771381853491}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8179753287169424198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4812253160621630818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4bdb6f31fa1ad9458c05ebd2ead5237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTargeting
+  player: {fileID: 486351507002619920}
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 256
+  softTargetRange: 24
+  updateSoftTargetWhileLocked: 1
+  lockRange: 14
+  lockBreakRange: 17
+  drawDebug: 1
+  <SoftTarget>k__BackingField: {fileID: 0}
+  <LockedTarget>k__BackingField: {fileID: 0}
+  targetBufferSize: 32
 --- !u!1 &8184122533374923768
 GameObject:
   m_ObjectHideFlags: 0
@@ -20660,8 +20724,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975033797313624791}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.59745, y: 0.32274, z: 3.64374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21706,6 +21770,7 @@ MonoBehaviour:
   recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
   cancelTime: 0
   forceExit: 0
+  allowChaining: 0
   <IsFinished>k__BackingField: 0
   <CanBreak>k__BackingField: 0
   horizontalForceMultiplier: 1

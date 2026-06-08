@@ -43,7 +43,7 @@ public class PlayerCastingManager : CharacterCastingManager
     {
         if (context.started)
         {
-            spellCaster.OnCastStart();
+            spellCaster.OnCastStart(castingData);
         }
     }
     protected override void HandleCastPerforming(InputAction.CallbackContext context)

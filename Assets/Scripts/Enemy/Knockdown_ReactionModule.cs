@@ -14,27 +14,13 @@ public class Knockdown_ReactionModule : ReactionModule
     private MovementMotionPolicy prevMovePolicy;
     private RotationMotionPolicy prevRotPolicy;
 
-    private Vector3 knockbackVelocity;
-    private Vector3 forcePerSecond;
     private bool isDone = false;
 
-    private DamageEvent currentEvent;
     private Vector3 initialVelocity;
-
-    public override ReactionPriority Priority => ReactionPriority.Medium;
 
     public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
     {
-        if (ctx.Self.Context.isGrounded == false)
-            return false;
-
-        if (ev.Effect != HitImpactType.Heavy)
-            return false;
-
-        if (ev.SwingType != SwingType.LeftToRight && ev.SwingType != SwingType.RightToLeft)
-            return false;
-
-        return true;
+        return ctx.Self.Context.isGrounded;
     }
 
     public override void Enter(DamageEvent ev, ReactionContext ctx)

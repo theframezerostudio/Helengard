@@ -107,6 +107,7 @@ public sealed class Hitbox : MonoBehaviour
             OnHit?.Invoke(new HitData(
                 target,
                 profile,
+                owner.transform,
                 hitCollider.transform,
                 hitPoint,
                 hitNormal,

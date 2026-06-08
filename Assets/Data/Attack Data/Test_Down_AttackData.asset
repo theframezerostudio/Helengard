@@ -17,9 +17,10 @@ MonoBehaviour:
   hurtboxMask:
     serializedVersion: 2
     m_Bits: 256
+  expectedReaction: {fileID: 11400000, guid: 28aa138d49bf24345a33cea7ff70609c, type: 2}
   hitImpact: 1
   swingType: 2
-  hitForce: {x: 0, y: -15, z: 0}
+  hitForce: {x: 0, y: -30, z: 0}
   stunDuration: 5
   hitStop: 0.06
   canChain: 1

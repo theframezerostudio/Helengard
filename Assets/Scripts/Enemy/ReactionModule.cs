@@ -9,14 +9,15 @@ public abstract class ReactionModule : MonoBehaviour, IReactionModule
     [Range(0f, 1f), SerializeField] protected float cancelTime = 1f;
     [Tooltip("Immediate Override Reaction Module On Cancel")]
     [SerializeField] protected bool forceExit = false;
+    [Tooltip("If Module Can Be Reactivated Within Its Duration")]
+    [SerializeField] private bool allowChaining = false;
 
     [field: SerializeField, ReadOnly] public bool IsFinished { get; protected set; } = false;
     [field: SerializeField, ReadOnly] public bool CanBreak { get; protected set; } = false;
     
     public Action<ActionData> onExit;
 
-    public abstract ReactionPriority Priority { get; }
-    public virtual bool AllowChaining => false;
+    public bool AllowChaining => allowChaining;
 
     public abstract bool CanHandle(DamageEvent ev, ReactionContext ctx);
 
@@ -30,26 +31,24 @@ public abstract class ReactionModule : MonoBehaviour, IReactionModule
 
     private void InitialRotation(DamageEvent ev, ReactionContext ctx)
     {
-        Vector3 attackDirection = ev.Attacker.position - transform.position;
-        attackDirection.y = 0;
-        Quaternion lookDirection;
+        if (ev == null || ev.Attacker == null)
+            return;
 
-        // Character will always face at the attacker (y - axis) no matter the attacker Position
-        lookDirection = Quaternion.LookRotation(attackDirection);
+        Vector3 attackDirection =
+            ev.Attacker.position - ev.Target.position;
 
-        // Show face to attacker
-        //if (ev.Direction == HitDirection.Front)
-        //    lookDirection = Quaternion.LookRotation(attackDirection);
-        //else // Show Back to attacker
-        //    lookDirection = Quaternion.LookRotation(-attackDirection);
+        attackDirection.y = 0f;
 
-        Quaternion delta = lookDirection * Quaternion.Inverse(transform.rotation);
+        if (attackDirection.sqrMagnitude <= 0.0001f)
+            return;
 
-        //Quaternion deltaRotation = Quaternion.Slerp(Quaternion.identity, delta, #Add alpha for smoother rotation#);
+        Quaternion lookDirection =
+            Quaternion.LookRotation(attackDirection.normalized, Vector3.up);
 
-        //transform.rotation = lookDirection;
+        Quaternion deltaRotation =
+            lookDirection * Quaternion.Inverse(ev.Target.rotation);
 
-        ctx.Motion.AddRotation(delta);
+        ctx.Motion.AddRotation(deltaRotation);
     }
 
     public virtual void Tick(float deltaTime) { }

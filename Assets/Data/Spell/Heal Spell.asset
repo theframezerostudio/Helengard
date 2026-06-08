@@ -15,6 +15,14 @@ MonoBehaviour:
   <Label>k__BackingField: Heal
   castingStrategy:
     rid: 2954478484639449179
+  aimSettings:
+    aimMode: 3
+    updateMode: 1
+    targetRange: 12
+    manualRange: 20
+    requireTarget: 0
+    allowManualFallback: 1
+    castOffset: {x: 0, y: 1.2, z: 0.4}
   castingProperties: {fileID: 11400000, guid: b4a70f635cee9da4da1c855f5f9fcaf9, type: 2}
   references:
     version: 2

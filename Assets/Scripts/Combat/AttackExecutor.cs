@@ -82,20 +82,6 @@ public sealed class AttackExecutor
 
     private DamageEvent CreateDamageEvent(HitData hit, InteractionResult result)
     {
-        return new DamageEvent(
-            result,
-            hit.profile.hitImpact,
-            hit.profile.swingType,
-            hit.hitPoint,
-            hit.hitNormal,
-            hit.hitForce,
-            owner.transform,
-            hit.targetTransform,
-            hit.direction,
-            hit.height,
-            hit.profile.canChain,
-            hit.profile.stunDuration,
-            hit.profile.hitStop,
-            hit.profile.staggerValue);
+        return new DamageEvent(result, hit);
     }
 }

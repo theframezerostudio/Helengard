@@ -7,7 +7,7 @@ public class CharacterContext : MonoBehaviour
 
     public DataAggregator dataAggregator;
     public JumpResolver jumpResolver;
-
+    [field: SerializeField] public PlayerTargeting Targeting { get; private set; }
     public float UngroundedTime { get; private set; }
 
     public bool isSprinting;

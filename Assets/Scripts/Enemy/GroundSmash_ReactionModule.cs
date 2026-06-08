@@ -23,9 +23,6 @@ public class GroundSmash_ReactionModule : ReactionModule
     private RotationMotionPolicy prevRotPolicy;
 
     private Vector3 horizontalVelocity;
-    private bool hitGround = false;
-
-    public override ReactionPriority Priority => ReactionPriority.High;
 
     public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
     {
@@ -33,12 +30,6 @@ public class GroundSmash_ReactionModule : ReactionModule
             return false;
 
         if (!ev.CanChain)
-            return false;
-
-        if (ev.SwingType != SwingType.UpToDown)
-            return false;
-
-        if (ev.Effect != HitImpactType.Heavy)
             return false;
 
         return true;
@@ -50,7 +41,6 @@ public class GroundSmash_ReactionModule : ReactionModule
         this.ctx = ctx;
         timer = 0f;
         gravityCurveTime = 0f;
-        hitGround = false;
 
         ctx.Animator.PlayAnim(groundSmashAnim, 0.05f);
         //ctx.Animator.CrossFade(groundSmashAnim, 0.05f);
@@ -100,7 +90,6 @@ public class GroundSmash_ReactionModule : ReactionModule
 
         if (ctx.Self.Context.isGrounded && ctx.Self.verticalVelocity <= 0)
         {
-            hitGround = true;
             IsFinished = true;
         }
     }
@@ -111,10 +100,5 @@ public class GroundSmash_ReactionModule : ReactionModule
         ctx.Motion.OverrideMotionPolicy(prevMovePolicy, prevRotPolicy);
 
         ctx.Self.Context.GravityScale = 1f;
-
-        if (hitGround)
-        {
-            // Next reaction
-        }
     }
 }

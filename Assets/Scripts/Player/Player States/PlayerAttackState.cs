@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerAttackState : PlayerState
@@ -87,8 +86,8 @@ public class PlayerAttackState : PlayerState
         bool isLightAttack = node.input == AttackInput.Light || node.input == AttackInput.LightHold;
         character.Context.dataAggregator.SetAttacking(true, isLightAttack);
 
-        motionWarpTarget = TargetResolver.ResolveTarget(player, inputManager.MoveInput, node.attackRange,
-            node.attackProfile.hurtboxMask);
+        // Get Target Resolver
+        motionWarpTarget = context.Targeting.ActiveTransform;
 
         ApplyMotionWarpDash();
 

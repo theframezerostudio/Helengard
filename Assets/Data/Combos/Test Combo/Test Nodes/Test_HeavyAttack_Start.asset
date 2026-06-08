@@ -47,8 +47,8 @@ MonoBehaviour:
     startTime: 0.32
     endTime: 1
   attackWindow:
-    startTime: 0.57
-    endTime: 0.75
+    startTime: 0.1
+    endTime: 0.4
   cancelWindow:
     startTime: 0.76
     endTime: 1

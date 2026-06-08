@@ -1,30 +1,28 @@
-using System;
-using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Animator))]
-public class HitAnimationController : MonoBehaviour
+public sealed class HitAnimationController : MonoBehaviour
 {
     [SerializeField] private AnimatorController animatorController;
     [SerializeField] private string animatorLayer = "Hit Layer";
+
     private Animator animator;
-    private int hitLayerIndex = 1;
+    private int hitLayerIndex;
 
-    private static readonly int HitFrontBackHash = Animator.StringToHash("HitDirection");
-    private static readonly int HitHeightHash = Animator.StringToHash("HitHeight");
-    private static readonly int HitSwingHash = Animator.StringToHash("HitSwing");
+    private static readonly int HitFrontBackHash =
+        Animator.StringToHash("HitDirection");
 
-    private Coroutine endRoutine;
-    private float duration;
+    private static readonly int HitHeightHash =
+        Animator.StringToHash("HitHeight");
+
+    private static readonly int HitSwingHash =
+        Animator.StringToHash("HitSwing");
 
     private void Awake()
     {
         animator = animatorController.GetAnimator();
         hitLayerIndex = animator.GetLayerIndex(animatorLayer);
 
-        animator.applyRootMotion = false;
         animator.SetLayerWeight(hitLayerIndex, 0f);
     }
 
@@ -33,34 +31,36 @@ public class HitAnimationController : MonoBehaviour
         animatorController.SetIntent(animatorLayer, intent);
     }
 
-    public async Task<float> ApplyHit(DamageEvent hit, string animState)
+    /// <summary>
+    /// Plays a contextual stagger animation.
+    /// Gameplay stun duration is resolved by the reaction module, not here.
+    /// </summary>
+    public void ApplyHit(
+        DamageEvent hit,
+        string animationState,
+        float transitionTime = 0.05f)
     {
-        duration = hit.StunDuration;
-
-        if (endRoutine != null)
-        {
-            StopCoroutine(endRoutine);
-            endRoutine = null;
-        }
-
         animatorController.SetIntent(animatorLayer, 1f);
 
-        animator.SetFloat(HitFrontBackHash, hit.Direction == HitDirection.Back ? 1f : 0f);
-        animator.SetFloat(HitHeightHash, HeightToParam(hit.Height));
-        animator.SetFloat(HitSwingHash, SwingToParam(hit.SwingType));
-        await Task.Delay(10);
+        animator.SetFloat(HitFrontBackHash, DirectionToParameter(hit.Direction));
+        animator.SetFloat(HitHeightHash, HeightToParameter(hit.Height));
+        animator.SetFloat(HitSwingHash, SwingToParameter(hit.SwingType));
 
-        animatorController.PlayAnim(animState, 0f, hitLayerIndex, 1f);
-
-        var clips = animator.GetCurrentAnimatorClipInfo(hitLayerIndex);
-        duration = clips.Length > 0 ? clips[0].clip.length : hit.StunDuration;
-        return duration;
+        animatorController.PlayAnim(
+            animationState,
+            transitionTime,
+            hitLayerIndex,
+            1f);
     }
 
-    public float PlayAnim(string anim, float transitionTime = 0.1f)
+    public float PlayAnim(string animationState, float transitionTime = 0.1f)
     {
         animatorController.SetIntent(animatorLayer, 1f);
-        return animatorController.PlayAnim(anim, transitionTime, hitLayerIndex);
+
+        return animatorController.PlayAnim(
+            animationState,
+            transitionTime,
+            hitLayerIndex);
     }
 
     public void EndHitAnim(bool forceEnd)
@@ -68,19 +68,20 @@ public class HitAnimationController : MonoBehaviour
         animatorController.SetIntent(animatorLayer, 0f);
 
         if (forceEnd)
-        {
             ClearHit();
-        }
     }
 
     public void ClearHit()
     {
-        duration = 0f;
-
         animator.SetLayerWeight(hitLayerIndex, 0f);
     }
 
-    private float HeightToParam(HitHeight height)
+    private static float DirectionToParameter(HitDirection direction)
+    {
+        return direction == HitDirection.Back ? 1f : 0f;
+    }
+
+    private static float HeightToParameter(HitHeight height)
     {
         return height switch
         {
@@ -91,7 +92,7 @@ public class HitAnimationController : MonoBehaviour
         };
     }
 
-    private float SwingToParam(SwingType swing)
+    private static float SwingToParameter(SwingType swing)
     {
         return swing switch
         {
@@ -99,6 +100,7 @@ public class HitAnimationController : MonoBehaviour
             SwingType.RightToLeft => 1f,
             SwingType.DownToUp => 2f,
             SwingType.UpToDown => 3f,
+            SwingType.Stab => 4f,
             _ => 0f
         };
     }
