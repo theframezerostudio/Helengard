@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583a41e6cf0dc3148aa49eda35df50ca, type: 3}
+  m_Name: Combat Progression Profile
+  m_EditorClassIdentifier: Assembly-CSharp::CombatProgressionProfile
+  startingScore: 0
+  minimumScore: 0
+  maximumScore: 1000
+  startingRank: 0
+  rankThresholds:
+  - rank: 0
+    displayName: D
+    enterScore: 100
+    demoteBelowScore: 50
+  - rank: 1
+    displayName: C
+    enterScore: 200
+    demoteBelowScore: 170
+  - rank: 2
+    displayName: B
+    enterScore: 300
+    demoteBelowScore: 270
+  eventTunings:
+  - eventDefinition: {fileID: 11400000, guid: 16b20cdf30295bf4baf100164c4981a9, type: 2}
+    category: 1
+    feedbackLabel: Attack Successfully Landed
+    baseScore: 0
+    valueMultiplier: 1
+    clampScore: 0
+    minScore: 10
+    maxScore: 50
+    meaningfulAction: 0
+    canIncreaseMultiplier: 0
+    canBreakDecay: 0
+    countsForRepetition: 1
+    resetsMultiplier: 0
+  repetitionSettings:
+    enabled: 1
+    checkWindow: 4
+    allowedUses: 2
+    repeatedPenalty: -15
+    blockBaseScoreWhenRepeated: 0
+    onlyPunishPositiveScore: 1
+  multiplierSettings:
+    enabled: 1
+    startingMultiplier: 1
+    maximumMultiplier: 2
+    gainPerMeaningfulAction: 0.05
+    lossOnPenalty: 0.15
+    applyMultiplierToPenalties: 0
+    resetOnMultiplierResetEvent: 1
+  decaySettings:
+    enabled: 1
+    delayBeforeDecay: 3
+    scoreDecayPerSecond: 8
+    pauseWhenOutOfCombat: 0
+    minimumScoreAfterDecay: 0

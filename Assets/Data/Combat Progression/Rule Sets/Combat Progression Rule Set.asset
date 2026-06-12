@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27fb1f9941fc9c42a1cb972495e8fbc, type: 3}
+  m_Name: Combat Progression Rule Set
+  m_EditorClassIdentifier: Assembly-CSharp::CombatProgressionRuleSet
+  rules:
+  - {fileID: 11400000, guid: e30ce9dac89431944a84c0fe0de89505, type: 2}
+  - {fileID: 11400000, guid: 4ac8718b9fc70e14f8140cca40234e1f, type: 2}
+  - {fileID: 11400000, guid: 7e1a7913ab35dba4ea03bc8da8d8b41d, type: 2}
+  - {fileID: 11400000, guid: ebd1e0a75ca3ae440bf72d3be885fbb5, type: 2}

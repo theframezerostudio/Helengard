@@ -32,7 +32,7 @@ public class AOECasting : CastingStrategy
 
         // Start with a point in front of the camera
         //targetPosition = cameraTransform.position + cameraTransform.forward * 5f;
-
+        
         targetPosition = context.Aim.Target.transform.position;
         //targetPosition = context.Aim.Origin;
         if (castInstance == null && properties.castVFX != null)

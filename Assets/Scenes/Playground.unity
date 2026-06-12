@@ -815,6 +815,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 796753980}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &212192172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 212192173}
+  m_Layer: 0
+  m_Name: ---------------- COMBAT PROGRESSION -----------------------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &212192173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212192172}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.60204, y: 2.57821, z: -1.9357}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &217772402
 GameObject:
   m_ObjectHideFlags: 0
@@ -2489,6 +2520,76 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00000025331974, y: 0.21973538, z: 0.07841611}
     m_Extent: {x: 0.09279397, y: 0.096498735, z: 0.08132693}
   m_DirtyAABB: 0
+--- !u!1 &694529541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 694529543}
+  - component: {fileID: 694529542}
+  m_Layer: 0
+  m_Name: Combat Progression
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &694529542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694529541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398879b17849ecb4dbeee2e25c2fbc44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatProgressionController
+  eventHub: {fileID: 1532114114}
+  profile: {fileID: 11400000, guid: bdcacef440d581646a5d1af9be2298f0, type: 2}
+  adapter:
+    logUntunedEvents: 0
+  evaluator:
+    ruleSet: {fileID: 11400000, guid: 849802d7d7f4b8b4cbf06b7f2a0f552f, type: 2}
+  scoreApplier:
+    applyBaseScoreBlocking: 1
+    logAppliedResults: 0
+  decayProcessor:
+    recordDecayScoreResult: 0
+    minimumRecordedDecay: 1
+  runtime:
+    currentScore: 0
+    currentRank: 0
+    previousRank: 0
+    currentMultiplier: 1
+    isCombatActive: 0
+    lastMeaningfulActionTime: 0
+    lastScoreChangeTime: 0
+    lastRankChangeTime: 0
+    maxRecentResults: 16
+  initializeOnAwake: 1
+  autoActivateCombatOnValidSignal: 1
+  tickDecay: 1
+  logPipeline: 0
+--- !u!4 &694529543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694529541}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.60204, y: 2.57821, z: -1.9357}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &699062385
 GameObject:
   m_ObjectHideFlags: 0
@@ -4256,6 +4357,54 @@ Transform:
   - {fileID: 1145253048}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1123803852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123803854}
+  - component: {fileID: 1123803853}
+  m_Layer: 0
+  m_Name: Test Combat Progression
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1123803853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123803852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3953133e327cda45a48ec508c4756d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestCombatProgression
+  eventHub: {fileID: 1532114114}
+  testEvent: {fileID: 11400000, guid: 16b20cdf30295bf4baf100164c4981a9, type: 2}
+  context: {fileID: 2720431801829060335}
+  amount: 50
+--- !u!4 &1123803854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123803852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.60204, y: 2.57821, z: -1.9357}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1128310733
 GameObject:
   m_ObjectHideFlags: 0
@@ -5955,6 +6104,66 @@ Transform:
   m_Children:
   - {fileID: 283867260}
   m_Father: {fileID: 1602379547}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1532114112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1532114115}
+  - component: {fileID: 1532114114}
+  - component: {fileID: 1532114113}
+  m_Layer: 0
+  m_Name: Combat Event Hub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1532114113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532114112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d93da1901afa0f24db9f882e59a5c50c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatMemory
+  maxEvents: 128
+--- !u!114 &1532114114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532114112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a8d203e5aa14e46a2b73eef3a7ba62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatEventHub
+  owner: {fileID: 2720431801829060335}
+  memory: {fileID: 1532114113}
+--- !u!4 &1532114115
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532114112}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.60204, y: 2.57821, z: -1.9357}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1534906972
 GameObject:
@@ -21955,3 +22164,7 @@ SceneRoots:
   - {fileID: 1412686802687759189}
   - {fileID: 7406680771381853491}
   - {fileID: 1082478051}
+  - {fileID: 212192173}
+  - {fileID: 694529543}
+  - {fileID: 1532114115}
+  - {fileID: 1123803854}
