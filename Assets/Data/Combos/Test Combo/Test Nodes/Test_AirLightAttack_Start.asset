@@ -62,7 +62,7 @@ MonoBehaviour:
   animClip: {fileID: 283724438331131685, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
   transitionTime: 0.2
   comboWindow:
-    startTime: 0.35
+    startTime: 0.3
     endTime: 1
   attackWindow:
     startTime: 0.02

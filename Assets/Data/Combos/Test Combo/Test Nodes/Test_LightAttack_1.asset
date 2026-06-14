@@ -44,7 +44,7 @@ MonoBehaviour:
   animClip: {fileID: 2215158669463986417, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
   transitionTime: 0.1
   comboWindow:
-    startTime: 0.22
+    startTime: 0.1
     endTime: 0.4
   attackWindow:
     startTime: 0.06
@@ -72,10 +72,10 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.9794763
-      value: 2.0535514
-      inSlope: 2
-      outSlope: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0

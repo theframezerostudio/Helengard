@@ -1424,7 +1424,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 321867168}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.22703569, y: -2.5107715e-15, z: 6.384021e-16, w: 0.9738865}
+  m_LocalRotation: {x: 0.22703569, y: 1.5786879e-24, z: -1.4996673e-23, w: 0.9738865}
   m_LocalPosition: {x: 0.000007644296, y: 2.9117799, z: -2.5177183}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4534,15 +4534,15 @@ MonoBehaviour:
       type: {class: HitStop_Feedback, ns: , asm: Assembly-CSharp}
       data:
         Label: Hit Stop
-        duration: 0.001
+        duration: 0.01
     - rid: 6336757465520537721
       type: {class: CameraShake_Feedback, ns: , asm: Assembly-CSharp}
       data:
         Label: Low Hit Shake
-        cinemachineCamera: {fileID: 4936117100269141152}
-        amplitude: 1
-        frequency: 3
-        duration: 0.05
+        cinemachineCamera: {fileID: 1322457689}
+        amplitude: 0.1
+        frequency: 0.5
+        duration: 0.02
     - rid: 6336757510483738697
       type: {class: Audio_Feedback, ns: , asm: Assembly-CSharp}
       data:
@@ -7816,7 +7816,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stagger_ReactionModule
   recoveryData: {fileID: 0}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -7826,7 +7825,7 @@ MonoBehaviour:
   fallbackAnimationState: Hit_Blend
   fallbackCancelNormalizedTime: 0.7
   requiresGrounded: 1
-  forceMultiplier: 1
+  impulseMultiplier: 1
   impulseDuration: 0.05
   impulseFalloff:
     serializedVersion: 2
@@ -7865,7 +7864,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaunchModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -7897,66 +7895,56 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gravityCurve:
+  riseCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0022785664
-      value: 2.017758
-      inSlope: 2
-      outSlope: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.49386585
-      value: 2.7679026
-      inSlope: 4.3924456
-      outSlope: -0.59870136
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.15231763
-      outWeight: 0.16582873
-    - serializedVersion: 3
-      time: 0.5047201
-      value: -0.03129196
-      inSlope: -0.75973773
-      outSlope: -0.75973773
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.732936
-      value: -0.048366785
-      inSlope: -0.37058643
-      outSlope: -0.37058643
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.73414516
-      value: 2.7587175
-      inSlope: -0.15811227
-      outSlope: -0.15811227
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.992625
-      value: 1.8859447
-      inSlope: -2.5731485
-      outSlope: -2.5731485
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.23899771
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  riseMultiplier: 1
+  fallCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fallMultiplier: 1
   safetyTime: 5
   launchAnim: Hit_Launch
 --- !u!114 &2075069661
@@ -7972,7 +7960,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AirJuggle_ReactionModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -8017,6 +8004,32 @@ MonoBehaviour:
   safetyTime: 2.5
   airHitAnim: Hit_Air
   juggleMultiplier: 1
+  impulseMultiplier: 1
+  impulseDuration: 0.05
+  impulseFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &2075069662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8030,7 +8043,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundSmash_ReactionModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -8101,7 +8113,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Knockdown_ReactionModule
   recoveryData: {fileID: 0}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -9867,7 +9878,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundSmash_ReactionModule
   recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -10129,7 +10139,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Knockdown_ReactionModule
   recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -12111,7 +12120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stagger_ReactionModule
   recoveryData: {fileID: 0}
-  cancelTime: 1
   forceExit: 0
   allowChaining: 1
   <IsFinished>k__BackingField: 0
@@ -12121,7 +12129,7 @@ MonoBehaviour:
   fallbackAnimationState: Hit_Blend
   fallbackCancelNormalizedTime: 0.7
   requiresGrounded: 1
-  forceMultiplier: 1
+  impulseMultiplier: 1
   impulseDuration: 0.05
   impulseFalloff:
     serializedVersion: 2
@@ -12330,7 +12338,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stagger_ReactionModule
   recoveryData: {fileID: 0}
-  cancelTime: 1
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -12340,7 +12347,7 @@ MonoBehaviour:
   fallbackAnimationState: Hit_Blend
   fallbackCancelNormalizedTime: 0.7
   requiresGrounded: 1
-  forceMultiplier: 1
+  impulseMultiplier: 1
   impulseDuration: 0.05
   impulseFalloff:
     serializedVersion: 2
@@ -13125,8 +13132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6ea9d74574d62e49a95d3a8833a8747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AirJuggle_ReactionModule
-  recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
-  cancelTime: 0
+  recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
   forceExit: 0
   allowChaining: 1
   <IsFinished>k__BackingField: 0
@@ -13162,6 +13168,32 @@ MonoBehaviour:
   safetyTime: 2.5
   airHitAnim: Hit_Air
   juggleMultiplier: 1
+  impulseMultiplier: 0.01
+  impulseDuration: 0.3
+  impulseFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3253675602578632163
 GameObject:
   m_ObjectHideFlags: 0
@@ -13191,7 +13223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaunchModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -13223,66 +13254,56 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gravityCurve:
+  riseCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0022785664
-      value: 2.017758
-      inSlope: 2
-      outSlope: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.49386585
-      value: 2.7679026
-      inSlope: 4.3924456
-      outSlope: -0.59870136
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.15231763
-      outWeight: 0.16582873
-    - serializedVersion: 3
-      time: 0.5047201
-      value: -0.03129196
-      inSlope: -0.75973773
-      outSlope: -0.75973773
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.732936
-      value: -0.048366785
-      inSlope: -0.37058643
-      outSlope: -0.37058643
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.73414516
-      value: 2.7587175
-      inSlope: -0.15811227
-      outSlope: -0.15811227
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.992625
-      value: 1.8859447
-      inSlope: -2.5731485
-      outSlope: -2.5731485
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.23899771
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  riseMultiplier: 1
+  fallCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fallMultiplier: 1
   safetyTime: 5
   launchAnim: Hit_Launch
 --- !u!4 &3274893654646722062
@@ -13516,7 +13537,7 @@ Transform:
   m_GameObject: {fileID: 6072786317991108314}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02904, y: 0, z: 7}
+  m_LocalPosition: {x: 0, y: 0, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15067,7 +15088,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AirJuggle_ReactionModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -15103,6 +15123,32 @@ MonoBehaviour:
   safetyTime: 2.5
   airHitAnim: Hit_Air
   juggleMultiplier: 1
+  impulseMultiplier: 1
+  impulseDuration: 0.05
+  impulseFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4666664551656426295
 GameObject:
   m_ObjectHideFlags: 0
@@ -16349,7 +16395,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaunchModule
   recoveryData: {fileID: 11400000, guid: bfa1ef0889bd0b644953b2f4a0a982af, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -16363,6 +16408,48 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
+      inSlope: -0.28951687
+      outSlope: -0.28951687
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4343793
+      value: 0.87423986
+      inSlope: -1.0700477
+      outSlope: -1.0700477
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8327021
+      value: 0.13711226
+      inSlope: -1.3350741
+      outSlope: -1.3350741
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.8195695
+      outSlope: -0.8195695
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  riseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9972236
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -16371,7 +16458,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 1.9972236
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -16381,66 +16468,32 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gravityCurve:
+  riseMultiplier: 2
+  fallCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0022785664
-      value: 2.017758
-      inSlope: 2
-      outSlope: 2
+      time: 0
+      value: 0.9972236
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.49386585
-      value: 2.7679026
-      inSlope: 4.3924456
-      outSlope: -0.59870136
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.15231763
-      outWeight: 0.16582873
-    - serializedVersion: 3
-      time: 0.5047201
-      value: -0.03129196
-      inSlope: -0.75973773
-      outSlope: -0.75973773
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.732936
-      value: -0.048366785
-      inSlope: -0.37058643
-      outSlope: -0.37058643
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.73414516
-      value: 2.7587175
-      inSlope: -0.15811227
-      outSlope: -0.15811227
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.992625
-      value: 1.8859447
-      inSlope: -2.5731485
-      outSlope: -2.5731485
+      time: 1
+      value: 1.9972236
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.23899771
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  fallMultiplier: 2
   safetyTime: 5
   launchAnim: Hit_Launch
 --- !u!4 &5354757485633675419
@@ -17513,7 +17566,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Knockdown_ReactionModule
   recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0
@@ -21977,7 +22029,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundSmash_ReactionModule
   recoveryData: {fileID: 11400000, guid: f2b7eec1bad1d4641bd034456b87ae1a, type: 2}
-  cancelTime: 0
   forceExit: 0
   allowChaining: 0
   <IsFinished>k__BackingField: 0

@@ -92,6 +92,4 @@ MonoBehaviour:
   requiresDash: 0
   amplitude: 0.1
   frequency: 2
-  transitions:
-  - attackInput: 1
-    targetNode: {fileID: 11400000, guid: eb180e00c008ca041852d161cf1196c4, type: 2}
+  transitions: []

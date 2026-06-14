@@ -42,9 +42,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   animationStateName: LightAttack_Start
   animClip: {fileID: -8975599911089915337, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
-  transitionTime: 0.2
+  transitionTime: 0.1
   comboWindow:
-    startTime: 0.22
+    startTime: 0.18
     endTime: 0.4
   attackWindow:
     startTime: 0.05

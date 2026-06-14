@@ -20,7 +20,7 @@ MonoBehaviour:
   expectedReaction: {fileID: 11400000, guid: 2f0958176cfd7cf4c897421381c7c405, type: 2}
   hitImpact: 0
   swingType: 0
-  hitForce: {x: 0, y: 0, z: 10}
+  hitForce: {x: 0, y: 0, z: 20}
   stunDuration: 5
   hitStop: 0.06
   canChain: 1

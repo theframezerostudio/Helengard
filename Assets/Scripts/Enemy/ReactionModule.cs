@@ -5,8 +5,6 @@ public abstract class ReactionModule : MonoBehaviour, IReactionModule
 {
     [Tooltip("Optional Recover Data For Followup Of Current Reaction")]
     [SerializeField] protected ActionData recoveryData = null;
-    [Tooltip("Normailed Time For Cancelling Reaction")]
-    [Range(0f, 1f), SerializeField] protected float cancelTime = 1f;
     [Tooltip("Immediate Override Reaction Module On Cancel")]
     [SerializeField] protected bool forceExit = false;
     [Tooltip("If Module Can Be Reactivated Within Its Duration")]

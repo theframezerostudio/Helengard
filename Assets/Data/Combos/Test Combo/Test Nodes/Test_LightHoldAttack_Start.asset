@@ -42,7 +42,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   animationStateName: LightAttackHold_Start
   animClip: {fileID: 1061640395591617320, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
-  transitionTime: 0.2
+  transitionTime: 0.1
   comboWindow:
     startTime: 0.22
     endTime: 0.4

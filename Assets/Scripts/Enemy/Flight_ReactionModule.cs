@@ -11,9 +11,18 @@ public sealed class Flight_ReactionModule : ReactionModule
     private AnimationCurve horizontalAirCurve =
         AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
 
+    [Header("Gravity Modifiers")]
     [SerializeField]
-    private AnimationCurve gravityCurve =
+    private AnimationCurve riseCurve =
         AnimationCurve.Linear(0f, 1f, 1f, 1f);
+
+    [SerializeField, Min(1f)] private float riseMultiplier = 1f;
+
+    [SerializeField]
+    private AnimationCurve fallCurve = 
+        AnimationCurve.Linear(0f, 1f, 1f, 1f);
+
+    [SerializeField, Min(1f)] private float fallMultiplier = 1f;
 
     [SerializeField, Min(0.1f)] private float safetyTime = 1.5f;
 
@@ -26,7 +35,8 @@ public sealed class Flight_ReactionModule : ReactionModule
     private RotationMotionPolicy previousRotationPolicy;
 
     private float timer;
-    private float gravityCurveTime;
+    private float riseCurveTime;
+    private float fallCurveTime;
 
     private Vector3 horizontalVelocity;
     private AirStateType state;
@@ -43,7 +53,7 @@ public sealed class Flight_ReactionModule : ReactionModule
         this.context = context;
 
         timer = 0f;
-        gravityCurveTime = 0f;
+        riseCurveTime = 0f;
 
         CanBreak = false;
         IsFinished = false;
@@ -62,7 +72,7 @@ public sealed class Flight_ReactionModule : ReactionModule
 
         SetupForces(hit, context);
 
-        context.Self.Context.GravityScale = gravityCurve.Evaluate(0f);
+        context.Self.Context.GravityScale = riseCurve.Evaluate(0f);
     }
 
     public override void Tick(float deltaTime)
@@ -71,7 +81,11 @@ public sealed class Flight_ReactionModule : ReactionModule
             return;
 
         timer += deltaTime;
-        gravityCurveTime += deltaTime;
+
+        if (state == AirStateType.Falling)
+            fallCurveTime += deltaTime;
+        else if (state == AirStateType.Rising)
+            riseCurveTime += deltaTime;
 
         if (timer >= safetyTime)
         {
@@ -83,10 +97,14 @@ public sealed class Flight_ReactionModule : ReactionModule
         float horizontalFactor = horizontalAirCurve.Evaluate(normalizedTime);
 
         context.Motion.AddPositionDelta(
-            horizontalVelocity * horizontalFactor * deltaTime);
+            deltaTime * horizontalFactor * horizontalVelocity);
+
+        AnimationCurve gravityCurve = state == AirStateType.Rising ? riseCurve : fallCurve;
+        float curveTime = state == AirStateType.Rising ? riseCurveTime : fallCurveTime;
+        float multiplier = state == AirStateType.Rising ? riseMultiplier : fallMultiplier;
 
         context.Self.Context.GravityScale =
-            gravityCurve.Evaluate(gravityCurveTime);
+            gravityCurve.Evaluate(curveTime) * multiplier;
 
         if (state == AirStateType.Rising &&
             context.Self.verticalVelocity <= 0f)

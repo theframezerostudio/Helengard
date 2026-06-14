@@ -15,6 +15,7 @@ public class PlayerAttackState : PlayerState
     private float animDuration;
     private float hoverBaseHeight;
     private float hoverTime;
+    private float previousHoverOffset;
 
     private bool isAttacking = false;
     private bool comboAttempted = false;
@@ -70,6 +71,9 @@ public class PlayerAttackState : PlayerState
 
         player.Context.GravityScale = 0f;
         player.verticalVelocity = 0f;
+        hoverBaseHeight = player.transform.position.y;
+        hoverTime = 0f;
+        previousHoverOffset = 0f;
 
         // Animation Feel Adjustments
         player.FeetIKResolver.SetFeetIk(false);
@@ -248,17 +252,17 @@ public class PlayerAttackState : PlayerState
     {
         hoverTime += Time.deltaTime;
 
-        float amplitude = node.amplitude;   
-        float frequency = node.frequency;  
+        float amplitude = node.amplitude;
+        float frequency = node.frequency;
 
-        float offset = Mathf.Sin(hoverTime * Mathf.PI * 2f * frequency) * amplitude;
+        float currentHoverOffset = Mathf.Sin(hoverTime * Mathf.PI * 2f * frequency) * amplitude;
 
-        Vector3 pos = player.transform.position;
-        pos.y = hoverBaseHeight + offset;
+        float hoverDelta = currentHoverOffset - previousHoverOffset;
 
-        player.motionAccumulator.AddExtraDelta(pos - player.transform.position);
+        player.motionAccumulator.AddExtraDelta(Vector3.up * hoverDelta);
+
+        previousHoverOffset = currentHoverOffset;
     }
-
 
     public float GetStateDuration()
     {

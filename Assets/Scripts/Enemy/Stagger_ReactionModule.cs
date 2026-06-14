@@ -19,7 +19,7 @@ public sealed class Stagger_ReactionModule : ReactionModule
 
     [Header("Impulse")]
     [Tooltip("Global multiplier owned by this target's stagger module.")]
-    [SerializeField, Min(0f)] private float forceMultiplier = 1f;
+    [SerializeField, Min(0f)] private float impulseMultiplier = 1f;
 
     [SerializeField, Min(0f)] private float impulseDuration = 0.05f;
 
@@ -65,12 +65,8 @@ public sealed class Stagger_ReactionModule : ReactionModule
         totalDuration = resolved.Duration;
         cancelNormalizedTime = resolved.CancelNormalizedTime;
 
-        impulseVelocity =
-            hit.HitForce *
-            forceMultiplier *
-            resolved.ImpulseMultiplier;
+        impulseVelocity = impulseMultiplier * resolved.ImpulseMultiplier * hit.HitForce;
 
- 
         context.Self.Suspend(totalDuration);
 
         context.Animator.ApplyHit(
@@ -136,13 +132,11 @@ public sealed class Stagger_ReactionModule : ReactionModule
             return;
         }
 
-        float normalizedTime =
-            Mathf.Clamp01(impulseElapsedTime / impulseDuration);
+        float normalizedTime = Mathf.Clamp01(impulseElapsedTime / impulseDuration);
 
         float falloff = impulseFalloff.Evaluate(normalizedTime);
 
-        motor.AddPositionDelta(
-            impulseVelocity * falloff * deltaTime);
+        motor.AddPositionDelta(deltaTime * falloff * impulseVelocity);
 
         impulseElapsedTime += deltaTime;
     }

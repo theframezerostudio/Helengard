@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class AirJuggle_ReactionModule : ReactionModule
 {
@@ -25,6 +26,17 @@ public class AirJuggle_ReactionModule : ReactionModule
     [SerializeField] private float juggleMultiplier = 1f;
     private Vector3 horizontalVelocity;
 
+    [Header("Impulse Settings")]
+    [SerializeField] private float impulseMultiplier = 1f;
+    [SerializeField, Min(0f)] private float impulseDuration = 0.05f;
+
+    [SerializeField]
+    private AnimationCurve impulseFalloff =
+        AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+
+    private ReactionMotionAdapter motor;
+    private Vector3 impulseVelocity;
+
     public override bool CanHandle(DamageEvent ev, ReactionContext ctx)
     {
         if (ctx.Self.Context.isGrounded)
@@ -42,15 +54,18 @@ public class AirJuggle_ReactionModule : ReactionModule
 
         this.ctx = ctx;
 
+        motor = ctx.Motion;
         timer = 0f;
         gravityCurveTime = 0f;
+
         startHeight = ctx.Self.transform.position.y;
+        impulseVelocity = impulseMultiplier * ev.HitForce;
 
         ctx.Animator.PlayAnim(airHitAnim, 0.05f);
 
-        ctx.Motion.GetMotionPolicy(out prevMovePolicy, out prevRotPolicy);
-        ctx.Motion.OverrideMotionPolicy(MovementMotionPolicy.NoRootMotion, RotationMotionPolicy.YawOnly);
-
+        motor.GetMotionPolicy(out prevMovePolicy, out prevRotPolicy);
+        motor.OverrideMotionPolicy(MovementMotionPolicy.NoRootMotion, RotationMotionPolicy.YawOnly);
+        
         Vector3 attackerToEnemy = ctx.Self.transform.position - ev.Attacker.position;
         attackerToEnemy.y = 0;
         attackerToEnemy.Normalize();
@@ -81,13 +96,15 @@ public class AirJuggle_ReactionModule : ReactionModule
             return;
         }
 
+        ApplyImpulse(timer);
+
         float currentHeight = ctx.Self.transform.position.y;
         if (currentHeight - startHeight > maxHeightOffset)
         {
             ctx.Self.verticalVelocity = Mathf.Min(ctx.Self.verticalVelocity, 0f);
         }
 
-        ctx.Motion.AddPositionDelta(horizontalVelocity * dt);
+        motor.AddPositionDelta(horizontalVelocity * dt);
 
         float curveValue = gravityCurve.Evaluate(gravityCurveTime);
         ctx.Self.Context.GravityScale = curveValue;
@@ -102,8 +119,22 @@ public class AirJuggle_ReactionModule : ReactionModule
     {
         base.Exit(ctx);
 
-        ctx.Motion.OverrideMotionPolicy(prevMovePolicy, prevRotPolicy);
+        motor.OverrideMotionPolicy(prevMovePolicy, prevRotPolicy);
 
         ctx.Self.Context.GravityScale = 1f;
+    }
+
+    private void ApplyImpulse(float deltaTime)
+    {
+        if (motor == null || impulseDuration <= 0f || timer >= impulseDuration)
+        {
+            return;
+        }
+
+        float normalizedTime = Mathf.Clamp01(timer / impulseDuration);
+
+        float falloff = impulseFalloff.Evaluate(normalizedTime);
+
+        motor.AddPositionDelta(deltaTime * falloff * impulseVelocity);
     }
 }

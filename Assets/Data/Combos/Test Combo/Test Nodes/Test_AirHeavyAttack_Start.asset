@@ -22,27 +22,45 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.28951687
+      outSlope: -0.28951687
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4343793
+      value: 0.87423986
+      inSlope: -1.0700477
+      outSlope: -1.0700477
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8327021
+      value: 0.13711226
+      inSlope: -1.3350741
+      outSlope: -1.3350741
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 0
+      inSlope: -0.8195695
+      outSlope: -0.8195695
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   animationStateName: Air_HeavyAttack_Start
   animClip: {fileID: -1106418094697352385, guid: 382178b1a20ad864dbfe253d4043b98a, type: 3}
-  transitionTime: 0.2
+  transitionTime: 0.1
   comboWindow:
     startTime: 0.35
     endTime: 1
@@ -56,8 +74,8 @@ MonoBehaviour:
     startTime: 0
     endTime: 0
   moveWindow:
-    startTime: 0
-    endTime: 0.3
+    startTime: 0.95
+    endTime: 1
   attackTurnSpeed: 6
   turnInfluence:
     serializedVersion: 2
@@ -83,8 +101,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forwardAttackForce: 5
-  upwardAttackForce: 0
+  forwardAttackForce: 0
+  upwardAttackForce: -10
   attackRange: 3
   requiresGround: 0
   requiresAir: 1

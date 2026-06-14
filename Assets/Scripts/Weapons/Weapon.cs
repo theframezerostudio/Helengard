@@ -128,7 +128,7 @@ public sealed class Weapon : MonoBehaviour
 
     private void HandleFeedback(DamageEvent damageEvent)
     {
-        // Use damageEvent.Result when FeedbackPlayer integration is added.
+        feedbackPlayer.Play();
     }
 
     private void UnsubscribeFromHitboxes()
