@@ -1,6 +1,6 @@
-using UnityEngine;
 using System;
 using System.Collections;
+using UnityEngine;
 
 [Serializable]
 public class CastingData
@@ -12,7 +12,7 @@ public class CastingData
 [System.Serializable]
 public class CastingStrategy
 {
-    [field: SerializeField] protected string StartAnimState {  get; private set; }
+    [field: SerializeField] protected string StartAnimState { get; private set; }
     [field: SerializeField] protected string ExecuteAnimState { get; private set; }
     [field: SerializeField] protected string RecoverAnimState { get; private set; }
 
@@ -60,11 +60,9 @@ public class CastingStrategy
 
     protected void EndRecovery()
     {
-        if (recoveryRoutine != null)
-        {
-            CoroutineManager.Stop(recoveryRoutine);
-            recoveryRoutine = null;
-        }
+        CoroutineManager.Stop(recoveryRoutine);
+        permissionManager.ReleaseAll();
+        recoveryRoutine = null;
     }
 
     private IEnumerator RecoveryRoutine(float duration, float transitionTime = 0.1f)

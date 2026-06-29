@@ -4,6 +4,7 @@ public class CastingProperties : ScriptableObject
 {   
     [field: Header("Conjuration Properties")]
     [field: SerializeField] public float spellDuration { get; private set; } // Duration of spell 
+    [field: SerializeField] public AttackProfile AttackProfile { get; private set; }
 
     [field: Header("Blocked Abilities")]
     [field: SerializeField] public AbilityTag[] blockAbilities;

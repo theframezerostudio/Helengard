@@ -5392,6 +5392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1feb2deda3008b4c93186f08a828d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterContext
+  attributes: {fileID: 0}
   jumpResolver: {fileID: 0}
   <Targeting>k__BackingField: {fileID: 0}
   isSprinting: 0
@@ -10677,6 +10678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1feb2deda3008b4c93186f08a828d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterContext
+  attributes: {fileID: 0}
   jumpResolver: {fileID: 0}
   <Targeting>k__BackingField: {fileID: 0}
   isSprinting: 0
@@ -12511,6 +12513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1feb2deda3008b4c93186f08a828d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterContext
+  attributes: {fileID: 7406680771381853492}
   jumpResolver: {fileID: 1497557375466167904}
   <Targeting>k__BackingField: {fileID: 8179753287169424198}
   isSprinting: 0
@@ -17408,7 +17411,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &6085942469844062015
 GameObject:
   m_ObjectHideFlags: 0
@@ -17674,10 +17677,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c960a906d311c428b05a9f0bf3db4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellCaster
+  owner: {fileID: 2324462831474733815}
   spells:
   - {fileID: 11400000, guid: c9673ab798daec24dbb06fdd781c2ef2, type: 2}
   - {fileID: 11400000, guid: f919ea9df15f91841b7ca6cae7c09ffd, type: 2}
   - {fileID: 11400000, guid: 6bee122ef9df046489e9c584857eab9d, type: 2}
+  - {fileID: 11400000, guid: 8743a2968054e2949b73923b68aa59b8, type: 2}
   spellAnimator: {fileID: 1758227868}
   characterContext: {fileID: 2720431801829060335}
   targeting: {fileID: 8179753287169424198}

@@ -16,9 +16,7 @@ public class PlayerCastingManager : CharacterCastingManager
 
     private void Start()
     {
-        InputManager.Instance.onCast += HandleCastStarted;
-        InputManager.Instance.onCast += HandleCastPerforming;
-        InputManager.Instance.onCast += HandleCastStopped;
+        InputManager.Instance.onCastHold += HandleCast;
         InputManager.Instance.onSkillSelect += HandleSkillSelect;
         InputManager.Instance.onAim += HandleOnAim;
     }
@@ -39,13 +37,24 @@ public class PlayerCastingManager : CharacterCastingManager
         spellCaster.SkillSelector(skillIndex);
     }
 
-    protected override void HandleCastStarted(InputAction.CallbackContext context)
+    private void HandleCast(InputAction.CallbackContext context)
     {
-        if (context.started)
+        switch (context.phase)
         {
-            spellCaster.OnCastStart(castingData);
+            case InputActionPhase.Started:
+                spellCaster.OnCastStart(castingData);
+                break;
+
+            case InputActionPhase.Performed:
+                spellCaster.OnCastPerform(castingData);
+                break;
+
+            case InputActionPhase.Canceled:
+                spellCaster.OnCastRelease();
+                break;
         }
     }
+
     protected override void HandleCastPerforming(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -56,6 +65,7 @@ public class PlayerCastingManager : CharacterCastingManager
 
     protected override void HandleCastStopped(InputAction.CallbackContext context)
     {
+        Debug.Log("HandleCastStopped: " + context.phase);
         if (context.canceled)
         {
             spellCaster.OnCastRelease();    
@@ -66,9 +76,7 @@ public class PlayerCastingManager : CharacterCastingManager
     {
         if (InputManager.Instance != null)
         {
-            InputManager.Instance.onCast -= HandleCastStarted;
-            InputManager.Instance.onCast -= HandleCastPerforming;
-            InputManager.Instance.onCast -= HandleCastStopped;
+            InputManager.Instance.onCastHold -= HandleCast;
             InputManager.Instance.onSkillSelect -= HandleSkillSelect;
             InputManager.Instance.onAim -= HandleOnAim;
         }

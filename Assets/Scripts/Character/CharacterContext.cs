@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterContext : MonoBehaviour
 {
     public AbilitySystem abilitySystem;
+    public CharacterAttributes attributes;
 
     public DataAggregator dataAggregator;
     public JumpResolver jumpResolver;

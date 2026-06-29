@@ -18,7 +18,8 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
     // Hold Interaction Events
     public event Action<bool> onSprint;
     public event Action<bool> onGuard;
-    public event Action<InputAction.CallbackContext> onCast;
+    public event Action<InputAction.CallbackContext> onCastHold;
+    public event Action<InputAction.CallbackContext> onCastTap;
     public event Action<AttackInput> onAttack;
 
     // Tap or Press Interaction Events
@@ -136,10 +137,11 @@ public class InputManager : Singleton<InputManager>, PlayerControls.IPlayerActio
 
     public void OnCast(InputAction.CallbackContext context)
     {
-        if (!permissionManager.IsAllowed(AbilityTag.Cast))
+
+        if (!permissionManager.IsAllowed(AbilityTag.Cast) && !context.canceled)
             return;
 
-        onCast?.Invoke(context);
+        onCastHold?.Invoke(context);
     }
 
     public void OnSpellSelect(InputAction.CallbackContext context)

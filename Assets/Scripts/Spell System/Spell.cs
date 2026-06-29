@@ -1,10 +1,18 @@
 using UnityEngine;
 
+public enum InputType
+{
+    Tap,
+    Hold,
+}
+
 [CreateAssetMenu(fileName = "New Spell", menuName = "Spell/Create Spell")]
 public class Spell : ScriptableObject
 {
     [field: SerializeField] public string Label { get; protected set; }
+    [field: SerializeField] public InputType InputType { get; protected set; }
 
+    [Header("Casting Settings")]
     [SerializeReference, SubclassSelector] public CastingStrategy castingStrategy;
     [SerializeField] private SpellAimSettings aimSettings = new();
 
@@ -30,4 +38,4 @@ public class Spell : ScriptableObject
     {
         castingStrategy.Deactivate();
     }
-}
+} 

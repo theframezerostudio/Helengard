@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static PixPlays.ElementalVFX.VFXTester;
 
 public class SpellCaster : MonoBehaviour
 {
+    [SerializeField] private GameObject owner;
     [SerializeField] private Spell[] spells;
     [SerializeReference] private SpellAnimationController spellAnimator;
 
@@ -52,6 +56,10 @@ public class SpellCaster : MonoBehaviour
         if (currentSpell == null)
             return;
 
+        if (isPerforming)
+            return;
+
+        Debug.Log($"Casting {currentSpell.name} started.");
         isPerforming = true;
 
         startAimData = aimResolver.Resolve(
@@ -63,6 +71,7 @@ public class SpellCaster : MonoBehaviour
         );
 
         castContext.Set(
+            owner,
             characterContext,
             data,
             startAimData,
@@ -84,7 +93,9 @@ public class SpellCaster : MonoBehaviour
             return;
 
         if (!isPerforming)
-            OnCastStart(data);
+            return;
+
+        Debug.Log($"Casting {currentSpell.name} performing.");
 
         if (performRoutine != null)
         {
@@ -97,9 +108,10 @@ public class SpellCaster : MonoBehaviour
 
     public void OnCastRelease()
     {
-        if (!isPerforming)
+        if (isPerforming == false)
             return;
 
+        Debug.Log($"Casting {currentSpell.name} released.");
         isPerforming = false;
 
         if (currentSpell != null)
@@ -113,6 +125,7 @@ public class SpellCaster : MonoBehaviour
             SpellAimData aimData = ResolveAimForCurrentSpell(data);
 
             castContext.Set(
+                owner,
                 characterContext,
                 data,
                 aimData,

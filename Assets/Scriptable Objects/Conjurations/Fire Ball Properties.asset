@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Fire Ball Properties
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileCastingProperties
   <spellDuration>k__BackingField: 10
+  <AttackProfile>k__BackingField: {fileID: 11400000, guid: d80494f49c96d314a8242bdf9152add2, type: 2}
   blockAbilities: 00000000
   <castVFX>k__BackingField: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
   <spellVFX>k__BackingField: {fileID: 5279063915523687438, guid: d8bbb4999a7d8564383d25deb9fab943, type: 3}

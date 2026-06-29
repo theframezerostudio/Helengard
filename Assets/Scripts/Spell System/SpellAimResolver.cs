@@ -97,7 +97,7 @@ public sealed class SpellAimResolver
 
     private Vector3 GetTargetAimPoint(Target target)
     {
-        return target.transform.position + Vector3.up * 1.2f;
+        return target.transform.position;// + Vector3.up * 1.2f;
     }
 
     private Vector3 ResolveManualDirection(Transform caster, CastingData data)
