@@ -80,7 +80,7 @@ Material:
     - _NormalStrength: 1
     - _OcculisionStrength: 0.5
     - _Opp: 0
-    - _OutlineWidth: 0.01
+    - _OutlineWidth: 7.39
     - _ShadeStrength: 1
     - _SpecularSmoothness: 1
     - _SpecularThreshold: 1

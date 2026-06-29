@@ -325,6 +325,7 @@ Shader "Custom/CelShadingCharacter"
                 float mldistanceAtt = mainLight.distanceAttenuation;
                 float mlshadowAtt = mainLight.shadowAttenuation;
                 float shadow = mldistanceAtt * mlshadowAtt;
+                shadow = 1;
                
                 half3 N = normalize(IN.normalWS); // World Space Normals (Vec3)
                 half3 L = normalize(mlDirection); // Light direction (Vec3)
@@ -527,44 +528,78 @@ Shader "Custom/CelShadingCharacter"
             ZTest LEqual
 
             HLSLPROGRAM
+
             #pragma vertex vert
             #pragma fragment frag
             #pragma shader_feature _USE_OUTLINE
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
+            sampler2D _ILMTex;
+
             struct Attributes
             {
                 float4 positionOS : POSITION;
                 float3 normalOS   : NORMAL;
+                float2 uv         : TEXCOORD0;
             };
 
             struct Varyings
             {
                 float4 positionHCS : SV_POSITION;
+                float2 uv          : TEXCOORD0;
             };
 
-            
-            Varyings vert (Attributes IN)
+            Varyings vert(Attributes IN)
             {
                 Varyings OUT;
 
-                #ifdef _USE_OUTLINE
-                    float3 normalWS = TransformObjectToWorldNormal(IN.normalOS);
-                    float3 positionWS = TransformObjectToWorld(IN.positionOS.xyz);
+            #ifdef _USE_OUTLINE
 
-                    positionWS += normalWS * _OutlineWidth;
-                    OUT.positionHCS = TransformWorldToHClip(positionWS);
-                #else
-                    OUT.positionHCS = 0;
-                #endif
+                OUT.uv = IN.uv;
 
-        return OUT;
+                float outlineMask =
+                    tex2Dlod(_ILMTex, float4(IN.uv, 0, 0)).b;
+
+                float3 normalWS =
+                    TransformObjectToWorldNormal(IN.normalOS);
+
+                float3 positionWS =
+                    TransformObjectToWorld(IN.positionOS.xyz);
+
+                positionWS +=
+                    normalWS *
+                    (_OutlineWidth * outlineMask);
+
+                OUT.positionHCS =
+                    TransformWorldToHClip(positionWS);
+
+            #else
+
+                OUT.positionHCS = 0;
+                OUT.uv = 0;
+
+            #endif
+
+                return OUT;
             }
 
-            float4 frag (Varyings IN) : SV_Target
-            {   
+            float4 frag(Varyings IN) : SV_Target
+            {
+            #ifdef _USE_OUTLINE
+
+                float outlineMask =
+                    tex2D(_ILMTex, IN.uv).b;
+
+                clip(outlineMask - 0.01);
+
                 return _OutlineColor;
+
+            #else
+
+                return 0;
+
+            #endif
             }
 
             ENDHLSL

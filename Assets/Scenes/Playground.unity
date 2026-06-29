@@ -17675,8 +17675,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellCaster
   spells:
-  - {fileID: 11400000, guid: f919ea9df15f91841b7ca6cae7c09ffd, type: 2}
   - {fileID: 11400000, guid: c9673ab798daec24dbb06fdd781c2ef2, type: 2}
+  - {fileID: 11400000, guid: f919ea9df15f91841b7ca6cae7c09ffd, type: 2}
+  - {fileID: 11400000, guid: 6bee122ef9df046489e9c584857eab9d, type: 2}
   spellAnimator: {fileID: 1758227868}
   characterContext: {fileID: 2720431801829060335}
   targeting: {fileID: 8179753287169424198}

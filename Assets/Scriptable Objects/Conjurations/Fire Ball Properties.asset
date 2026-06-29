@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b904f16d9a4ab704a9b8d9271f4000c8, type: 3}
+  m_Name: Fire Ball Properties
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileCastingProperties
+  <spellDuration>k__BackingField: 10
+  blockAbilities: 00000000
+  <castVFX>k__BackingField: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
+  <spellVFX>k__BackingField: {fileID: 5279063915523687438, guid: d8bbb4999a7d8564383d25deb9fab943, type: 3}
+  <CastSFX>k__BackingField: {fileID: 0}
+  <SpellSFX>k__BackingField: {fileID: 0}
+  <projectileSpeed>k__BackingField: 10
+  <effectRadius>k__BackingField: 10
+  <groundMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64

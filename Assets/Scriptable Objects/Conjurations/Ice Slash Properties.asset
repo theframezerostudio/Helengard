@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9486f8fae3dc79c468967405d80aada4, type: 3}
+  m_Name: Ice Slash Properties
+  m_EditorClassIdentifier: 
+  <spellDuration>k__BackingField: 1
+  blockAbilities: 00000000
+  <castVFX>k__BackingField: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
+  <spellVFX>k__BackingField: {fileID: 2060900179291159282, guid: ca6705a3f9070d14d819d179493bcfa0, type: 3}
+  <CastSFX>k__BackingField: {fileID: 0}
+  <SpellSFX>k__BackingField: {fileID: 0}
+  <circleMoveSpeed>k__BackingField: 15
+  <circleRange>k__BackingField: 10
+  <effectRadius>k__BackingField: 10
+  <groundMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
