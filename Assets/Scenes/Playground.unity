@@ -8916,7 +8916,7 @@ MonoBehaviour:
   <Context>k__BackingField: {fileID: 2720431801829060335}
   <FeetIKResolver>k__BackingField: {fileID: 1758227869}
   <CurrentWeapon>k__BackingField: {fileID: 176036787}
-  movementSpeed: 0
+  movementSpeed: 5
   rotationTime: 0
   gravity: -30
   verticalVelocity: 0
